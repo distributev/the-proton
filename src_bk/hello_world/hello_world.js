@@ -3,5 +3,5 @@ export var greet = function () {
 };
 
 export var bye = function () {
-    return 'See ya!';
+    return 'See ya\'ll!';
 };

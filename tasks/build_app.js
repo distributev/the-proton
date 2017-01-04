@@ -7,28 +7,30 @@ var batch = require('gulp-batch');
 var plumber = require('gulp-plumber');
 var jetpack = require('fs-jetpack');
 var electron = require('electron-connect').server.create( { stopOnClose: true } );
-var bundle = require('./bundle');
+// var bundle = require('./bundle');
 var utils = require('./utils');
 var runSequence = require('run-sequence');
 
 var projectDir = jetpack;
 var srcDir = jetpack.cwd('./src');
-var destDir = jetpack.cwd('./app');
+var destDir = jetpack.cwd('./dist');
 
-gulp.task('bundle:background', function () {
-    return bundle(srcDir.path('background.js'), destDir.path('background.js'));
+gulp.task('bundle:background', ['webpack:dev'], function (done) {
+    // return bundle(srcDir.path('background.js'), destDir.path('background.js'));
+    done();
 });
 
-gulp.task('bundle:app', function () {
-    return bundle(srcDir.path('app.js'), destDir.path('app.js'));
+gulp.task('bundle:app', ['webpack:dev'], function (done) {
+    // return bundle(srcDir.path('app.js'), destDir.path('app.js'));
+    done();
 });
 
-gulp.task('less', function () {
-    return gulp.src(srcDir.path('stylesheets/main.less'))
-        .pipe(plumber())
-        .pipe(less())
-        .pipe(gulp.dest(destDir.path('stylesheets')));
-});
+// gulp.task('less', function () {
+//     return gulp.src(srcDir.path('stylesheets/main.less'))
+//         .pipe(plumber())
+//         .pipe(less())
+//         .pipe(gulp.dest(destDir.path('stylesheets')));
+// });
 
 gulp.task('environment', function () {
     var configFile = 'config/env_' + utils.getEnvName() + '.json';
@@ -44,8 +46,6 @@ gulp.task('watch', function () {
             done(err);
         };
     };
-    // Start Electron connect (livereload)
-    // electron.start();
     
     watch('src/background.js', batch( function(events, done) { 
         runSequence(
@@ -84,4 +84,4 @@ gulp.task('reload:renderer', function (done) {
 
 gulp.task('bundle', ['bundle:background', 'bundle:app']);
 
-gulp.task('build', ['bundle', 'less', 'environment']);
+gulp.task('build', ['clean:dist', 'bundle', 'environment']);
