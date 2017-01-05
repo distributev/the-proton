@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "author": "Luis Manuel <luisman40@gmail.com>",
   "license": "MIT",
-  "main": "app/background.js",
+  "main": "background.js",
   "build": {
     "appId": "com.distributev.the-proton",
     "files": [
-      "app/**/*",
+      "dist/**/*",
       "node_modules/**/*",
       "package.json"
     ]
@@ -37,7 +37,8 @@
     "bootstrap": "^3.3.7",
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
-    "fs-jetpack": "^0.10.2"
+    "fs-jetpack": "^0.10.2",
+    "source-map-support": "^0.4.2"
   },
   "devDependencies": {
     "autoprefixer": "^6.6.1",
@@ -57,9 +58,11 @@
     "file-loader": "^0.9.0",
     "gulp": "^3.9.0",
     "gulp-batch": "^1.0.5",
+    "gulp-inject": "^4.2.0",
     "gulp-less": "^3.0.3",
     "gulp-load-plugins": "^1.4.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-sort": "^2.0.0",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
     "html-webpack-harddisk-plugin": "^0.0.2",
@@ -80,9 +83,9 @@
     "rollup": "^0.36.3",
     "rollup-plugin-istanbul": "^1.1.0",
     "run-sequence": "^1.2.2",
-    "source-map-support": "^0.4.2",
     "spectron": "^3.3.0",
     "style-loader": "^0.13.1",
-    "webpack-stream": "^3.2.0"
+    "webpack-stream": "^3.2.0",
+    "ws": "^1.1.1"
   }
 }

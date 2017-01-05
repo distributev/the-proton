@@ -11,12 +11,7 @@ export class MainController {
     this.$http = $http;
   }
 
-  $onInit() {
-    this.$http.get('/api/things')
-      .then(response => {
-        this.awesomeThings = response.data;
-      });
-  }
+  $onInit() { }
 }
 
 export default angular.module('theProtonAppApp.main', [uiRouter])

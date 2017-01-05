@@ -1,45 +1,84 @@
 'use strict';
 
-var gulp = require('gulp');
-var less = require('gulp-less');
-var watch = require('gulp-watch');
-var batch = require('gulp-batch');
-var plumber = require('gulp-plumber');
-var jetpack = require('fs-jetpack');
-var electron = require('electron-connect').server.create( { stopOnClose: true } );
-// var bundle = require('./bundle');
-var utils = require('./utils');
-var runSequence = require('run-sequence');
+import _ from 'lodash';
+import gulp from 'gulp';
+import less from 'gulp-less';
+import watch from 'gulp-watch';
+import batch from 'gulp-batch';
+import plumber from 'gulp-plumber';
+import jetpack from 'fs-jetpack';
+import del from 'del';
+import electronConnect from 'electron-connect';
+let electron = electronConnect.server.create( { stopOnClose: true } );
+import utils from './utils';
+import runSequence from 'run-sequence';
+import gulpLoadPlugins from 'gulp-load-plugins';
 
-var projectDir = jetpack;
-var srcDir = jetpack.cwd('./src');
-var destDir = jetpack.cwd('./dist');
+let projectDir = jetpack;
+let srcDir = jetpack.cwd('./src');
+let destDir = jetpack.cwd('./dist');
 
-gulp.task('bundle:background', ['webpack:dev'], function (done) {
-    // return bundle(srcDir.path('background.js'), destDir.path('background.js'));
-    done();
+let mainStylePath = srcDir.path('app/app.less');
+let stylesPath = [srcDir.path('{app,components}/**/*.less')];
+
+let plugins = gulpLoadPlugins();
+
+gulp.task('clean:dist', () => del(['dist/**/*'], {dot: true}));
+
+gulp.task('inject', cb => {
+    runSequence(['inject:less'], cb);
 });
 
-gulp.task('bundle:app', ['webpack:dev'], function (done) {
-    // return bundle(srcDir.path('app.js'), destDir.path('app.js'));
-    done();
+gulp.task('inject:less', () => {
+    console.log(mainStylePath);
+    console.log(stylesPath);
+    return gulp.src(mainStylePath)
+        .pipe(plugins.inject(
+            gulp.src(_.union(stylesPath, ['!' + mainStylePath]), {read: false})
+                .pipe(plugins.sort()),
+            {
+                transform: (filepath) => {
+                    let newPath = filepath
+                        .replace(`/src/app/`, '')
+                        .replace(`/src/components/`, '../components/')
+                        .replace(/_(.*).less/, (match, p1, offset, string) => p1)
+                        .replace('.less', '');
+                    return `@import '${newPath}';`;
+                }
+            }))
+        .pipe(gulp.dest(`src/app`));
 });
 
-// gulp.task('less', function () {
-//     return gulp.src(srcDir.path('stylesheets/main.less'))
-//         .pipe(plumber())
-//         .pipe(less())
-//         .pipe(gulp.dest(destDir.path('stylesheets')));
-// });
-
-gulp.task('environment', function () {
-    var configFile = 'config/env_' + utils.getEnvName() + '.json';
+gulp.task('environment',  () => {
+    let configFile = 'config/env_' + utils.getEnvName() + '.json';
     projectDir.copy(configFile, destDir.path('env.json'), { overwrite: true });
 });
 
-gulp.task('watch', function () {
-    var beepOnError = function (done) {
-        return function (err) {
+gulp.task('copy:fonts', () => {
+    return gulp.src('node_modules/{bootstrap,font-awesome}/fonts/*')
+        .pipe(utils.flatten())
+        .pipe(gulp.dest(`dist/assets/fonts`));
+});
+
+gulp.task('copy:assets', () => {
+    return gulp.src([srcDir.path('assets/**/*')])
+        .pipe(gulp.dest(destDir.path('assets')));
+});
+
+gulp.task('copy:extras', () => {
+    return gulp.src([
+        srcDir.path('favicon.ico'),
+        srcDir.path('robots.txt'),
+        srcDir.path('.htaccess'),
+        srcDir.path('index.html'),
+        srcDir.path('package.json')
+    ], { dot: true })
+        .pipe(gulp.dest(destDir.path()));
+});
+
+gulp.task('watch', () => {
+    let beepOnError = (done) => {
+        return (err) => {
             if (err) {
                 utils.beepSound();
             }
@@ -47,41 +86,45 @@ gulp.task('watch', function () {
         };
     };
     
-    watch('src/background.js', batch( function(events, done) { 
+    watch('src/background.js', batch((events, done) => {
         runSequence(
-            'bundle:background',
+            'webpack:main:dev',
             'reload:browser',
             beepOnError(done)
         )
     }));
-    watch(['src/**/*.js', '!src/background.js'], batch( function(events, done) { 
+    watch(['src/**/*.{js,html,less}', '!src/background.js', '!src/index.html'], batch((events, done) => {
         runSequence(
-            'bundle:app',
-            'reload:renderer',
-            beepOnError(done)
-        )
-    }));
-    watch('src/**/*.less', batch( function(events, done) { 
-        runSequence(
-            'less',
+            'webpack:dev',
             'reload:renderer',
             beepOnError(done)
         )
     }));
 });
 
-gulp.task('reload:browser', function (done) {
+gulp.task('reload:browser', done => {
   // Restart Electron's main process
   electron.restart();
   done();
 });
 
-gulp.task('reload:renderer', function (done) {
+gulp.task('reload:renderer', done => {
   // Reload Electron's renderer process
   electron.reload();
   done();
 });
 
-gulp.task('bundle', ['bundle:background', 'bundle:app']);
+gulp.task('bundle', ['webpack:main:dev', 'webpack:dev']);
 
-gulp.task('build', ['clean:dist', 'bundle', 'environment']);
+gulp.task('build', done => {
+    runSequence(
+        'clean:dist',
+        // 'inject',
+        'bundle',
+        'environment',
+        'copy:assets',
+        'copy:fonts',
+        'copy:extras',
+        done
+    );
+});

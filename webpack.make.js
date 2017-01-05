@@ -27,6 +27,8 @@ module.exports = function makeWebpackConfig(options) {
      */
     var config = {};
 
+    config.target = "electron-renderer";
+
     /**
      * Entry
      * Reference: http://webpack.github.io/docs/configuration.html#entry
@@ -66,11 +68,11 @@ module.exports = function makeWebpackConfig(options) {
     } else {
         config.output = {
             // Absolute output directory
-            path: BUILD ? path.join(__dirname, '/dist/src/') : path.join(__dirname, '/.tmp/'),
+            path: BUILD ? path.join(__dirname, '/dist/') : path.join(__dirname, '/dist/'),
 
             // Output path from the view of the page
             // Uses webpack-dev-server in development
-            publicPath: BUILD || DEV || E2E ? '/' : `http://localhost:${8080}/`,
+            publicPath: BUILD || DEV || E2E ? '' : `http://localhost:${8080}/`,
             //publicPath: BUILD ? '/' : 'http://localhost:' + env.port + '/',
 
             // Filename for entry points
@@ -207,6 +209,8 @@ module.exports = function makeWebpackConfig(options) {
         });
     }
 
+    // config.module.noParse = ['ws', 'spawn-sync'];
+    // config.externals = ['ws', 'spawn-sync'];
 
     /**
      * PostCSS
@@ -244,6 +248,16 @@ module.exports = function makeWebpackConfig(options) {
             // (with more entries, this ensures that no other module
             //  goes into the vendor chunk)
         }));
+        // config.plugins.push(new CommonsChunkPlugin({
+        //     name: 'background',
+
+        //     // filename: "vendor.js"
+        //     // (Give the chunk a different name)
+
+        //     minChunks: Infinity
+        //     // (with more entries, this ensures that no other module
+        //     //  goes into the vendor chunk)
+        // }));
     }
 
     // Skip rendering index.html in test mode
@@ -252,7 +266,8 @@ module.exports = function makeWebpackConfig(options) {
     let htmlConfig = {
         template: 'src/_index.html',
         filename: '../src/index.html',
-        alwaysWriteToDisk: true
+        alwaysWriteToDisk: true,
+        excludeChunks: ['background']
     }
     config.plugins.push(
       new HtmlWebpackPlugin(htmlConfig),
@@ -329,13 +344,10 @@ module.exports = function makeWebpackConfig(options) {
     //     }
     // };
 
-    // config.node = {
-    //     global: 'window',
-    //     process: true,
-    //     crypto: 'empty',
-    //     clearImmediate: false,
-    //     setImmediate: false
-    // };
+    config.node = {
+        __dirname: false,
+        __filename: false
+    };
 
     return config;
 };
