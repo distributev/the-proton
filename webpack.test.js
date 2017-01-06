@@ -1,8 +1,12 @@
 /**
  * Webpack config for tests
  */
-module.exports = require('./webpack.make')({
-    BUILD: false,
-    TEST: true,
-    DEV: false
-});
+import makeWebpackConfig from './webpack.make';
+
+export default (options) =>  {
+    return makeWebpackConfig({
+        BUILD: false,
+        TEST: true,
+        DEV: false
+    });
+};

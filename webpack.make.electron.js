@@ -1,23 +1,16 @@
 'use strict';
 /*eslint-env node*/
 
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-var fs = require('fs');
-var path = require('path');
+import webpack from 'webpack';
+import path from 'path';
 
-module.exports = function makeWebpackConfig(options) {
-
+export default (options) =>  {
     /**
      * Config
      * Reference: http://webpack.github.io/docs/configuration.html
      * This is the object where all configuration gets set
      */
-    var config = {};
+    let config = {};
 
     config.entry = ['./src/background'];
 
@@ -44,14 +37,14 @@ module.exports = function makeWebpackConfig(options) {
         // new BabiliPlugin(),
         // Add source map support for stack traces in node
         // https://github.com/evanw/node-source-map-support
-        // new webpack.BannerPlugin(
-        //   'require("source-map-support").install();',
-        //   { raw: true, entryOnly: false }
-        // ),
+        new webpack.BannerPlugin(
+            'require("source-map-support").install();',
+            { raw: true, entryOnly: false }
+        ),
         new webpack.DefinePlugin({
-        'process.env': {
-            NODE_ENV: JSON.stringify('production')
-        }
+            'process.env': {
+                NODE_ENV: JSON.stringify('production')
+            }
         })
     ];
 

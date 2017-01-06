@@ -1,31 +1,30 @@
 'use strict';
 /*eslint-env node*/
-var webpack = require('webpack');
-var autoprefixer = require('autoprefixer');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var HtmlWebpackHarddiskPlugin = require('html-webpack-harddisk-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
-var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
-var fs = require('fs');
-var path = require('path');
+import webpack from 'webpack';
+import autoprefixer from 'autoprefixer';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import fs from 'fs';
+import path from 'path';
 
-module.exports = function makeWebpackConfig(options) {
+export default (options) =>  {
     /**
      * Environment type
      * BUILD is for generating minified builds
      * TEST is for generating test builds
      */
-    var BUILD = !!options.BUILD;
-    var TEST = !!options.TEST;
-    var E2E = !!options.E2E;
-    var DEV = !!options.DEV;
+    const BUILD = !!options.BUILD;
+    const TEST = !!options.TEST;
+    const E2E = !!options.E2E;
+    const DEV = !!options.DEV;
 
     /**
      * Config
      * Reference: http://webpack.github.io/docs/configuration.html
      * This is the object where all configuration gets set
      */
-    var config = {};
+    let config = {};
 
     config.target = "electron-renderer";
 
@@ -238,7 +237,7 @@ module.exports = function makeWebpackConfig(options) {
     ];
 
     if(!TEST) {
-        config.plugins.push(new CommonsChunkPlugin({
+        config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
 
             // filename: "vendor.js"
@@ -248,16 +247,6 @@ module.exports = function makeWebpackConfig(options) {
             // (with more entries, this ensures that no other module
             //  goes into the vendor chunk)
         }));
-        // config.plugins.push(new CommonsChunkPlugin({
-        //     name: 'background',
-
-        //     // filename: "vendor.js"
-        //     // (Give the chunk a different name)
-
-        //     minChunks: Infinity
-        //     // (with more entries, this ensures that no other module
-        //     //  goes into the vendor chunk)
-        // }));
     }
 
     // Skip rendering index.html in test mode
@@ -328,21 +317,6 @@ module.exports = function makeWebpackConfig(options) {
         };
         config.debug = false;
     }
-
-    // /**
-    //  * Dev server configuration
-    //  * Reference: http://webpack.github.io/docs/configuration.html#devserver
-    //  * Reference: http://webpack.github.io/docs/webpack-dev-server.html
-    //  */
-    // config.devServer = {
-    //     contentBase: './src/',
-    //     stats: {
-    //         modules: false,
-    //         cached: false,
-    //         colors: true,
-    //         chunk: false
-    //     }
-    // };
 
     config.node = {
         __dirname: false,
