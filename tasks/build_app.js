@@ -30,8 +30,6 @@ gulp.task('inject', cb => {
 });
 
 gulp.task('inject:less', () => {
-    console.log(mainStylePath);
-    console.log(stylesPath);
     return gulp.src(mainStylePath)
         .pipe(plugins.inject(
             gulp.src(_.union(stylesPath, ['!' + mainStylePath]), {read: false})
@@ -119,7 +117,7 @@ gulp.task('bundle', ['webpack:main:dev', 'webpack:dev']);
 gulp.task('build', done => {
     runSequence(
         'clean:dist',
-        // 'inject',
+        'inject',
         'bundle',
         'environment',
         'copy:assets',
