@@ -14,7 +14,7 @@ export class MainController {
   $onInit() { }
 }
 
-export default angular.module('theProtonAppApp.main', [uiRouter])
+export default angular.module('theProtonApp.main', [uiRouter])
   .config(routing)
   .component('main', {
     template: require('./main.html'),

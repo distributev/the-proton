@@ -9,7 +9,7 @@ import { app, Menu } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
 import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
-import { client } from 'electron-connect';
+// import { client } from 'electron-connect';
 
 // Special module holding environment variables which you declared
 // in config/env_xxx.json file.
@@ -17,7 +17,7 @@ import env from './env';
 
 var mainWindow;
 
-var setApplicationMenu = function () {
+var setApplicationMenu = function() {
     var menus = [editMenuTemplate];
     if (env.name !== 'production') {
         menus.push(devMenuTemplate);
@@ -33,7 +33,7 @@ if (env.name !== 'production') {
     app.setPath('userData', userDataPath + ' (' + env.name + ')');
 }
 
-app.on('ready', function () {
+app.on('ready', function() {
     setApplicationMenu();
 
     var mainWindow = createWindow('main', {
@@ -50,10 +50,10 @@ app.on('ready', function () {
     if (env.name === 'development') {
         mainWindow.openDevTools();
         // Activate Electron's live reload
-        client.create(mainWindow);
+        // client.create(mainWindow);
     }
 });
 
-app.on('window-all-closed', function () {
+app.on('window-all-closed', function() {
     app.quit();
 });

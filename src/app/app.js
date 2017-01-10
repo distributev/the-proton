@@ -12,7 +12,7 @@ import uiBootstrap from 'angular-ui-bootstrap';
 
 
 import {
-  routeConfig
+    routeConfig
 } from './app.config';
 
 import navbar from '../components/navbar/navbar.component';
@@ -20,17 +20,19 @@ import footer from '../components/footer/footer.component';
 import main from './main/main.component';
 import constants from './app.constants';
 import util from '../components/util/util.module';
+// import { adminLTE } from '../components/themes/admin-lte/theme.module';
+require('../components/themes/admin-lte/theme.module');
 
 import './app.less';
 
-angular.module('theProtonAppApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, navbar,
-  footer, main, constants, util
-])
-  .config(routeConfig);
+angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, navbar,
+        footer, main, constants, util, 'admin-lte'
+    ])
+    .config(routeConfig);
 
 angular.element(document)
-  .ready(() => {
-    angular.bootstrap(document, ['theProtonAppApp'], {
-      strictDi: true
+    .ready(() => {
+        angular.bootstrap(document, ['theProtonApp'], {
+            strictDi: true
+        });
     });
-  });

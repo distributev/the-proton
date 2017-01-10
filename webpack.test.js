@@ -3,10 +3,8 @@
  */
 import makeWebpackConfig from './webpack.make';
 
-export default (options) =>  {
-    return makeWebpackConfig({
-        BUILD: false,
-        TEST: true,
-        DEV: false
-    });
-};
+export default makeWebpackConfig({
+    BUILD: false,
+    TEST: true,
+    DEV: false
+});

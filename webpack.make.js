@@ -8,7 +8,9 @@ import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import fs from 'fs';
 import path from 'path';
 
-export default (options) =>  {
+const port = process.env.PORT || 3000;
+
+export default (options) => {
     /**
      * Environment type
      * BUILD is for generating minified builds
@@ -34,12 +36,20 @@ export default (options) =>  {
      * Should be an empty object if it's generating a test build
      * Karma will set this when it's a test build
      */
-    if(TEST) {
+    if (TEST) {
         config.entry = {};
     } else {
         config.entry = {
-            app: './src/app/app.js',
-            polyfills: './src/polyfills.js',
+            app: [
+                // 'webpack/hot/dev-server',
+                // `webpack-dev-server/client?http://localhost:${port}/__webpack_hmr`,
+                `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
+                'babel-polyfill',
+                './src/app/app.js'
+            ],
+            polyfills: [
+                './src/polyfills.js'
+            ],
             vendor: [
                 'angular',
                 'angular-animate',
@@ -62,16 +72,16 @@ export default (options) =>  {
      * Should be an empty object if it's generating a test build
      * Karma will handle setting it up for you when it's a test build
      */
-    if(TEST) {
+    if (TEST) {
         config.output = {};
     } else {
         config.output = {
             // Absolute output directory
-            path: BUILD ? path.join(__dirname, '/dist/') : path.join(__dirname, '/dist/'),
+            path: BUILD ? path.join(__dirname, '/dist/') : path.join(__dirname, '/src'),
 
             // Output path from the view of the page
             // Uses webpack-dev-server in development
-            publicPath: BUILD || DEV || E2E ? '' : `http://localhost:${8080}/`,
+            publicPath: BUILD || E2E ? '' : `http://localhost:${port}/`,
             //publicPath: BUILD ? '/' : 'http://localhost:' + env.port + '/',
 
             // Filename for entry points
@@ -86,7 +96,7 @@ export default (options) =>  {
 
 
 
-    if(TEST) {
+    if (TEST) {
         config.resolve = {
             modulesDirectories: [
                 'node_modules'
@@ -100,9 +110,9 @@ export default (options) =>  {
      * Reference: http://webpack.github.io/docs/configuration.html#devtool
      * Type of sourcemap to use per build type
      */
-    if(TEST) {
+    if (TEST) {
         config.devtool = 'inline-source-map';
-    } else if(BUILD || DEV) {
+    } else if (BUILD || DEV) {
         config.devtool = 'source-map';
     } else {
         config.devtool = 'eval';
@@ -167,10 +177,12 @@ export default (options) =>  {
                 //
                 // Reference: https://github.com/webpack/style-loader
                 // Use style-loader in development for hot-loading
-                ? ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
+                ?
+                ExtractTextPlugin.extract('style', 'css?sourceMap!postcss')
                 // Reference: https://github.com/webpack/null-loader
                 // Skip loading css in test mode
-                : 'null'
+                :
+                'null'
         }, {
 
             // LESS LOADER
@@ -194,7 +206,7 @@ export default (options) =>  {
     // Reference: https://github.com/ColCh/isparta-instrumenter-loader
     // Instrument JS files with Isparta for subsequent code coverage reporting
     // Skips node_modules and spec files
-    if(TEST) {
+    if (TEST) {
         config.module.preLoaders.push({
             //delays coverage til after tests are run, fixing transpiled source coverage error
             test: /\.js$/,
@@ -236,7 +248,7 @@ export default (options) =>  {
         })
     ];
 
-    if(!TEST) {
+    if (!TEST) {
         config.plugins.push(new webpack.optimize.CommonsChunkPlugin({
             name: 'vendor',
 
@@ -244,8 +256,8 @@ export default (options) =>  {
             // (Give the chunk a different name)
 
             minChunks: Infinity
-            // (with more entries, this ensures that no other module
-            //  goes into the vendor chunk)
+                // (with more entries, this ensures that no other module
+                //  goes into the vendor chunk)
         }));
     }
 
@@ -255,17 +267,21 @@ export default (options) =>  {
     let htmlConfig = {
         template: 'src/_index.html',
         filename: '../src/index.html',
-        alwaysWriteToDisk: true,
-        excludeChunks: ['background']
+        alwaysWriteToDisk: true
+            // excludeChunks: ['background']
     }
     config.plugins.push(
-      new HtmlWebpackPlugin(htmlConfig),
-      new HtmlWebpackHarddiskPlugin()
+        new webpack.optimize.OccurenceOrderPlugin(),
+        // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
+        new webpack.HotModuleReplacementPlugin(),
+        new HtmlWebpackPlugin(htmlConfig),
+        new HtmlWebpackHarddiskPlugin()
     );
 
     // Add build specific plugins
-    if(BUILD) {
+    if (BUILD) {
         config.plugins.push(
+
             // Reference: http://webpack.github.io/docs/list-of-plugins.html#noerrorsplugin
             // Only emit files when there are no errors
             new webpack.NoErrorsPlugin(),
@@ -296,7 +312,7 @@ export default (options) =>  {
         );
     }
 
-    if(DEV) {
+    if (DEV) {
         config.plugins.push(
             // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
             // Define free global variables
@@ -310,7 +326,7 @@ export default (options) =>  {
 
     config.cache = DEV;
 
-    if(TEST) {
+    if (TEST) {
         config.stats = {
             colors: true,
             reasons: true

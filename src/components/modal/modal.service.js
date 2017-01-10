@@ -73,6 +73,6 @@ export function Modal($rootScope, $uibModal) {
   };
 }
 
-export default angular.module('theProtonAppApp.Modal', [])
+export default angular.module('theProtonApp.Modal', [])
   .factory('Modal', Modal)
   .name;

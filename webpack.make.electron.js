@@ -4,7 +4,7 @@
 import webpack from 'webpack';
 import path from 'path';
 
-export default (options) =>  {
+export default (options) => {
     /**
      * Config
      * Reference: http://webpack.github.io/docs/configuration.html
@@ -12,7 +12,10 @@ export default (options) =>  {
      */
     let config = {};
 
-    config.entry = ['./src/background'];
+    config.entry = [
+        'babel-polyfill',
+        './src/background'
+    ];
 
     config.module = {
         loaders: [{
@@ -38,8 +41,7 @@ export default (options) =>  {
         // Add source map support for stack traces in node
         // https://github.com/evanw/node-source-map-support
         new webpack.BannerPlugin(
-            'require("source-map-support").install();',
-            { raw: true, entryOnly: false }
+            'require("source-map-support").install();', { raw: true, entryOnly: false }
         ),
         new webpack.DefinePlugin({
             'process.env': {
@@ -51,7 +53,7 @@ export default (options) =>  {
     config.externals = {};
 
     config.target = "electron-main";
-    
+
     config.devtool = 'source-map';
 
     // config.module.noParse = ['ws', 'spawn-sync'];
@@ -66,6 +68,6 @@ export default (options) =>  {
         __dirname: false,
         __filename: false
     };
-    
+
     return config;
 };

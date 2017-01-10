@@ -9,21 +9,21 @@ import plumber from 'gulp-plumber';
 import jetpack from 'fs-jetpack';
 import del from 'del';
 import electronConnect from 'electron-connect';
-let electron = electronConnect.server.create( { stopOnClose: true } );
+let electron = electronConnect.server.create({ stopOnClose: true });
 import utils from './utils';
 import runSequence from 'run-sequence';
 import gulpLoadPlugins from 'gulp-load-plugins';
 
 let projectDir = jetpack;
 let srcDir = jetpack.cwd('./src');
-let destDir = jetpack.cwd('./dist');
+let destDir = utils.getEnvName() === 'development' ? jetpack.cwd('./src') : jetpack.cwd('./dist');
 
 let mainStylePath = srcDir.path('app/app.less');
 let stylesPath = [srcDir.path('{app,components}/**/*.less')];
 
 let plugins = gulpLoadPlugins();
 
-gulp.task('clean:dist', () => del(['dist/**/*'], {dot: true}));
+gulp.task('clean:dist', () => del(['dist/**/*'], { dot: true }));
 
 gulp.task('inject', cb => {
     runSequence(['inject:less'], cb);
@@ -32,9 +32,8 @@ gulp.task('inject', cb => {
 gulp.task('inject:less', () => {
     return gulp.src(mainStylePath)
         .pipe(plugins.inject(
-            gulp.src(_.union(stylesPath, ['!' + mainStylePath]), {read: false})
-                .pipe(plugins.sort()),
-            {
+            gulp.src(_.union(stylesPath, ['!' + mainStylePath]), { read: false })
+            .pipe(plugins.sort()), {
                 transform: (filepath) => {
                     let newPath = filepath
                         .replace(`/src/app/`, '')
@@ -47,7 +46,7 @@ gulp.task('inject:less', () => {
         .pipe(gulp.dest(`src/app`));
 });
 
-gulp.task('environment',  () => {
+gulp.task('environment', () => {
     let configFile = 'config/env_' + utils.getEnvName() + '.json';
     projectDir.copy(configFile, destDir.path('env.json'), { overwrite: true });
 });
@@ -65,12 +64,12 @@ gulp.task('copy:assets', () => {
 
 gulp.task('copy:extras', () => {
     return gulp.src([
-        srcDir.path('favicon.ico'),
-        srcDir.path('robots.txt'),
-        srcDir.path('.htaccess'),
-        srcDir.path('index.html'),
-        srcDir.path('package.json')
-    ], { dot: true })
+            srcDir.path('favicon.ico'),
+            srcDir.path('robots.txt'),
+            srcDir.path('.htaccess'),
+            srcDir.path('index.html'),
+            srcDir.path('package.json')
+        ], { dot: true })
         .pipe(gulp.dest(destDir.path()));
 });
 
@@ -83,7 +82,7 @@ gulp.task('watch', () => {
             done(err);
         };
     };
-    
+
     watch('src/background.js', batch((events, done) => {
         runSequence(
             'webpack:main:dev',
@@ -101,15 +100,15 @@ gulp.task('watch', () => {
 });
 
 gulp.task('reload:browser', done => {
-  // Restart Electron's main process
-  electron.restart();
-  done();
+    // Restart Electron's main process
+    electron.restart();
+    done();
 });
 
 gulp.task('reload:renderer', done => {
-  // Reload Electron's renderer process
-  electron.reload();
-  done();
+    // Reload Electron's renderer process
+    electron.reload();
+    done();
 });
 
 gulp.task('bundle', ['webpack:main:dev', 'webpack:dev']);

@@ -1,9 +1,9 @@
 {
-  "name": "the-proton",
-  "productName": "The Proton App",
-  "version": "0.0.0",
-  "author": "Luis Manuel <luisman40@gmail.com>",
-  "license": "MIT",
-  "main": "background.js",
-  "dependencies": { }
+    "name": "the-proton",
+    "productName": "The Proton App",
+    "version": "0.0.0",
+    "author": "Luis Manuel <luisman40@gmail.com>",
+    "license": "MIT",
+    "main": "background.js",
+    "dependencies": {}
 }

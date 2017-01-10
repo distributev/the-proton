@@ -5,6 +5,6 @@ import {
   UtilService
 } from './util.service';
 
-export default angular.module('theProtonAppApp.util', [])
+export default angular.module('theProtonApp.util', [])
   .factory('Util', UtilService)
   .name;
