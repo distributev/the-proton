@@ -4,20 +4,22 @@ import routing from './main.routes';
 
 export class MainController {
 
-  awesomeThings = [];
+    awesomeThings = [];
 
-  /*@ngInject*/
-  constructor($http) {
-    this.$http = $http;
-  }
+    /*@ngInject*/
+    constructor($http) {
+        this.$http = $http;
+    }
 
-  $onInit() { }
+    $onInit() {
+        $.AdminLTE.layout.activate();
+    }
 }
 
 export default angular.module('theProtonApp.main', [uiRouter])
-  .config(routing)
-  .component('main', {
-    template: require('./main.html'),
-    controller: MainController
-  })
-  .name;
+    .config(routing)
+    .component('main', {
+        template: require('./main.html'),
+        controller: MainController
+    })
+    .name;

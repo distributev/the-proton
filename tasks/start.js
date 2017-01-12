@@ -2,6 +2,7 @@
 
 import childProcess from 'child_process';
 import gulp from 'gulp';
+import path from 'path';
 import electron from 'electron';
 import webpack from 'webpack';
 import WebpackDevServer from 'webpack-dev-server';
@@ -12,18 +13,20 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 const port = process.env.port || 3000;
 
-gulp.task('start', ['environment'], () => {
+gulp.task('start', ['environment', 'copy:fonts:dev'], () => {
     let compiler = webpack(webpackConfig);
     let server = new WebpackDevServer(compiler, {
-        contentBase: 'src',
+        contentBase: webpackConfig.output.path,
         hot: true,
+        reload: true,
+        historyApiFallback: true,
         filename: webpackConfig.output.filename,
-        publicPath: '/',
+        publicPath: webpackConfig.output.publicPath,
         stats: {
             colors: true,
         }
     });
-    server.listen(3000, 'localhost', () => {
+    server.listen(port, 'localhost', () => {
         childProcess.spawn(electron, ['-r', 'babel-register', './src'], {
                 stdio: 'inherit'
             })
@@ -31,38 +34,6 @@ gulp.task('start', ['environment'], () => {
                 // User closed the app. Kill the host process.
                 process.exit();
             });
-    });
-});
-
-gulp.task('start:hot', () => {
-    const config = webpackConfig;
-    const app = express();
-    const compiler = webpack(config);
-
-    const wdm = webpackDevMiddleware(compiler, {
-        publicPath: config.output.publicPath,
-        reload: true,
-        stats: {
-            colors: true
-        }
-    });
-
-    app.use(wdm);
-
-    app.use(webpackHotMiddleware(compiler));
-
-    const server = app.listen(port, 'localhost', serverError => {
-        if (serverError) {
-            return console.error(serverError);
-        }
-
-        // if (argv['start-hot']) {
-        childProcess.spawn('npm', ['run', 'start-hot'], { shell: true, env: process.env, stdio: 'inherit' })
-            .on('close', code => process.exit(code))
-            .on('error', spawnError => console.error(spawnError));
-        // }
-
-        console.log(`Listening at http://localhost:${port}`);
     });
 });
 

@@ -7,6 +7,9 @@ import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import fs from 'fs';
 import path from 'path';
+const componentHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/component-loader.js');
+const serviceHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/service-loader.js');
+const jadeHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/jade-loader.js');
 
 const port = process.env.PORT || 3000;
 
@@ -41,9 +44,8 @@ export default (options) => {
     } else {
         config.entry = {
             app: [
-                // 'webpack/hot/dev-server',
-                // `webpack-dev-server/client?http://localhost:${port}/__webpack_hmr`,
-                `webpack-hot-middleware/client?path=http://localhost:${port}/__webpack_hmr`,
+                'webpack/hot/dev-server',
+                `webpack-dev-server/client?http://localhost:${port}`,
                 'babel-polyfill',
                 './src/app/app.js'
             ],
@@ -61,7 +63,10 @@ export default (options) => {
 
                 'angular-ui-bootstrap',
                 'angular-ui-router',
-                'lodash'
+                'lodash',
+                'jquery',
+                'jquery-ui',
+                'admin-lte/dist/js/app'
             ]
         };
     }
@@ -98,6 +103,9 @@ export default (options) => {
 
     if (TEST) {
         config.resolve = {
+            alias: {
+                jqueryUi: 'jquery-ui'
+            },
             modulesDirectories: [
                 'node_modules'
             ],
@@ -185,6 +193,11 @@ export default (options) => {
                 'null'
         }, {
 
+            test: /\.(png|jpg)$/,
+            loader: 'url-loader?limit=8192'
+
+        }, {
+
             // LESS LOADER
             // Reference: https://github.com/
             test: /\.less$/,
@@ -220,8 +233,9 @@ export default (options) => {
         });
     }
 
-    // config.module.noParse = ['ws', 'spawn-sync'];
-    // config.externals = ['ws', 'spawn-sync'];
+    config.module.preLoaders.push({ test: /\.component\.js$/, loader: componentHotLoader, exclude: [/client\/lib/, /node_modules/, /\.spec\.js/, /components\/themes/] });
+    config.module.preLoaders.push({ test: /\.service\.js$/, loader: serviceHotLoader, exclude: [/client\/lib/, /node_modules/, /\.spec\.js/, /components\/themes/] })
+    config.module.postLoaders.push({ test: /\.html/, loader: jadeHotLoader, exclude: [/components\/themes/] });
 
     /**
      * PostCSS
@@ -245,6 +259,14 @@ export default (options) => {
         // Disabled when in test mode or not in build mode
         new ExtractTextPlugin('[name].[hash].css', {
             disable: !BUILD || TEST
+        }),
+
+        new webpack.ProvidePlugin({
+            '$': "jquery",
+            'window.jQuery': "jquery",
+            'jQuery': 'jquery',
+            'window.$': 'jquery',
+            'jquery': 'jquery'
         })
     ];
 
@@ -265,10 +287,9 @@ export default (options) => {
     // Reference: https://github.com/ampedandwired/html-webpack-plugin
     // Render index.html
     let htmlConfig = {
-        template: 'src/_index.html',
+        template: 'src/_index.ejs',
         filename: '../src/index.html',
         alwaysWriteToDisk: true
-            // excludeChunks: ['background']
     }
     config.plugins.push(
         new webpack.optimize.OccurenceOrderPlugin(),
@@ -336,7 +357,8 @@ export default (options) => {
 
     config.node = {
         __dirname: false,
-        __filename: false
+        __filename: false,
+        global: 'window'
     };
 
     return config;

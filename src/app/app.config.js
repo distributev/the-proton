@@ -1,9 +1,10 @@
 'use strict';
 
 export function routeConfig($urlRouterProvider, $locationProvider) {
-  'ngInject';
+    'ngInject';
 
-  $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.when('', '/');
+    $urlRouterProvider.otherwise('/');
 
-  $locationProvider.html5Mode(true);
+    // $locationProvider.html5Mode(true);
 }

@@ -1,10 +1,10 @@
 import angular from 'angular';
 
-export class FooterComponent {}
+export class FooterController {}
 
 export default angular.module('directives.footer', [])
-  .component('footer', {
-    template: require('./footer.html'),
-    controller: FooterComponent
-  })
-  .name;
+    .component('footer', {
+        template: require('./footer.html'),
+        controller: FooterController
+    })
+    .name;

@@ -51,6 +51,12 @@ gulp.task('environment', () => {
     projectDir.copy(configFile, destDir.path('env.json'), { overwrite: true });
 });
 
+gulp.task('copy:fonts:dev', () => {
+    return gulp.src('node_modules/{bootstrap,font-awesome}/fonts/*')
+        .pipe(utils.flatten())
+        .pipe(gulp.dest(`src/assets/fonts`));
+});
+
 gulp.task('copy:fonts', () => {
     return gulp.src('node_modules/{bootstrap,font-awesome}/fonts/*')
         .pipe(utils.flatten())
