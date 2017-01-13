@@ -11,9 +11,18 @@ export class MainController {
         this.$http = $http;
     }
 
-    $onInit() {
-        $.AdminLTE.layout.fix();
-        $.AdminLTE.controlSidebar.activate();
+    $onInit() {}
+
+    $onChanges() {
+        this.onLayoutChange();
+    }
+
+    onLayoutChange() {
+        $(function() {
+            $.AdminLTE.layout.fix();
+            $.AdminLTE.layout.activate();
+            $.AdminLTE.controlSidebar.activate();
+        });
     }
 }
 

@@ -13,7 +13,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 
 const port = process.env.port || 3000;
 
-gulp.task('start', ['environment', 'copy:fonts:dev'], () => {
+gulp.task('start', ['environment', 'copy:fonts:dev', 'inject'], () => {
     let compiler = webpack(webpackConfig);
     let server = new WebpackDevServer(compiler, {
         contentBase: webpackConfig.output.path,
