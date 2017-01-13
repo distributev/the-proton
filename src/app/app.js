@@ -10,8 +10,8 @@ import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 // import ngMessages from 'angular-messages';
 
-import 'bootstrap/js/tooltip';
-import 'bootstrap/js/dropdown';
+// Import all bootstrap plugins
+import 'bootstrap/dist/js/npm';
 
 import {
     routeConfig

@@ -66,6 +66,7 @@ export default (options) => {
                 'lodash',
                 'jquery',
                 'jquery-ui',
+                'jquery-slimscroll',
                 'admin-lte/dist/js/app'
             ]
         };
@@ -104,7 +105,7 @@ export default (options) => {
     if (TEST) {
         config.resolve = {
             alias: {
-                jqueryUi: 'jquery-ui'
+                jqueryUi: 'jquery-ui',
             },
             modulesDirectories: [
                 'node_modules'

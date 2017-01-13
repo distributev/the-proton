@@ -12,7 +12,8 @@ export class MainController {
     }
 
     $onInit() {
-        $.AdminLTE.layout.activate();
+        $.AdminLTE.layout.fix();
+        $.AdminLTE.controlSidebar.activate();
     }
 }
 
