@@ -7,11 +7,14 @@ export class MainController {
     awesomeThings = [];
 
     /*@ngInject*/
-    constructor($http) {
+    constructor($http, SkinService) {
         this.$http = $http;
+        this.skinService = SkinService;
     }
 
-    $onInit() {}
+    $onInit() {
+        this.skin = this.skinService.getSkin();
+    }
 
     $onChanges() {
         this.onLayoutChange();
@@ -23,6 +26,10 @@ export class MainController {
             $.AdminLTE.layout.activate();
             $.AdminLTE.controlSidebar.activate();
         });
+    }
+
+    changeSkin({ skin }) {
+        this.skin = skin;
     }
 }
 

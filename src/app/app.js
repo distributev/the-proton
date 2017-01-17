@@ -23,11 +23,12 @@ import main from './main/main.component';
 import constants from './app.constants';
 import mainSidebar from '../components/main-sidebar/main-sidebar.component';
 import controlSidebar from '../components/control-sidebar/control-sidebar.component';
+import skin from '../components/skin/skin.module';
 
 import './app.less';
 
 angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, navbar,
-        footer, main, constants, mainSidebar, controlSidebar
+        footer, main, constants, mainSidebar, controlSidebar, skin
     ])
     .config(routeConfig);
 
