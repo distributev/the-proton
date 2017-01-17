@@ -96,7 +96,9 @@ export default (options) => {
 
             // Filename for non-entry points
             // Only adds hash in build mode
-            chunkFilename: BUILD ? '[name].[hash].js' : '[name].bundle.js'
+            chunkFilename: BUILD ? '[name].[hash].js' : '[name].bundle.js',
+
+            libraryTarget: 'commonjs2'
         };
     }
 
@@ -355,6 +357,10 @@ export default (options) => {
         };
         config.debug = false;
     }
+    // config.noParse = ['electron-config']
+    config.externals = [{
+        'electron-config': 'electron-config'
+    }];
 
     config.node = {
         __dirname: false,

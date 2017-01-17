@@ -14,6 +14,7 @@ export class ControlSidebarController {
     changeSkin(value) {
         let skins = this.skinService.getSkins();
         if (skins.indexOf(value) !== -1) {
+            this.skinService.setSkin(value);
             this.onSkinChange({
                 $event: {
                     skin: value
