@@ -20,15 +20,18 @@ import {
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
+import breadcrumb from '../components/breadcrumb/breadcrumb.module';
+import home from './home/home.module';
 import constants from './app.constants';
 import mainSidebar from '../components/main-sidebar/main-sidebar.component';
 import controlSidebar from '../components/control-sidebar/control-sidebar.component';
 import skin from '../components/skin/skin.module';
+import configuration from './configuration/configuration.module';
 
 import './app.less';
 
 angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, navbar,
-        footer, main, constants, mainSidebar, controlSidebar, skin
+        footer, main, breadcrumb, home, constants, mainSidebar, controlSidebar, skin, configuration
     ])
     .config(routeConfig);
 

@@ -1,0 +1,16 @@
+<section class="content-header col-xs-12">
+    <breadcrumb $state="$ctrl.$state"></breadcrumb>
+</section>
+<div class="col-xs-12">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.settings" aria-expanded="true">Connection Settings</a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.message" aria-expanded="false">Email Message</a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.attachments" aria-expanded="false">Attachments</a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.cloud" aria-expanded="false">Cloud Email Providers</a></li>
+        </ul>
+        <div class="tab-content">
+            <ui-view></ui-view>
+        </div>
+    </div>
+</div>

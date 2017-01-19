@@ -22,15 +22,15 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-list-ul"></i> General</a></li>
-                    <li class="treeview">
-                        <a href="#"><i class="fa fa-envelope"></i> <span>Email</span>
+                    <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.general"><i class="fa fa-list-ul"></i> General</a></li>
+                    <li class="treeview" ui-sref-active="active">
+                        <a href="#" ui-sref="main.configuration.email.settings"><i class="fa fa-envelope"></i> <span>Email</span>
                             <span class="pull-right-container">
                             <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-envelope-o"></i> Cloud Email Providers</a></li>
+                            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.cloud"><i class="fa fa-envelope-o"></i> Cloud Email Providers</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
@@ -44,7 +44,7 @@
                             <li><a href="#"><i class="fa fa-key"></i> SFTP/SCP</a></li>
                         </ul>
                     </li>
-                    <li><a href="#"><i class="fa fa-window-restore"></i> Advanced</a></li>
+                    <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.advanced"><i class="fa fa-window-restore"></i> Advanced</a></li>
                 </ul>
             </li>
             <li><a href="#"><i class="fa fa-cogs"></i> <span>Configuration Templates</span></a></li>

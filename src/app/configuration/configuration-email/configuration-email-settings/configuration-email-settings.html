@@ -1,0 +1,99 @@
+<div class="tab-pane active">
+    <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Well-Known Services</label>
+            <div class="col-xs-6 input-container">
+                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-download"></i> Load</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="fromName" class="col-xs-3 control-label">From Name</label>
+            <div class="col-xs-6 input-container">
+                <input type="text" class="form-control" id="fromName" placeholder="From Name">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="fromEmailAddress" class="col-xs-3 control-label">From Email Address</label>
+            <div class="col-xs-6 input-container">
+                <input type="text" class="form-control" id="fromEmailAddress" placeholder="from@emailaddress.com">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="host" class="col-xs-3 control-label">Host</label>
+            <div class="col-xs-6 input-container">
+                <input type="text" class="form-control" id="host" placeholder="Email Server Host">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="username" class="col-xs-3 control-label">User Name</label>
+            <div class="col-xs-6 input-container">
+                <input type="text" class="form-control" id="username" placeholder="From Email User ID">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="password" class="col-xs-3 control-label">Password</label>
+            <div class="col-xs-6 input-container">
+                <input type="password" class="form-control" id="password" placeholder="*********">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="port" class="col-xs-3 control-label">Port</label>
+            <div class="col-xs-6 input-container">
+                <input type="text" class="form-control" id="port" placeholder="25">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-3 control-label-icon" for="ssl"></i></label>
+            <div class="col-xs-6 input-container">
+                <div class="checkbox">
+                    <label for="ssl">
+                                <input type="checkbox" id="ssl">
+                                SSL Enabled
+                            </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-3 control-label-icon" for="tls"></label>
+            <div class="col-xs-6 input-container">
+                <div class="checkbox">
+                    <label for="tls">
+                                <input type="checkbox" id="tls">
+                                TLS Enabled
+                            </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-3 control-label">Test Connection</label>
+            <div class="col-xs-6 input-container">
+                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-send"></i> Send Test Email</button>
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-eraser"></i> Clear Errors</button>
+            </div>
+        </div>
+        <div class="form-group text-right">
+            <button type="button" class="btn btn-flat btn-default">Cancel</button>
+            <button type="button" class="btn btn-flat btn-info">Save</button>
+        </div>
+    </form>
+</div>
