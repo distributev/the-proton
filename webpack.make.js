@@ -67,7 +67,9 @@ export default (options) => {
                 'jquery',
                 'jquery-ui',
                 'jquery-slimscroll',
-                'admin-lte/dist/js/app'
+                'admin-lte/dist/js/app',
+                'brace',
+                'angular-ui-ace'
             ]
         };
     }
@@ -108,6 +110,7 @@ export default (options) => {
         config.resolve = {
             alias: {
                 jqueryUi: 'jquery-ui',
+                ace: 'brace'
             },
             modulesDirectories: [
                 'node_modules'

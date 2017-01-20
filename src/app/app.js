@@ -8,6 +8,7 @@ import ngSanitize from 'angular-sanitize';
 
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
+import 'angular-ui-ace';
 // import ngMessages from 'angular-messages';
 
 // Import all bootstrap plugins
@@ -30,7 +31,7 @@ import configuration from './configuration/configuration.module';
 
 import './app.less';
 
-angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, navbar,
+angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', navbar,
         footer, main, breadcrumb, home, constants, mainSidebar, controlSidebar, skin, configuration
     ])
     .config(routeConfig);

@@ -1,7 +1,62 @@
-<div class="tab-pane active" id="tab_1">
-    <b>Message:</b>
-
-    <p>Exactly like the original bootstrap tabs except you should use the custom wrapper <code>.nav-tabs-custom</code> to achieve this style.</p>
-    A wonderful serenity has taken possession of my entire soul, like these sweet mornings of spring which I enjoy with my whole heart. I am alone, and feel the charm of existence in this spot, which was created for the bliss of souls like mine. I am so happy,
-    my dear friend, so absorbed in the exquisite sense of mere tranquil existence, that I neglect my talents. I should be incapable of drawing a single stroke at the present moment; and yet I feel that I never was a greater artist than now.
+<div class="tab-pane active">
+    <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
+        <div class="form-group single-button">
+            <label for="to" class="col-xs-2 control-label">To</label>
+            <div class="col-xs-8 input-container">
+                <input type="text" class="form-control" id="to" placeholder="">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group single-button">
+            <label for="cc" class="col-xs-2 control-label">CC</label>
+            <div class="col-xs-8 input-container">
+                <input type="text" class="form-control" id="cc" placeholder="">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group single-button">
+            <label for="bcc" class="col-xs-2 control-label">BCC</label>
+            <div class="col-xs-8 input-container">
+                <input type="text" class="form-control" id="bcc" placeholder="">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group single-button">
+            <label for="Subject" class="col-xs-2 control-label">Subject</label>
+            <div class="col-xs-8 input-container">
+                <input type="text" class="form-control" id="Subject" placeholder="">
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group single-button">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-8 input-container">
+                <uib-tabset active="active" class="nav-tabs-custom">
+                    <uib-tab index="0" heading="HTML">
+                        <div ui-ace></div>
+                    </uib-tab>
+                    <uib-tab index="1" heading="Text">
+                        <textarea class="form-control" rows="9"></textarea>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+            <div class="col-xs-3 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-save"></i> Save Template</button>
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-folder-open"></i> Load Template</button>
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+        </div>
+        <div class="form-group text-right">
+            <button type="button" class="btn btn-flat btn-default">Cancel</button>
+            <button type="button" class="btn btn-flat btn-info">Save</button>
+        </div>
+    </form>
 </div>
