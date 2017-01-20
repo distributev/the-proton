@@ -91,6 +91,22 @@
                 <button type="button" class="btn btn-flat btn-default"><i class="fa fa-eraser"></i> Clear Errors</button>
             </div>
         </div>
+        <div class="form-group cloud-email-providers-select">
+            <div class="col-xs-3 cloud-email-provider-name">
+                <h4>
+                    <img ng-src="{{ $ctrl.selectedCloudProvider.logo }}" alt="{{ $ctrl.selectedCloudProvider.name }}"> {{ $ctrl.selectedCloudProvider.name }}
+                </h4>
+            </div>
+            <div class="col-xs-9 cloud-email-provider-description">
+                <blockquote>
+                    <p>{{ $ctrl.selectedCloudProvider.description }}</p>
+                </blockquote>
+            </div>
+            <label class="col-xs-3 control-label">Cloud Email Service Providers</label>
+            <div class="col-xs-9">
+                <button type="button" class="btn btn-flat btn-default" ng-repeat="provider in $ctrl.cloudProviders" ng-click="$ctrl.selectedCloudProvider = provider"><img ng-src="{{ provider.logo }}" alt="{{ provider.name }}"> {{ provider.name }}</button>
+            </div>
+        </div>
         <div class="form-group text-right">
             <button type="button" class="btn btn-flat btn-default">Cancel</button>
             <button type="button" class="btn btn-flat btn-info">Save</button>

@@ -1,10 +1,14 @@
 class ConfigurationEmailSettingsController {
-    constructor($state) {
+    constructor($state, ConfigurationEmailService) {
         'ngInject';
         this.$state = $state;
+        this.configurationEmailService = ConfigurationEmailService;
     }
 
-    $onInit() {}
+    $onInit() {
+        this.cloudProviders = this.configurationEmailService.getCloudProviders();
+        this.selectedCloudProvider = this.cloudProviders[0];
+    }
 
     $onChanges(changes) {}
 
