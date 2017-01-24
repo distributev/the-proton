@@ -1,11 +1,13 @@
 import angular from 'angular';
 import uiRouter from 'angular-ui-router';
 import { ConfigurationEmailAttachmentsComponent } from './configuration-email-attachments.component';
+import attachmentModal from './attachment-modal/attachment-modal.module';
 // import './configuration-email-attachments.less';
 
 export default angular
     .module('theProtonApp.configurationEmailAttachments', [
-        uiRouter
+        uiRouter,
+        attachmentModal
     ])
     .component('configurationEmailAttachments', ConfigurationEmailAttachmentsComponent)
     .config(($stateProvider, $urlRouterProvider) => {
