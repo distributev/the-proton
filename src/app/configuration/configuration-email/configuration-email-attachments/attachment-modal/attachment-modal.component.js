@@ -2,16 +2,16 @@ import electron from 'electron';
 const { dialog } = electron.remote;
 
 class AttachmentModalController {
-    constructor() {
+    constructor($timeout) {
         'ngInject';
+        this.$timeout = $timeout;
     }
-    $onInit() {
-        this.path = this.resolve.path || '';
-    }
+
+    $onInit() {}
 
     $onChanges(changes) {}
 
-    selectFile() {
+    selectFile($event) {
         let options = {
             title: 'Attachments',
             properties: [
@@ -20,13 +20,15 @@ class AttachmentModalController {
         }
 
         dialog.showOpenDialog(options, filePaths => {
-            console.log(filePaths);
-            this.path = filePaths[0];
+            this.$timeout(() => {
+                this.resolve.path = filePaths[0];
+                angular.element($event.target).parents('.form-group').find('input')[0].focus();
+            });
         });
     }
 
     ok() {
-        this.close({ $value: this.path });
+        this.close({ $value: this.resolve.path });
     }
 
     cancel() {

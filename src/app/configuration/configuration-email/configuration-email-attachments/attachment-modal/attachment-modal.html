@@ -1,23 +1,23 @@
 <div class="modal-header">
     <h3 class="modal-title" id="modal-title"><i class="fa fa-paperclip"></i> Attachments</h3>
 </div>
-<div class="modal-body" id="modal-body">
-    <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
+<form class="form-horizontal" ng-submit="$ctrl.ok()">
+    <div class="modal-body" id="modal-body">
         <div class="form-group">
             <label for="path" class="col-xs-1">Path</label>
             <div class="col-xs-7">
-                <input type="text" class="form-control" id="path" placeholder="" ng-model="$ctrl.path">
+                <input type="text" class="form-control" id="path" placeholder="" ng-model="$ctrl.resolve.path">
             </div>
             <div class="col-xs-4">
                 <div class="row">
-                    <button class="btn btn-default" type="button" ng-click="$ctrl.selectFile()"><i class="fa fa-folder-open"></i> Select</button>
+                    <button class="btn btn-default" type="button" ng-click="$ctrl.selectFile($event)"><i class="fa fa-folder-open"></i> Select</button>
                     <button class="btn btn-default" type="button" ng-click=""><i class="fa fa-code"></i> Variables</button>
                 </div>
             </div>
         </div>
-    </form>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
-    <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
-</div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="submit">OK</button>
+        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+    </div>
+</form>

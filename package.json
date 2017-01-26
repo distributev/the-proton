@@ -49,7 +49,8 @@
         "jquery-slimscroll": "^1.3.8",
         "jquery-ui": "^1.12.1",
         "lodash": "^4.17.4",
-        "source-map-support": "^0.4.2"
+        "source-map-support": "^0.4.2",
+        "through2": "^2.0.3"
     },
     "devDependencies": {
         "angular-hot-reloader": "^0.0.2",

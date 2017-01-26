@@ -2,17 +2,16 @@
     <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
         <div class="form-group single-button">
             <div class="col-xs-10">
-                {{ $ctrl.selectedAttachment }}
                 <select name="attachments" id="attachments" class="form-control" multiple size="15" ng-model="$ctrl.selectedAttachment">
-                    <option ng-repeat="attachment in $ctrl.attachments" ng-value="attachment.path">{{attachment.path}}</option>
+                    <option ng-repeat="attachment in $ctrl.attachments" ng-value="attachment">{{attachment.path}}</option>
                 </select>
             </div>
             <div class="col-xs-2 buttons-container-vertical">
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal(true)"><i class="fa fa-plus"></i> Add</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.removeAttachment()"><i class="fa fa-minus"></i> Remove</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal()" ng-class="{ 'disabled': !$ctrl.getSelectedAttachment() }"><i class="fa fa-pencil-square-o"></i> Edit</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentUp()"><i class="fa fa-arrow-up"></i> Up</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentDown()"><i class="fa fa-arrow-down"></i> Down</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal()"><i class="fa fa-plus"></i> Add</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.removeAttachment($ctrl.getSelectedAttachment())"><i class="fa fa-minus"></i> Remove</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal($ctrl.getSelectedAttachment())" ng-class="{ 'disabled': !$ctrl.getSelectedAttachment() }"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentUp($ctrl.getSelectedAttachment())"><i class="fa fa-arrow-up"></i> Up</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentDown($ctrl.getSelectedAttachment())"><i class="fa fa-arrow-down"></i> Down</button>
                 <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.clearAttachments()"><i class="fa fa-eraser"></i> Clear</button>
             </div>
         </div>

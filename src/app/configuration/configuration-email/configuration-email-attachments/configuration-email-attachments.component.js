@@ -33,41 +33,51 @@ class ConfigurationEmailAttachmentsController {
         return this.selectedAttachment[0] ? this.selectedAttachment[0] : false;
     }
 
-    showAddOrEditModal(isAdd) {
-        if (!isAdd && !this.getSelectedAttachment()) return;
-
+    showAddOrEditModal(attachment) {
         let modalInstance = this.$uibModal.open({
             animation: true,
             component: 'attachmentModal',
             resolve: {
-                path: () => {
-                    return !isAdd ? this.getSelectedAttachment().path : null;
-                }
+                path: () => attachment ? attachment.path : null
             }
         });
 
         modalInstance.result.then(result => {
-            console.log('modal-component closed with result: ' + result);
-            this.attachments.push({
-                path: result
-            });
+            if (attachment) {
+                let index = _.indexOf(this.attachments, attachment);
+                this.attachments[index].path = result;
+            } else {
+                this.attachments.push({
+                    path: result
+                });
+            }
         }, reason => {
-            console.log('modal-component dismissed with reason: ' + reason);
+            // console.log('modal-component dismissed with reason: ' + reason);
         });
     }
 
-    removeAttachment() {
-        if (this.getSelectedAttachment()) {
-            _.remove(this.attachments, { path: this.getSelectedAttachment().path });
+    removeAttachment(attachment) {
+        if (attachment) {
+            _.remove(this.attachments, { path: attachment.path });
         }
     }
 
-    attachmentUp() {
-
+    attachmentUp(attachment) {
+        let index = _.indexOf(this.attachments, attachment);
+        if (index > 0) {
+            this.move(this.attachments, index, index - 1);
+        }
     }
 
-    attachmentDown() {
+    attachmentDown(attachment) {
+        let index = _.indexOf(this.attachments, attachment);
+        if (index < this.attachments.length) {
+            this.move(this.attachments, index, index + 1);
+        }
+    }
 
+    move(array, from, to) {
+        array.splice(to, 0, array.splice(from, 1)[0]);
     }
 
     clearAttachments() {
