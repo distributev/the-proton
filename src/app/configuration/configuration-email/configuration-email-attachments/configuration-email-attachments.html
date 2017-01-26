@@ -1,19 +1,55 @@
-<div class="tab-pane active">
-    <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
-        <div class="form-group single-button">
-            <div class="col-xs-10">
-                <select name="attachments" id="attachments" class="form-control" multiple size="15" ng-model="$ctrl.selectedAttachment">
-                    <option ng-repeat="attachment in $ctrl.attachments" ng-value="attachment">{{attachment.path}}</option>
-                </select>
-            </div>
-            <div class="col-xs-2 buttons-container-vertical">
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal()"><i class="fa fa-plus"></i> Add</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.removeAttachment($ctrl.getSelectedAttachment())"><i class="fa fa-minus"></i> Remove</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal($ctrl.getSelectedAttachment())" ng-class="{ 'disabled': !$ctrl.getSelectedAttachment() }"><i class="fa fa-pencil-square-o"></i> Edit</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentUp($ctrl.getSelectedAttachment())"><i class="fa fa-arrow-up"></i> Up</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentDown($ctrl.getSelectedAttachment())"><i class="fa fa-arrow-down"></i> Down</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.clearAttachments()"><i class="fa fa-eraser"></i> Clear</button>
-            </div>
-        </div>
+<div class="tab-pane active row">
+    <div class="col-xs-12">
+        <form class="form-horizontal" name="attachmentForm" ng-submit="$ctrl.onSubmit()" novalidate>
+            <dix class="panel panel-default col-xs-12">
+                <div class="panel-body row">
+                    <h5>Select Attachments</h5>
+                    <div class="form-group single-button">
+                        <div class="col-xs-10">
+                            <select name="attachments" id="attachments" class="form-control" multiple size="15" ng-model="$ctrl.formData.selectedAttachment">
+                                <option ng-repeat="attachment in $ctrl.formData.attachments" ng-value="attachment">{{attachment.path}}</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-2 buttons-container-vertical">
+                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal()"><i class="fa fa-plus"></i> Add</button>
+                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.removeAttachment($ctrl.getSelectedAttachment())"><i class="fa fa-minus"></i> Remove</button>
+                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal($ctrl.getSelectedAttachment())" ng-class="{ 'disabled': !$ctrl.getSelectedAttachment() }"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentUp($ctrl.getSelectedAttachment())"><i class="fa fa-arrow-up"></i> Up</button>
+                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.attachmentDown($ctrl.getSelectedAttachment())"><i class="fa fa-arrow-down"></i> Down</button>
+                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.clearAttachments()"><i class="fa fa-eraser"></i> Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </dix>
+            <dix class="panel panel-default col-xs-12">
+                <div class="panel-body row">
+                    <h5>Archive Attachments</h5>
+                    <div class="form-group">
+                        <div class="col-xs-3 control-label-icon"><i class="fa fa-file-archive-o"></i></div>
+                        <div class="col-xs-9">
+                            <div class="checkbox">
+                                <label for="archive">
+                                    <input type="checkbox" id="archive" ng-model="$ctrl.formData.archive">
+                                    Archive all attachments together
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group single-button">
+                        <label for="archiveFileName" class="col-xs-3 control-label">Archive File Name</label>
+                        <div class="col-xs-7 input-container">
+                            <input type="text" class="form-control" id="archiveFileName" ng-model="$ctrl.formData.archiveFileName" ng-disabled="!$ctrl.formData.archive">
+                        </div>
+                        <div class="col-xs-2 buttons-container">
+                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-disabled="!$ctrl.formData.archive"><i class="fa fa-code"></i> Variables</button>
+                        </div>
+                    </div>
+                </div>
+    </div>
+    <div class="form-group text-right">
+        <button type="button" class="btn btn-flat btn-default">Cancel</button>
+        <button type="submit" class="btn btn-flat btn-info">Save</button>
+    </div>
     </form>
+</div>
 </div>

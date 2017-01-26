@@ -1,7 +1,12 @@
+import electron from 'electron';
+const { dialog } = electron.remote;
+
 class ConfigurationGeneralController {
-    constructor($state) {
+    constructor($state, $timeout) {
         'ngInject';
         this.$state = $state;
+        this.$timeout = $timeout;
+        this.formData = {}
     }
 
     $onInit() {}
@@ -10,6 +15,18 @@ class ConfigurationGeneralController {
 
     onSubmit() {
 
+    }
+
+    outputSelected({ path }) {
+        this.$timeout(() => {
+            this.formData.outputFolder = path;
+        });
+    }
+
+    quarantineSelected({ path }) {
+        this.$timeout(() => {
+            this.formData.quarantineFolder = path;
+        });
     }
 }
 

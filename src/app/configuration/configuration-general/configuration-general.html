@@ -6,43 +6,43 @@
         <div class="box-header with-border">
             <h3 class="box-title">General</h3>
         </div>
-        <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
+        <form class="form-horizontal" name="generalForm" ng-submit="$ctrl.onSubmit()">
             <div class="box-body">
                 <div class="form-group">
                     <label for="fileName" class="col-xs-3 control-label">File Name</label>
-                    <div class="col-xs-6 input-container">
-                        <input type="text" class="form-control" id="fileName" placeholder="File Name">
+                    <div class="col-xs-5 input-container">
+                        <input type="text" class="form-control" id="fileName" placeholder="File Name" ng-model="$ctrl.formData.fileName">
                     </div>
-                    <div class="col-xs-3 buttons-container">
-                        <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+                    <div class="col-xs-4 buttons-container">
+                        <button type="button" class="btn btn-flat btn-default col-xs-6"><i class="fa fa-code"></i> Variables</button>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="outputFolder" class="col-xs-3 control-label">Output Folder</label>
-                    <div class="col-xs-6 input-container">
-                        <input type="text" class="form-control" id="outputFolder" placeholder="Output Folder">
+                    <div class="col-xs-5 input-container">
+                        <input type="text" class="form-control" id="outputFolder" placeholder="Output Folder" ng-model="$ctrl.formData.outputFolder">
                     </div>
-                    <div class="col-xs-3 buttons-container">
-                        <button type="button" class="btn btn-flat btn-default"><i class="fa fa-folder"></i> Select</button>
-                        <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+                    <div class="col-xs-4 buttons-container">
+                        <electron-dialog-button class="col-xs-6" dialog-type="'folder'" on-path-selected="$ctrl.outputSelected($event)"></electron-dialog-button>
+                        <button type="button" class="btn btn-flat btn-default col-xs-6"><i class="fa fa-code"></i> Variables</button>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="quarantineFolder" class="col-xs-3 control-label">Quarantine Folder </br> <span class="text-italic"><em><small>(should be a local folder)</small></em></span></label>
-                    <div class="col-xs-6 input-container">
-                        <input type="text" class="form-control" id="quarantineFolder" placeholder="Quarantine Folder">
+                    <div class="col-xs-5 input-container">
+                        <input type="text" class="form-control" id="quarantineFolder" placeholder="Quarantine Folder" ng-model="$ctrl.formData.quarantineFolder">
                     </div>
-                    <div class="col-xs-3 buttons-container">
-                        <button type="button" class="btn btn-flat btn-default"><i class="fa fa-folder"></i> Select</button>
-                        <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+                    <div class="col-xs-4 buttons-container">
+                        <electron-dialog-button class="col-xs-6" dialog-type="'folder'" on-path-selected="$ctrl.quarantineSelected($event)"></electron-dialog-button>
+                        <button type="button" class="btn btn-flat btn-default col-xs-6"><i class="fa fa-code"></i> Variables</button>
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-xs-3 control-label-icon" for="sendDocuments"><i class="fa fa-share-square-o"></i></label>
-                    <div class="col-xs-6 input-container">
+                    <div class="col-xs-5 input-container">
                         <div class="checkbox">
                             <label for="sendDocuments">
-                                <input type="checkbox" id="sendDocuments">
+                                <input type="checkbox" id="sendDocuments" ng-model="$ctrl.formData.sendDocuments">
                                 Send documents
                             </label>
                         </div>
@@ -50,10 +50,10 @@
                 </div>
                 <div class="form-group">
                     <label class="col-xs-3 control-label-icon" for="deleteDocuments"><i class="fa fa-trash"></i></label>
-                    <div class="col-xs-6 input-container">
+                    <div class="col-xs-5 input-container">
                         <div class="checkbox">
                             <label for="deleteDocuments">
-                                <input type="checkbox" id="deleteDocuments">
+                                <input type="checkbox" id="deleteDocuments" ng-model="$ctrl.formData.deleteDocuments">
                                 Delete documents
                             </label>
                         </div>
@@ -61,10 +61,10 @@
                 </div>
                 <div class="form-group">
                     <label class="col-xs-3 control-label-icon" for="quarantineDocuments"><i class="fa fa-bug"></i></label>
-                    <div class="col-xs-6 input-container">
+                    <div class="col-xs-5 input-container">
                         <div class="checkbox">
                             <label for="quarantineDocuments">
-                                <input type="checkbox" id="quarantineDocuments">
+                                <input type="checkbox" id="quarantineDocuments" ng-model="$ctrl.formData.quarantineDocuments">
                                 Quarantine Documents
                             </label>
                         </div>
@@ -72,12 +72,12 @@
                 </div>
                 <div class="form-group">
                     <label for="quarantineFolder" class="col-xs-3 control-label"><span class="text-italic"><em><small>Invalid Chars in Filenanes(*)</small></em></span></label>
-                    <div class="col-xs-6 input-container control-label">\/:*&lt;&gt;|</div>
+                    <div class="col-xs-5 input-container control-label">\/:*&lt;&gt;|</div>
                 </div>
             </div>
             <div class="box-footer text-right">
                 <button type="button" class="btn btn-flat btn-default">Cancel</button>
-                <button type="button" class="btn btn-flat btn-info">Save</button>
+                <button type="submit" class="btn btn-flat btn-info">Save</button>
             </div>
         </form>
     </div>

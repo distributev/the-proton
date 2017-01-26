@@ -11,19 +11,10 @@ class AttachmentModalController {
 
     $onChanges(changes) {}
 
-    selectFile($event) {
-        let options = {
-            title: 'Attachments',
-            properties: [
-                'openFile'
-            ]
-        }
-
-        dialog.showOpenDialog(options, filePaths => {
-            this.$timeout(() => {
-                this.resolve.path = filePaths[0];
-                angular.element($event.target).parents('.form-group').find('input')[0].focus();
-            });
+    selectFile({ path }) {
+        this.$timeout(() => {
+            this.resolve.path = path;
+            // angular.element($event.target).parents('.form-group').find('input')[0].focus();
         });
     }
 

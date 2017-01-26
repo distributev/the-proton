@@ -9,18 +9,21 @@ class ConfigurationEmailAttachmentsController {
         'ngInject';
         this.$state = $state;
         this.$uibModal = $uibModal;
-        this.attachments = [];
-        this.selectedAttachment = [];
     }
 
     $onInit() {
-        this.attachments = [{
-                path: '{{custom1}}'
-            },
-            {
-                path: '{{custom2}}'
-            }
-        ];
+        this.formData = {
+            selectedAttachment: [],
+            attachments: [{
+                    path: '{{custom1}}'
+                },
+                {
+                    path: '{{custom2}}'
+                }
+            ],
+            archive: false,
+            archiveFileName: 'reports-{{custom3}}.zip'
+        };
     }
 
     $onChanges(changes) {}
@@ -30,10 +33,12 @@ class ConfigurationEmailAttachmentsController {
     }
 
     getSelectedAttachment() {
-        return this.selectedAttachment[0] ? this.selectedAttachment[0] : false;
+        return this.formData.selectedAttachment[0] ? this.formData.selectedAttachment[0] : false;
     }
 
     showAddOrEditModal(attachment) {
+        if (!this.getSelectedAttachment()) return;
+
         let modalInstance = this.$uibModal.open({
             animation: true,
             component: 'attachmentModal',
@@ -44,10 +49,10 @@ class ConfigurationEmailAttachmentsController {
 
         modalInstance.result.then(result => {
             if (attachment) {
-                let index = _.indexOf(this.attachments, attachment);
-                this.attachments[index].path = result;
+                let index = _.indexOf(this.formData.attachments, attachment);
+                this.formData.attachments[index].path = result;
             } else {
-                this.attachments.push({
+                this.formData.attachments.push({
                     path: result
                 });
             }
@@ -58,21 +63,21 @@ class ConfigurationEmailAttachmentsController {
 
     removeAttachment(attachment) {
         if (attachment) {
-            _.remove(this.attachments, { path: attachment.path });
+            _.remove(this.formData.attachments, { path: attachment.path });
         }
     }
 
     attachmentUp(attachment) {
-        let index = _.indexOf(this.attachments, attachment);
+        let index = _.indexOf(this.formData.attachments, attachment);
         if (index > 0) {
-            this.move(this.attachments, index, index - 1);
+            this.move(this.formData.attachments, index, index - 1);
         }
     }
 
     attachmentDown(attachment) {
-        let index = _.indexOf(this.attachments, attachment);
-        if (index < this.attachments.length) {
-            this.move(this.attachments, index, index + 1);
+        let index = _.indexOf(this.formData.attachments, attachment);
+        if (index < this.formData.attachments.length) {
+            this.move(this.formData.attachments, index, index + 1);
         }
     }
 
@@ -81,7 +86,7 @@ class ConfigurationEmailAttachmentsController {
     }
 
     clearAttachments() {
-        this.attachments = [];
+        this.formData.attachments = [];
     }
 }
 
