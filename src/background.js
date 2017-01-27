@@ -48,7 +48,8 @@ app.on('ready', function() {
     }));
 
     if (env.name === 'development') {
-        mainWindow.openDevTools();
+        // mainWindow.openDevTools();
+
         // Activate Electron's live reload
         // client.create(mainWindow);
     }
