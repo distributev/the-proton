@@ -1,6 +1,3 @@
-import electron from 'electron';
-const { dialog } = electron.remote;
-
 class AttachmentModalController {
     constructor($timeout) {
         'ngInject';

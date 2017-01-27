@@ -1,0 +1,41 @@
+<section class="content-header col-xs-12">
+    <breadcrumb $state="$ctrl.$state"></breadcrumb>
+</section>
+<div class="col-xs-12">
+    <div class="box box-primary">
+        <div class="box-header with-border">
+            <h3 class="box-title">Configuration Templates</h3>
+        </div>
+        <form class="form-horizontal" name="advancedForm" ng-submit="$ctrl.onSubmit()">
+            <div class="box-body">
+                <div class="form-group">
+                    <div class="templates-table-container col-xs-10">
+                        <table class="table table-condensed table-hover col-xs-10">
+                            <tbody>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Path</th>
+                                    <th>How to use it</th>
+                                </tr>
+                                <tr ng-repeat="template in $ctrl.formData.templates" ng-click="$ctrl.onTemplateClick(template)" ng-class="{ 'info': template.active }">
+                                    <td>{{template.name}}</td>
+                                    <td>{{template.path}}</td>
+                                    <td>{{template.howTo}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-xs-2 buttons-container-vertical">
+                        <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal()"><i class="fa fa-plus"></i> Add</button>
+                        <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal($ctrl.getSelectedTemplate())" ng-class="{ 'disabled': !$ctrl.getSelectedTemplate() }"><i class="fa fa-pencil-square-o"></i> Edit</button>
+                        <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.removeTemplate($ctrl.getSelectedTemplate())"><i class="fa fa-minus"></i> Remove</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box-footer text-right">
+                <button type="button" class="btn btn-flat btn-default">Cancel</button>
+                <button type="submit" class="btn btn-flat btn-info">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -37,8 +37,6 @@ class ConfigurationEmailAttachmentsController {
     }
 
     showAddOrEditModal(attachment) {
-        if (!this.getSelectedAttachment()) return;
-
         let modalInstance = this.$uibModal.open({
             animation: true,
             component: 'attachmentModal',

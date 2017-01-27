@@ -8,16 +8,16 @@
             <div class="col-xs-7">
                 <input type="text" class="form-control" id="path" placeholder="" ng-model="$ctrl.resolve.path">
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-4 buttons-container">
                 <div class="row">
                     <electron-dialog-button class="col-xs-6" dialog-type="'file'" on-path-selected="$ctrl.selectFile($event)"></electron-dialog-button>
-                    <button class="btn btn-default" type="button" ng-click=""><i class="fa fa-code"></i> Variables</button>
+                    <button class="btn btn-flat btn-default col-xs-6" type="button" ng-click=""><i class="fa fa-code"></i> Variables</button>
                 </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" type="submit">OK</button>
-        <button class="btn btn-warning" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+        <button class="btn btn-flat btn-primary" type="submit">OK</button>
+        <button class="btn btn-flat btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
     </div>
 </form>

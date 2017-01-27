@@ -1,6 +1,6 @@
 <ol class="breadcrumb">
     <li ng-repeat="state in $ctrl.path" ng-if="!$first">
         <a href="#" ng-if="!$last"><i class="fa fa-cog" ng-show="$index === 1"></i> {{ state }}</a>
-        <span ng-if="$last">{{ state }}</span>
+        <span ng-if="$last"><i class="fa fa-cog" ng-show="$ctrl.path.length === 2"></i> {{ state }}</span>
     </li>
 </ol>

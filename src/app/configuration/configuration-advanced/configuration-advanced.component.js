@@ -1,9 +1,14 @@
 class ConfigurationAdvancedController {
-    constructor() {
+    constructor($state) {
         'ngInject';
+        this.$state = $state;
     }
 
-    $onInit() {}
+    $onInit() {
+        this.formData = {
+            distFail: 'fail_job'
+        };
+    }
 
     $onChanges(changes) {}
 

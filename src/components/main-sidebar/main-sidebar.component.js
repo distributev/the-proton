@@ -1,9 +1,14 @@
 import angular from 'angular';
+import electron from 'electron';
 
 export class MainSidebarController {
     /*@ngInject*/
     constructor() {
         this.message = 'World';
+    }
+
+    quit() {
+        electron.remote.getCurrentWindow().close();
     }
 }
 

@@ -47,11 +47,11 @@
                     <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.advanced"><i class="fa fa-window-restore"></i> Advanced</a></li>
                 </ul>
             </li>
-            <li><a href="#"><i class="fa fa-cogs"></i> <span>Configuration Templates</span></a></li>
-            <li><a href="#"><i class="fa fa-search"></i> <span>Logging, Tracing...</span></a></li>
-            <li><a href="#"><i class="fa fa-question"></i> <span>Help</span></a></li>
-            <li><a href="#"><i class="fa fa-info"></i> <span>About</span></a></li>
-            <li><a href="#"><i class="fa fa-sign-out"></i> <span>Quit</span></a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.configurationTemplates"><i class="fa fa-cogs"></i> <span>Configuration Templates</span></a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.logging-tracing"><i class="fa fa-search"></i> <span>Logging, Tracing...</span></a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.help"><i class="fa fa-question"></i> <span>Help</span></a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.about"><i class="fa fa-info"></i> <span>About</span></a></li>
+            <li><a href="#" ng-click="$ctrl.quit()"><i class="fa fa-sign-out"></i> <span>Quit</span></a></li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>

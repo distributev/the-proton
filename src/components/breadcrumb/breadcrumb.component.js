@@ -6,10 +6,12 @@ class BreadcrumbController {
     }
 
     $onInit() {
-        this.path = _.map(this.$state.$current.name.split('.'), (each) => each = _.capitalize(each));
+        this.path = _.map(this.$state.$current.name.split('.'), (each) => each = _.startCase(_.kebabCase(each)));
     }
 
-    $onChanges(changes) {}
+    $onChanges(changes) {
+        console.log('BreadcrumbController', changes);
+    }
 
 }
 
