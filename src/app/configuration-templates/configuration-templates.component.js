@@ -39,7 +39,7 @@ class ConfigurationTemplatesController {
             animation: true,
             component: 'editTemplateModal',
             resolve: {
-                template: () => template
+                template: () => angular.copy(template)
             }
         });
 
@@ -48,7 +48,7 @@ class ConfigurationTemplatesController {
                 let index = _.indexOf(this.formData.templates, template);
                 this.formData.templates[index] = result;
             } else {
-                this.formData.templates.push(template);
+                this.formData.templates.push(result);
             }
         }, reason => {
             // console.log('modal-component dismissed with reason: ' + reason);

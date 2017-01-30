@@ -1,0 +1,20 @@
+<div class="tab-pane active">
+    <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
+        <div class="form-group">
+            <label for="command" class="col-xs-2 control-label">Command</label>
+            <div class="col-xs-8 input-container">
+                <input type="text" class="form-control" id="command" placeholder="" ng-model="$ctrl.formData.command">
+            </div>
+            <div class="col-xs-2 buttons-container">
+                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+            </div>
+            <div class="col-xs-12">
+                <p class="help-block"><em>Synopsis [options][URL...]</em></p>
+            </div>
+        </div>
+        <div class="form-group text-right">
+            <button type="button" class="btn btn-flat btn-default">Cancel</button>
+            <button type="button" class="btn btn-flat btn-info">Save</button>
+        </div>
+    </form>
+</div>

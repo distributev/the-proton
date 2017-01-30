@@ -1,0 +1,10 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title"><i class="fa fa-{{icon || 'question-circle'}}"></i> {{ $ctrl.resolve.title }}</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <p>{{ $ctrl.resolve.message }}</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-flat btn-primary" type="button" ng-click="$ctrl.ok()">Yes</button>
+    <button class="btn btn-flat btn-default" type="button" ng-click="$ctrl.cancel()">No</button>
+</div>

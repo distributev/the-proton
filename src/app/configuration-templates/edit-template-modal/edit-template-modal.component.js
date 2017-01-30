@@ -5,30 +5,16 @@ class EditTemplateModalController {
     }
 
     $onInit() {
-        this.resolve = {
-            template: {
-                name: '',
-                copyFrom: './config/default/defaults.xml',
-                path: '',
-                howTo: ''
-            }
-        };
+        if (!this.resolve.template) this.resolve.template = { name: '' };
+        this.resolve.template.copyFrom = this.resolve.template.copyFrom || './config/default/defaults.xml';
+        this.updateForm();
     }
 
-    $onChanges(changes) {
-        if (changes.resolve.template) {
-            console.log('changes.resolve.template', changes.resolve.template);
-            if (changes.resolve.template.isFirstChange()) {
-                console.log('changes.resolve.template.isFirstChange()');
-            }
-        }
+    $onChanges(changes) {}
 
-        // this.resolve.template.name = angular.copy(this.resolve.template.name);
-        // this.resolve.template.name = angular.copy(this.resolve.template.name);
-        //         copyFrom: './config/default/defaults.xml',
-        //         path: './config/' + _.kebabCase(this.resolve.template.name),
-        //         howTo: '<config>' + this.resolve.template.path + '</config>'
-        // };
+    updateForm() {
+        this.resolve.template.path = './config/' + _.kebabCase(this.resolve.template.name);
+        this.resolve.template.howTo = '<config>' + this.resolve.template.path + '</config>';
     }
 
     selectFile({ path }) {

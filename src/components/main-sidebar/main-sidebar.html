@@ -11,8 +11,8 @@
                     </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="#"><i class="fa fa-arrow-right"></i> Do Action</a></li>
-                    <li><a href="#"><i class="fa fa-check"></i> Quality</a></li>
+                    <li ui-sref-active="active"><a href="#" ui-sref="main.processing.doAction"><i class="fa fa-arrow-right"></i> Do Action</a></li>
+                    <li ui-sref-active="active"><a href="#" ui-sref="main.processing.quality"><i class="fa fa-check"></i> Quality</a></li>
                 </ul>
             </li>
             <li class="treeview">
@@ -40,15 +40,15 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="#"><i class="fa fa-upload"></i> FTP</a></li>
-                            <li><a href="#"><i class="fa fa-key"></i> SFTP/SCP</a></li>
+                            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.upload.ftp"><i class="fa fa-upload"></i> FTP</a></li>
+                            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.upload.sftp"><i class="fa fa-key"></i> SFTP/SCP</a></li>
                         </ul>
                     </li>
                     <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.advanced"><i class="fa fa-window-restore"></i> Advanced</a></li>
                 </ul>
             </li>
             <li ui-sref-active="active"><a href="#" ui-sref="main.configurationTemplates"><i class="fa fa-cogs"></i> <span>Configuration Templates</span></a></li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.logging-tracing"><i class="fa fa-search"></i> <span>Logging, Tracing...</span></a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.loggingTracing"><i class="fa fa-search"></i> <span>Logging, Tracing...</span></a></li>
             <li ui-sref-active="active"><a href="#" ui-sref="main.help"><i class="fa fa-question"></i> <span>Help</span></a></li>
             <li ui-sref-active="active"><a href="#" ui-sref="main.about"><i class="fa fa-info"></i> <span>About</span></a></li>
             <li><a href="#" ng-click="$ctrl.quit()"><i class="fa fa-sign-out"></i> <span>Quit</span></a></li>

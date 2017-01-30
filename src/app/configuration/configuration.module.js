@@ -3,6 +3,7 @@ import uiRouter from 'angular-ui-router';
 import { ConfigurationComponent } from './configuration.component';
 import configurationGeneral from './configuration-general/configuration-general.module';
 import configurationEmail from './configuration-email/configuration-email.module';
+import configurationUpload from './configuration-upload/configuration-upload.module';
 import configurationAdvanced from './configuration-advanced/configuration-advanced.module';
 // import { ConfigurationService } from './configuration.service';
 // import './configuration.less';
@@ -12,6 +13,7 @@ export default angular
         uiRouter,
         configurationGeneral,
         configurationEmail,
+        configurationUpload,
         configurationAdvanced
     ])
     .component('configuration', ConfigurationComponent)
@@ -22,10 +24,7 @@ export default angular
             .state('main.configuration', {
                 url: 'configuration',
                 redirectTo: 'main.configuration.general',
-                component: 'configuration',
-                resolve: {
-                    $transition$: '$transition$'
-                }
+                component: 'configuration'
             });
         $urlRouterProvider.otherwise('/');
     })

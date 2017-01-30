@@ -1,0 +1,15 @@
+<section class="content-header col-xs-12">
+    <breadcrumb $state="$ctrl.$state"></breadcrumb>
+</section>
+<div class="col-xs-12">
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li ui-sref-active="active">
+                <a href="#" ui-sref="main.configuration.upload.ftp" aria-expanded="true">FTP</a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.upload.sftp" aria-expanded="false">SFTP/SCP</a></li>
+        </ul>
+        <div class="tab-content">
+            <ui-view></ui-view>
+        </div>
+    </div>
+</div>
