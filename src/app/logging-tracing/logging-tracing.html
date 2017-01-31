@@ -7,33 +7,61 @@
             <h3 class="box-title">Logging, Tracing...</h3>
         </div>
         <div class="box-body">
-            <div class="form-group">
-                <div class="templates-table-container col-xs-10">
-                    <table class="table table-condensed table-hover col-xs-10">
+            <div class="row">
+                <div class="col-xs-12">
+                    <table class="table table-condensed table-bordered table-hover col-xs-10">
                         <tbody>
                             <tr>
-                                <th>Name</th>
-                                <th>Path</th>
-                                <th>How to use it</th>
+                                <th>Document Name</th>
+                                <th>Job Type</th>
+                                <th>Status</th>
+                                <th>Submitted</th>
+                                <th>Time Elapsed</th>
                             </tr>
-                            <tr ng-repeat="template in $ctrl.formData.templates" ng-click="$ctrl.onTemplateClick(template)" ng-class="{ 'info': template.active }">
-                                <td>{{template.name}}</td>
-                                <td>{{template.path}}</td>
-                                <td>{{template.howTo}}</td>
+                            <tr ng-repeat="job in $ctrl.currentJobs">
+                                <td>{{job.name}}</td>
+                                <td>{{job.type}}</td>
+                                <td>{{job.status}}</td>
+                                <td>{{job.submitted}}</td>
+                                <td>{{job.timeElapsed}}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="col-xs-2 buttons-container-vertical">
-                    <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal()"><i class="fa fa-plus"></i> Add</button>
-                    <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showAddOrEditModal($ctrl.getSelectedTemplate())" ng-class="{ 'disabled': !$ctrl.getSelectedTemplate() }"><i class="fa fa-pencil-square-o"></i> Edit</button>
-                    <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.removeTemplate($ctrl.getSelectedTemplate())"><i class="fa fa-minus"></i> Remove</button>
+            </div>
+            <div class="row">
+                <div class="logging-tail-panel col-xs-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body row">
+                            <h5 class="text-info col-xs-12">Info Log Tail</h5>
+                            <p class="text-info col-xs-12">{{ $ctrl.infoLogs }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="logging-tail-panel col-xs-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body row">
+                            <h5 class="text-warning col-xs-12">Warning Log Tail</h5>
+                            <p class="text-warning col-xs-12">{{ $ctrl.warningLogs }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="logging-tail-panel col-xs-6">
+                    <div class="panel panel-default">
+                        <div class="panel-body row">
+                            <h5 class="text-danger col-xs-12">Error Log Tail</h5>
+                            <p class="text-danger col-xs-12">{{ $ctrl.errorLogs }}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="box-footer text-right">
-            <button type="button" class="btn btn-flat btn-default">Cancel</button>
-            <button type="button" class="btn btn-flat btn-info">Save</button>
+            <div class="">
+                <button type="button" class="btn btn-sm btn-flat btn-default" ng-click="$ctrl.clearInfoLogs()"><i class="fa fa-eraser"></i> Clear INFO Log</button>
+                <button type="button" class="btn btn-sm btn-flat btn-default" ng-click="$ctrl.clearErrorLogs()"><i class="fa fa-eraser"></i> Clear ERROR Log</button>
+                <button type="button" class="btn btn-sm btn-flat btn-default" ng-click="$ctrl.clearWarningLogs()"><i class="fa fa-eraser"></i> Clear WARN Log</button>
+                <button type="button" class="btn btn-sm btn-flat btn-default" ng-click="$ctrl.clearAllLogs()"><i class="fa fa-eraser"></i> Clear ALL Logs</button>
+                <button type="button" class="btn btn-sm btn-flat btn-default" ng-click="$ctrl.clearQuarantineFiles()"><i class="fa fa-eraser"></i> Clear Quarantine Files</button>
+            </div>
         </div>
     </div>
 </div>

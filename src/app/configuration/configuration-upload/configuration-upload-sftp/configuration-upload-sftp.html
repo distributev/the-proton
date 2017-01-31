@@ -6,7 +6,7 @@
                 <input type="text" class="form-control" id="command" placeholder="" ng-model="$ctrl.formData.command">
             </div>
             <div class="col-xs-2 buttons-container">
-                <button type="button" class="btn btn-flat btn-default"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
             <div class="col-xs-12">
                 <p class="help-block"><em>Synopsis [options][URL...]</em></p>

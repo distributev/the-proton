@@ -14,7 +14,7 @@
                         <input type="text" class="form-control" id="fileName" placeholder="File Name" ng-model="$ctrl.formData.fileName">
                     </div>
                     <div class="col-xs-4 buttons-container">
-                        <button type="button" class="btn btn-flat btn-default col-xs-6"><i class="fa fa-code"></i> Variables</button>
+                        <variables-button class="col-xs-6" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -24,7 +24,7 @@
                     </div>
                     <div class="col-xs-4 buttons-container">
                         <electron-dialog-button class="col-xs-6" dialog-type="'folder'" on-path-selected="$ctrl.outputSelected($event)"></electron-dialog-button>
-                        <button type="button" class="btn btn-flat btn-default col-xs-6"><i class="fa fa-code"></i> Variables</button>
+                        <variables-button class="col-xs-6" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
                     </div>
                 </div>
                 <div class="form-group">
@@ -34,7 +34,7 @@
                     </div>
                     <div class="col-xs-4 buttons-container">
                         <electron-dialog-button class="col-xs-6" dialog-type="'folder'" on-path-selected="$ctrl.quarantineSelected($event)"></electron-dialog-button>
-                        <button type="button" class="btn btn-flat btn-default col-xs-6"><i class="fa fa-code"></i> Variables</button>
+                        <variables-button class="col-xs-6" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
                     </div>
                 </div>
                 <div class="form-group">

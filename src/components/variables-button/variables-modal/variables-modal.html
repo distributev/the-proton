@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title"><i class="fa fa-code"></i> Variables</h3>
+</div>
+<div class="modal-body" id="modal-body">
+    <table class="table table-condensed table-hover table-bordered">
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <th>Type</th>
+            </tr>
+            <tr ng-repeat="variable in $ctrl.variables" ng-click="$ctrl.onVariableClick(variable)" ng-class="{ 'info': variable.active }">
+                <td>{{variable.name}}</td>
+                <td>{{variable.type}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-flat btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+    <button class="btn btn-flat btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+</div>

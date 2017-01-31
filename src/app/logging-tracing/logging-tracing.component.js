@@ -1,54 +1,57 @@
 class LoggingTracingController {
-    constructor($state) {
+    constructor($state, LoggingService, $timeout) {
         'ngInject';
         this.$state = $state;
+        this.LoggingService = LoggingService;
     }
 
-    $onInit() {}
+    $onInit() {
+        this.getCurrentJobs().then(jobs => this.currentJobs = jobs);
+        this.getInfoLogs().then(logs => {
+            console.log('logs', logs);
+            this.infoLogs = logs
+        });
+        this.getWarningLogs().then(logs => this.warningLogs = logs);
+        this.getErrorLogs().then(logs => this.errorLogs = logs);
+    }
 
     $onChanges(changes) {}
 
     getCurrentJobs() {
-        return [{
-                name: 'document.pdf',
-                jobType: 'test',
-                status: 'Running. Please wait.',
-                submmited: '21/12/2016 09:37:37',
-                timeElapsed: '20 min'
-            },
-            {
-                name: 'document.pdf',
-                jobType: 'test',
-                status: 'Running. Please wait.',
-                submmited: '21/12/2016 09:37:37',
-                timeElapsed: '20 min'
-            },
-            {
-                name: 'document.pdf',
-                jobType: 'test',
-                status: 'Running. Please wait.',
-                submmited: '21/12/2016 09:37:37',
-                timeElapsed: '20 min'
-            },
-            {
-                name: 'document.pdf',
-                jobType: 'test',
-                status: 'Running. Please wait.',
-                submmited: '21/12/2016 09:37:37',
-                timeElapsed: '20 min'
-            }
-        ];
+        return this.LoggingService.getCurrentJobs();
     }
 
     getInfoLogs() {
-
+        return this.LoggingService.getInfoLogs();
     }
 
     getWarningLogs() {
-
+        return this.LoggingService.getWarningLogs();
     }
 
     getErrorLogs() {
+        return this.LoggingService.getErrorLogs();
+    }
+
+    clearInfoLogs() {
+        this.infoLogs = '';
+    }
+
+    clearWarningLogs() {
+        this.warningLogs = '';
+    }
+
+    clearErrorLogs() {
+        this.errorLogs = '';
+    }
+
+    clearAllLogs() {
+        this.infoLogs = '';
+        this.warningLogs = '';
+        this.errorLogs = '';
+    }
+
+    clearErrorLogs() {
 
     }
 }

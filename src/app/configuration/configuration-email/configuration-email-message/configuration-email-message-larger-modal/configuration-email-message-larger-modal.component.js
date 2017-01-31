@@ -1,19 +1,21 @@
-class ConfigurationUploadFtpController {
-    constructor($state, $timeout) {
+class ConfigurationEmailMessageLargerModalController {
+    constructor($timeout) {
         'ngInject';
-        this.$state = $state;
         this.$timeout = $timeout;
-        this.formData = {};
     }
 
     $onInit() {
-
+        this.formData = angular.copy(this.resolve.email);
     }
 
     $onChanges(changes) {}
 
-    onSubmit() {
+    ok() {
+        this.close({ $value: this.formData });
+    }
 
+    cancel() {
+        this.dismiss({ $value: 'cancel' });
     }
 
     variableSelected({ variable, target }) {
@@ -26,8 +28,12 @@ class ConfigurationUploadFtpController {
     }
 }
 
-export const ConfigurationUploadFtpComponent = {
-    bindings: {},
-    template: require('./configuration-upload-ftp.html'),
-    controller: ConfigurationUploadFtpController
+export const ConfigurationEmailMessageLargerModalComponent = {
+    bindings: {
+        resolve: '<',
+        close: '&',
+        dismiss: '&'
+    },
+    template: require('./configuration-email-message-larger-modal.html'),
+    controller: ConfigurationEmailMessageLargerModalController
 };

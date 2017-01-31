@@ -1,8 +1,10 @@
 class ConfigurationEmailSettingsController {
-    constructor($state, ConfigurationEmailService) {
+    constructor($state, ConfigurationEmailService, $timeout) {
         'ngInject';
         this.$state = $state;
         this.configurationEmailService = ConfigurationEmailService;
+        this.$timeout = $timeout;
+        this.formData = {};
     }
 
     $onInit() {
@@ -14,6 +16,15 @@ class ConfigurationEmailSettingsController {
 
     onSubmit() {
 
+    }
+
+    variableSelected({ variable, target }) {
+        this.$timeout(() => {
+            let targetInput = angular.element(target).parents('.form-group').find('input')[0];
+            let inputModel = targetInput.getAttribute('ng-model').split('.').pop();
+            this.formData[inputModel] = this.formData[inputModel] ? this.formData[inputModel] + variable.name : variable.name;
+            targetInput.focus();
+        });
     }
 }
 

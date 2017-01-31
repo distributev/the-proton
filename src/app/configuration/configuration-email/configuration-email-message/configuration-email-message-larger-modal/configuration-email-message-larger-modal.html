@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title"><i class="fa fa-search-plus"></i> Edit Large Email Message</h3>
+</div>
+<form class="form-horizontal" ng-submit="$ctrl.ok()">
+    <div class="modal-body" id="modal-body">
+        <div class="form-group single-button">
+            <div class="col-xs-3">
+                <div class="checkbox">
+                    <label for="isHtmlEnabled">
+                        <input type="checkbox" id="isHtmlEnabled" ng-model="$ctrl.formData.isHtmlEnabled">
+                        HTML email
+                    </label>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showPreview = !$ctrl.showPreview" ng-show="!$ctrl.showPreview">Preview</br>Message</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showPreview = !$ctrl.showPreview" ng-show="$ctrl.showPreview">Edit</br>Message</button>
+            </div>
+            <div class="col-xs-6">
+                <variables-button class="col-xs-5 pull-right" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
+            </div>
+        </div>
+        <div class="form-group single-button">
+            <div class="col-xs-12 input-container">
+                <uib-tabset active="active" class="nav-tabs-custom">
+                    <uib-tab index="0" heading="HTML" disable="!$ctrl.formData.isHtmlEnabled">
+                        <div ui-ace ng-model="$ctrl.formData.html"></div>
+                    </uib-tab>
+                    <uib-tab index="1" heading="Text">
+                        <textarea class="form-control" rows="12" ng-model="$ctrl.formData.text"></textarea>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-flat btn-primary" type="submit">OK</button>
+        <button class="btn btn-flat btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+    </div>
+</form>

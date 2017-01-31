@@ -9,55 +9,55 @@
         <div class="form-group">
             <label for="fromName" class="col-xs-3 control-label">From Name</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="fromName" placeholder="From Name">
+                <input type="text" class="form-control" id="fromName" placeholder="From Name" ng-model="$ctrl.formData.fromName">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group">
             <label for="fromEmailAddress" class="col-xs-3 control-label">From Email Address</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="fromEmailAddress" placeholder="from@emailaddress.com">
+                <input type="text" class="form-control" id="fromEmailAddress" placeholder="from@emailaddress.com" ng-model="$ctrl.formData.fromEmailAddress">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group">
             <label for="host" class="col-xs-3 control-label">Host</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="host" placeholder="Email Server Host">
+                <input type="text" class="form-control" id="host" placeholder="Email Server Host" ng-model="$ctrl.formData.host">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group">
             <label for="username" class="col-xs-3 control-label">User Name</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="username" placeholder="From Email User ID">
+                <input type="text" class="form-control" id="username" placeholder="From Email User ID" ng-model="$ctrl.formData.username">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group">
             <label for="password" class="col-xs-3 control-label">Password</label>
             <div class="col-xs-6 input-container">
-                <input type="password" class="form-control" id="password" placeholder="*********">
+                <input type="password" class="form-control" id="password" placeholder="*********" ng-model="$ctrl.formData.password">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group">
             <label for="port" class="col-xs-3 control-label">Port</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="port" placeholder="25">
+                <input type="text" class="form-control" id="port" placeholder="25" ng-model="$ctrl.formData.port">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group">

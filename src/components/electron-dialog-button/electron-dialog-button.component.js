@@ -13,7 +13,7 @@ class ElectronDialogButtonController {
 
     onClick() {
         let options = {
-            title: 'Select ' + (this.dialogType === 'folder' ? 'Folder' : 'File'),
+            title: this.dialogTitle || ('Select ' + (this.dialogType === 'folder' ? 'Folder' : 'File')),
             properties: [
                 'open' + (this.dialogType === 'folder' ? 'Directory' : 'File'),
             ]
@@ -33,7 +33,9 @@ class ElectronDialogButtonController {
 
 export const ElectronDialogButtonComponent = {
     bindings: {
+        buttonLabel: '<',
         dialogType: '<',
+        dialogTitle: '<',
         onPathSelected: '&'
     },
     template: require('./electron-dialog-button.html'),

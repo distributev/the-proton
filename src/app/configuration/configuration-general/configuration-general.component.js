@@ -17,6 +17,15 @@ class ConfigurationGeneralController {
 
     }
 
+    variableSelected({ variable, target }) {
+        this.$timeout(() => {
+            let targetInput = angular.element(target).parents('.form-group').find('input')[0];
+            let inputModel = targetInput.getAttribute('ng-model').split('.').pop();
+            this.formData[inputModel] = this.formData[inputModel] ? this.formData[inputModel] + variable.name : variable.name;
+            targetInput.focus();
+        });
+    }
+
     outputSelected({ path }) {
         this.$timeout(() => {
             this.formData.outputFolder = path;

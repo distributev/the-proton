@@ -1,7 +1,9 @@
 class ConfigurationUploadSftpController {
-    constructor($state) {
+    constructor($state, $timeout) {
         'ngInject';
         this.$state = $state;
+        this.$timeout = $timeout;
+        this.formData = {};
     }
 
     $onInit() {
@@ -12,6 +14,15 @@ class ConfigurationUploadSftpController {
 
     onSubmit() {
 
+    }
+
+    variableSelected({ variable, target }) {
+        this.$timeout(() => {
+            let targetInput = angular.element(target).parents('.form-group').find('input')[0];
+            let inputModel = targetInput.getAttribute('ng-model').split('.').pop();
+            this.formData[inputModel] = this.formData[inputModel] ? this.formData[inputModel] + variable.name : variable.name;
+            targetInput.focus();
+        });
     }
 }
 

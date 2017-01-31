@@ -3,68 +3,83 @@
         <div class="form-group single-button">
             <label for="to" class="col-xs-2 control-label">To</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="to" placeholder="">
+                <input type="text" class="form-control" id="to" placeholder="" ng-model="$ctrl.formData.to">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group single-button">
             <label for="cc" class="col-xs-2 control-label">CC</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="cc" placeholder="">
+                <input type="text" class="form-control" id="cc" placeholder="" ng-model="$ctrl.formData.cc">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group single-button">
             <label for="bcc" class="col-xs-2 control-label">BCC</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="bcc" placeholder="">
+                <input type="text" class="form-control" id="bcc" placeholder="" ng-model="$ctrl.formData.bcc">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group single-button">
-            <label for="Subject" class="col-xs-2 control-label">Subject</label>
+            <label for="subject" class="col-xs-2 control-label">Subject</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="Subject" placeholder="">
+                <input type="text" class="form-control" id="subject" placeholder="" ng-model="$ctrl.formData.subject">
             </div>
             <div class="col-xs-3 buttons-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
+            </div>
+        </div>
+        <div class="form-group single-button">
+            <div class="col-xs-2"></div>
+            <div class="col-xs-10 input-container">
+                <div class="checkbox">
+                    <label for="isHtmlEnabled">
+                        <input type="checkbox" id="isHtmlEnabled" ng-model="$ctrl.formData.isHtmlEnabled">
+                        HTML email
+                    </label>
+                </div>
+
             </div>
         </div>
         <div class="form-group single-button">
             <div class="col-xs-2 btn-preview-message">
-                <button type="button" class="btn btn-flat btn-default col-xs-12">Preview</br>Message</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showPreview = !$ctrl.showPreview" ng-show="!$ctrl.showPreview">Preview</br>Message</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showPreview = !$ctrl.showPreview" ng-show="$ctrl.showPreview">Edit</br>Message</button>
             </div>
             <div class="col-xs-7 input-container">
                 <uib-tabset active="active" class="nav-tabs-custom">
-                    <uib-tab index="0" heading="HTML">
-                        <div ui-ace></div>
+                    <uib-tab index="0" heading="HTML" disable="!$ctrl.formData.isHtmlEnabled">
+                        <div ui-ace ng-model="$ctrl.formData.html"></div>
                     </uib-tab>
                     <uib-tab index="1" heading="Text">
-                        <textarea class="form-control" rows="9"></textarea>
+                        <textarea class="form-control" rows="9" ng-model="$ctrl.formData.text"></textarea>
                     </uib-tab>
                 </uib-tabset>
             </div>
             <div class="col-xs-3 buttons-container buttons-container-vertical">
                 <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-save"></i> Save Template</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-folder-open"></i> Load Template</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-code"></i> Variables</button>
+                <electron-dialog-button class="col-xs-12" button-label="'Load Template'" dialog-title="'Please select the message template to load'" dialog-type="'file'" on-path-selected="$ctrl.templateSelected($event)"></electron-dialog-button>
+                <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
         <div class="form-group single-button">
             <label class="col-xs-2 control-label"></label>
             <div class="col-xs-7 input-container">
-                <button type="button" class="btn btn-flat btn-default col-xs-12"><i class="fa fa-search-plus"></i> Larger Message</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showLargerMessageModal()"><i class="fa fa-search-plus"></i> Larger Message</button>
             </div>
         </div>
         <div class="form-group text-right">
-            <button type="button" class="btn btn-flat btn-default">Cancel</button>
-            <button type="submit" class="btn btn-flat btn-info">Save</button>
+            <div class="col-xs-12">
+                <button type="button" class="btn btn-flat btn-default">Cancel</button>
+                <button type="submit" class="btn btn-flat btn-info">Save</button>
+            </div>
         </div>
     </form>
 </div>

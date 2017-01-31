@@ -32,13 +32,14 @@ import configuration from './configuration/configuration.module';
 import configurationTemplates from './configuration-templates/configuration-templates.module';
 import loggingTracing from './logging-tracing/logging-tracing.module';
 import electronDialogButton from '../components/electron-dialog-button/electron-dialog-button.module';
+import variablesButton from '../components/variables-button/variables-button.module';
 import confirmationModal from '../components/confirmation-modal/confirmation-modal.module';
 
 import './app.less';
 
 angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', navbar,
         footer, main, breadcrumb, home, constants, mainSidebar, controlSidebar, skin,
-        processing, configuration, configurationTemplates, loggingTracing, electronDialogButton, confirmationModal
+        processing, configuration, configurationTemplates, loggingTracing, electronDialogButton, variablesButton, confirmationModal
     ])
     .config(routeConfig);
 

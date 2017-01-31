@@ -5,10 +5,11 @@ import { remote } from 'electron';
 const { BrowserWindow, dialog } = remote;
 
 class ConfigurationEmailAttachmentsController {
-    constructor($state, $uibModal) {
+    constructor($state, $uibModal, $timeout) {
         'ngInject';
         this.$state = $state;
         this.$uibModal = $uibModal;
+        this.$timeout = $timeout;
     }
 
     $onInit() {
@@ -34,6 +35,15 @@ class ConfigurationEmailAttachmentsController {
 
     getSelectedAttachment() {
         return this.formData.selectedAttachment[0] ? this.formData.selectedAttachment[0] : false;
+    }
+
+    variableSelected({ variable, target }) {
+        this.$timeout(() => {
+            let targetInput = angular.element(target).parents('.form-group').find('input')[0];
+            let inputModel = targetInput.getAttribute('ng-model').split('.').pop();
+            this.formData[inputModel] = this.formData[inputModel] ? this.formData[inputModel] + variable.name : variable.name;
+            targetInput.focus();
+        });
     }
 
     showAddOrEditModal(attachment) {

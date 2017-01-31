@@ -41,7 +41,7 @@
                             <input type="text" class="form-control" id="archiveFileName" ng-model="$ctrl.formData.archiveFileName" ng-disabled="!$ctrl.formData.archive">
                         </div>
                         <div class="col-xs-2 buttons-container">
-                            <button type="button" class="btn btn-flat btn-default col-xs-12" ng-disabled="!$ctrl.formData.archive"><i class="fa fa-code"></i> Variables</button>
+                            <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
                         </div>
                     </div>
                 </div>
