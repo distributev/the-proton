@@ -4,6 +4,7 @@
 // instances of it and give each different name.
 
 import { app, BrowserWindow, screen } from 'electron';
+import path from 'path';
 import jetpack from 'fs-jetpack';
 
 export default function(name, options) {
@@ -13,7 +14,8 @@ export default function(name, options) {
     var defaultSize = {
         width: options.width,
         height: options.height,
-        resizable: false
+        resizable: false,
+        icon: path.join(__dirname, '../assets/icons/png/64x64.png')
     };
     var state = {};
     var win;
