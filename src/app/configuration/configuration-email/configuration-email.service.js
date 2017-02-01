@@ -26,16 +26,16 @@ export class ConfigurationEmail {
                     
                     Deserunt eiusmod enim non proident.`
             },
-            {
-                name: "Microsoft Exchange",
-                logo: "assets/images/exchange32.png",
-                description: `
-                    Anim laborum non amet consectetur minim magna fugiat labore.
+            // {
+            //     name: "Microsoft Exchange",
+            //     logo: "assets/images/exchange32.png",
+            //     description: `
+            //         Anim laborum non amet consectetur minim magna fugiat labore.
 
-                    Exercitation non anim eu aute mollit. Irure laboris esse mollit ipsum eiusmod sunt. Mollit proident quis voluptate occaecat. Eiusmod ipsum cupidatat Lorem nisi aliquip veniam.
-                    
-                    Deserunt eiusmod enim non proident.`
-            },
+            //         Exercitation non anim eu aute mollit. Irure laboris esse mollit ipsum eiusmod sunt. Mollit proident quis voluptate occaecat. Eiusmod ipsum cupidatat Lorem nisi aliquip veniam.
+
+            //         Deserunt eiusmod enim non proident.`
+            // },
             {
                 name: "Mailgun",
                 logo: "assets/images/mailgun32.png",

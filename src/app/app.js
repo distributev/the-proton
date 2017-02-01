@@ -19,7 +19,7 @@ import {
 } from './app.config';
 
 import navbar from '../components/navbar/navbar.component';
-import footer from '../components/footer/footer.component';
+import footer from '../components/footer/footer.module';
 import main from './main/main.component';
 import breadcrumb from '../components/breadcrumb/breadcrumb.module';
 import constants from './app.constants';

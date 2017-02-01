@@ -4,5 +4,5 @@ import { FooterComponent } from './footer.component';
 
 export default angular
     .module('theProtonApp.footer', [])
-    .component('Footer', FooterComponent)
+    .component('footer', FooterComponent)
     .name;

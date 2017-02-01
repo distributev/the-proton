@@ -1,16 +1,12 @@
 <div class="tab-pane active">
-    <ul class="list-unstyled">
+    <ul class="list-unstyled cloud-email-provider-list">
         <li ng-repeat="provider in $ctrl.cloudProviders">
             <div class="row">
-                <div class="col-xs-3 cloud-email-provider-name">
-                    <h4>
-                        <img ng-src="{{ provider.logo }}" alt="{{ provider.name }}"> {{ provider.name }}
-                    </h4>
+                <div class="col-xs-3 cloud-email-provider-name text-center">
+                    <h4><img ng-src="{{ provider.logo }}" alt="{{ provider.name }}"> {{ provider.name }}</h4>
                 </div>
                 <div class="col-xs-9 cloud-email-provider-description">
-                    <blockquote>
-                        <p>{{ provider.description }}</p>
-                    </blockquote>
+                    <p>{{ provider.description }}</p>
                 </div>
             </div>
         </li>
