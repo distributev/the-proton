@@ -5,7 +5,7 @@ export default function routes($stateProvider) {
 
     $stateProvider.state('main', {
         url: '/',
-        redirectTo: 'main.home',
+        redirectTo: 'main.processing.doAction',
         template: '<main></main>'
     });
 }

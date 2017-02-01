@@ -22,7 +22,6 @@ import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.component';
 import main from './main/main.component';
 import breadcrumb from '../components/breadcrumb/breadcrumb.module';
-import home from './home/home.module';
 import constants from './app.constants';
 import mainSidebar from '../components/main-sidebar/main-sidebar.component';
 import controlSidebar from '../components/control-sidebar/control-sidebar.component';
@@ -38,7 +37,7 @@ import confirmationModal from '../components/confirmation-modal/confirmation-mod
 import './app.less';
 
 angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', navbar,
-        footer, main, breadcrumb, home, constants, mainSidebar, controlSidebar, skin,
+        footer, main, breadcrumb, constants, mainSidebar, controlSidebar, skin,
         processing, configuration, configurationTemplates, loggingTracing, electronDialogButton, variablesButton, confirmationModal
     ])
     .config(routeConfig);
