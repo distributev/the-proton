@@ -13,9 +13,7 @@ export default function(name, options) {
     var defaultSize = {
         width: options.width,
         height: options.height,
-        resizable: false,
-        center: true,
-        movable: false
+        resizable: false
     };
     var state = {};
     var win;
@@ -76,11 +74,11 @@ export default function(name, options) {
         userDataDir.write(stateStoreFile, state, { atomic: true });
     };
 
-    state = ensureVisibleOnSomeDisplay(restore());
+    // state = ensureVisibleOnSomeDisplay(restore());
 
     win = new BrowserWindow(Object.assign({}, options, state));
 
-    win.on('close', saveState);
+    // win.on('close', saveState);
 
     return win;
 }
