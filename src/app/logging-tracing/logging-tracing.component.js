@@ -8,7 +8,6 @@ class LoggingTracingController {
     $onInit() {
         this.getCurrentJobs().then(jobs => this.currentJobs = jobs);
         this.getInfoLogs().then(logs => {
-            console.log('logs', logs);
             this.infoLogs = logs
         });
         this.getWarningLogs().then(logs => this.warningLogs = logs);

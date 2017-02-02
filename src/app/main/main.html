@@ -2,6 +2,11 @@
     <navbar></navbar>
     <main-sidebar></main-sidebar>
     <div class="content-wrapper">
+        <div class="row">
+            <section class="content-header col-xs-12">
+                <breadcrumb $state="$ctrl.$state" current-state="$ctrl.$state.$current.name"></breadcrumb>
+            </section>
+        </div>
         <ui-view class="row"></ui-view>
     </div>
     <footer></footer>

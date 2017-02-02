@@ -25,7 +25,7 @@ export default angular
         $stateProvider
             .state('main.configuration.email', {
                 url: '/email',
-                // redirectTo: 'main.configuration.email.settings',
+                redirectTo: 'main.configuration.email.settings',
                 component: 'configurationEmail'
             });
         $urlRouterProvider.otherwise('/');

@@ -20,7 +20,7 @@ import {
 
 import navbar from '../components/navbar/navbar.component';
 import footer from '../components/footer/footer.module';
-import main from './main/main.component';
+import main from './main/main.module';
 import breadcrumb from '../components/breadcrumb/breadcrumb.module';
 import constants from './app.constants';
 import mainSidebar from '../components/main-sidebar/main-sidebar.component';
@@ -40,7 +40,13 @@ angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiB
         footer, main, breadcrumb, constants, mainSidebar, controlSidebar, skin,
         processing, configuration, configurationTemplates, loggingTracing, electronDialogButton, variablesButton, confirmationModal
     ])
-    .config(routeConfig);
+    .config(routeConfig)
+    .run(($transitions, BreadcrumbService) => {
+        'ngInject';
+        $transitions.onSuccess({}, ($transition$) => {
+            BreadcrumbService.setCurrentState($transition$.treeChanges().to);
+        });
+    });
 
 angular.element(document)
     .ready(() => {

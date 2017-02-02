@@ -1,10 +1,4 @@
-import angular from 'angular';
-import uiRouter from 'angular-ui-router';
-import routing from './main.routes';
-
-export class MainController {
-
-    awesomeThings = [];
+class MainController {
 
     /*@ngInject*/
     constructor($http, SkinService) {
@@ -16,7 +10,7 @@ export class MainController {
         this.skin = this.skinService.getSkin();
     }
 
-    $onChanges() {
+    $onChanges(changes) {
         this.onLayoutChange();
     }
 
@@ -33,10 +27,8 @@ export class MainController {
     }
 }
 
-export default angular.module('theProtonApp.main', [uiRouter])
-    .config(routing)
-    .component('main', {
-        template: require('./main.html'),
-        controller: MainController
-    })
-    .name;
+export const MainComponent = {
+    bindings: {},
+    template: require('./main.html'),
+    controller: MainController
+}
