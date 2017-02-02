@@ -7,7 +7,6 @@ import path from 'path';
 import url from 'url';
 import { app, Menu } from 'electron';
 import { devMenuTemplate } from './menu/dev_menu_template';
-import { editMenuTemplate } from './menu/edit_menu_template';
 import createWindow from './helpers/window';
 // import { client } from 'electron-connect';
 
@@ -17,11 +16,8 @@ import env from './env';
 
 var mainWindow;
 
-var setApplicationMenu = function() {
-    var menus = [editMenuTemplate];
-    if (env.name !== 'production') {
-        menus.push(devMenuTemplate);
-    }
+var setApplicationDevMenu = function() {
+    var menus = [devMenuTemplate];
     Menu.setApplicationMenu(Menu.buildFromTemplate(menus));
 };
 
@@ -34,7 +30,11 @@ if (env.name !== 'production') {
 }
 
 app.on('ready', function() {
-    setApplicationMenu();
+
+    // Only set app menu when not in production
+    if (env.name !== 'production') {
+        setApplicationDevMenu();
+    }
 
     var mainWindow = createWindow('main', {
         width: 960,
@@ -49,9 +49,6 @@ app.on('ready', function() {
 
     if (env.name === 'development') {
         // mainWindow.openDevTools();
-
-        // Activate Electron's live reload
-        // client.create(mainWindow);
     }
 });
 
