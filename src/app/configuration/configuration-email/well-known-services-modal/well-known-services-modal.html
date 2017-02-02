@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h3 class="modal-title" id="modal-title"><i class="fa fa-thumbs-o-up"></i> Well-Known Services</h3>
+</div>
+<form>
+    <div class="modal-body" id="modal-body">
+        <div class="form-group">
+            <select class="form-control" name="service" id="service" ng-options="service as service.name for service in $ctrl.services" ng-attr-size="{{ $ctrl.selectSize || '5' }}" ng-model="$ctrl.selected"></select>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <div class="checkbox text-left col-xs-6">
+            <label for="showMore">
+                <input type="checkbox" id="showMore" ng-model="$ctrl.showMore" ng-change="$ctrl.showMoreToggle()">
+                Show More
+            </label>
+        </div>
+        <button class="btn btn-flat btn-primary" type="button" ng-click="$ctrl.ok()">OK</button>
+        <button class="btn btn-flat btn-default" type="button" ng-click="$ctrl.cancel()">Cancel</button>
+    </div>
+</form>

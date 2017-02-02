@@ -1,8 +1,31 @@
+import _ from 'lodash';
+import wellKnown from 'nodemailer-wellknown/services.json';
+
 export class ConfigurationEmail {
 
     /*@ngInject*/
-    constructor($http) {
+    constructor($http, $q) {
         this.$http = $http;
+        this.$q = $q;
+        this.wellKnown = _.mapValues(wellKnown, (value, key) => {
+            value.name = key;
+            return value;
+        });
+    }
+
+    getDefaultWellKnownServices() {
+        let defaultServices = [
+            'Outlook365',
+            'Gmail',
+            'Mandrill',
+            'SendGrid',
+            'Mailgun'
+        ];
+        return this.$q.resolve(_.at(this.wellKnown, defaultServices));
+    }
+
+    getAllWellKnownServices() {
+        return this.$q.resolve(this.wellKnown);
     }
 
     getCloudProviders() {

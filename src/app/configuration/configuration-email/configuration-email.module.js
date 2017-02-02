@@ -6,6 +6,7 @@ import configurationEmailMessage from './configuration-email-message/configurati
 import configurationEmailAttachments from './configuration-email-attachments/configuration-email-attachments.module';
 import configurationEmailCloud from './configuration-email-cloud/configuration-email-cloud.module';
 import { ConfigurationEmail as ConfigurationEmailService } from './configuration-email.service';
+import wellKnownServicesModal from './well-known-services-modal/well-known-services-modal.module';
 // import './configuration-email.less';
 
 export default angular
@@ -14,7 +15,8 @@ export default angular
         configurationEmailSettings,
         configurationEmailMessage,
         configurationEmailAttachments,
-        configurationEmailCloud
+        configurationEmailCloud,
+        wellKnownServicesModal
     ])
     .component('configurationEmail', ConfigurationEmailComponent)
     .service('ConfigurationEmailService', ConfigurationEmailService)

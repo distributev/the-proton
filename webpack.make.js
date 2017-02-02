@@ -151,6 +151,9 @@ export default (options) => {
     config.module = {
         preLoaders: [],
         loaders: [{
+            test: /\.json$/,
+            loader: "json-loader"
+        }, {
             // JS LOADER
             // Reference: https://github.com/babel/babel-loader
             // Transpile .js files using babel-loader

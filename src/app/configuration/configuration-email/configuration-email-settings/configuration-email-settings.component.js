@@ -1,10 +1,11 @@
 class ConfigurationEmailSettingsController {
-    constructor($state, ConfigurationEmailService, $timeout) {
+    constructor($state, ConfigurationEmailService, $timeout, $uibModal) {
         'ngInject';
         this.$state = $state;
         this.configurationEmailService = ConfigurationEmailService;
         this.$timeout = $timeout;
         this.formData = {};
+        this.$uibModal = $uibModal;
     }
 
     $onInit() {
@@ -16,6 +17,21 @@ class ConfigurationEmailSettingsController {
 
     onSubmit() {
 
+    }
+
+    showWellKnownServicesModal() {
+        let modalInstance = this.$uibModal.open({
+            animation: true,
+            component: 'wellKnownServicesModal',
+            size: 'sm',
+            resolve: {}
+        });
+
+        modalInstance.result.then(result => {
+            console.log(result);
+        }, reason => {
+            // console.log('modal-component dismissed with reason: ' + reason);
+        });
     }
 
     variableSelected({ variable, target }) {
