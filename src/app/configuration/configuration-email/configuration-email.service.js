@@ -25,7 +25,7 @@ export class ConfigurationEmail {
     }
 
     getAllWellKnownServices() {
-        return this.$q.resolve(this.wellKnown);
+        return this.$q.resolve(_.values(this.wellKnown));
     }
 
     getCloudProviders() {
