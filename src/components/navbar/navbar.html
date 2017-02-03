@@ -1,25 +1,42 @@
 <!-- Main Header -->
 <header class="main-header">
 
-    <!-- Logo -->
-    <a href="index.html" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><i class="fa fa-files-o"></i></span>
-        <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><i class="fa fa-files-o"></i> TheProtonApp</span>
-    </a>
+    <div class="logo">
+        <div class="btn-group" uib-dropdown dropdown-append-to-body>
+            <button id="single-button" type="button" class="btn btn-default" uib-dropdown-toggle ng-hide="$ctrl.isNavCollapsed">
+                {{ $ctrl.activeSection }} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                <li><a href="#" ui-sref="main.processing" ng-click="$ctrl.changeActiveSection('Process')">Process</a></li>
+                <li><a href="#" ui-sref="main.configuration" ng-click="$ctrl.changeActiveSection('Configure')">Configure</a></li>
+                <li><a href="#" ui-sref="main.configurationTemplates" ng-click="$ctrl.changeActiveSection('Configuration Templates')">Configuration Templates</a></li>
+            </ul>
+            </li>
+            </ul>
+        </div>
+    </div>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
         <!-- Sidebar toggle button-->
-        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+        <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button" ng-click="$ctrl.isNavCollapsed = !$ctrl.isNavCollapsed">
             <span class="sr-only">Toggle navigation</span>
         </a>
+        <!-- Navbar Left Menu -->
+        <div>
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="mailto:support@theprotonapp.com">support@theprotonapp.com</a>
+                </li>
+            </ul>
+        </div>
         <!-- Navbar Right Menu -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="mailto:support@theprotonapp.com">support@theprotonapp.com</a>
+                    <a href="index.html" class="navbar-brand">
+                        <span><i class="fa fa-files-o"></i> TheProtonApp</span>
+                    </a>
                 </li>
                 <!-- Control Sidebar Toggle Button -->
                 <li>

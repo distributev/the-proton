@@ -8,6 +8,7 @@ class MainController {
 
     $onInit() {
         this.skin = this.skinService.getSkin();
+        this.activeSection = 'Process';
     }
 
     $onChanges(changes) {
@@ -24,6 +25,10 @@ class MainController {
 
     changeSkin({ skin }) {
         this.skin = skin;
+    }
+
+    activeSectionChange({ section }) {
+        this.activeSection = section;
     }
 }
 

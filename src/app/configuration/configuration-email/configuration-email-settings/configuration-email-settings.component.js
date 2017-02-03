@@ -28,6 +28,7 @@ class ConfigurationEmailSettingsController {
         });
 
         modalInstance.result.then(result => {
+            // TODO: implement
             console.log(result);
         }, reason => {
             // console.log('modal-component dismissed with reason: ' + reason);

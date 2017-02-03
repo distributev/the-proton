@@ -6,6 +6,14 @@ export class MainSidebarController {
 
     }
 
+    $onInit() {}
+
+    $onChanges(changes) {
+        if (changes.activeSection) {
+            this.activeSection = angular.copy(changes.activeSection.currentValue);
+        }
+    }
+
     quit() {
         electron.remote.getCurrentWindow().close();
     }
@@ -13,6 +21,8 @@ export class MainSidebarController {
 
 export const MainSidebarComponent = {
     template: require('./main-sidebar.html'),
-    bindings: {},
+    bindings: {
+        activeSection: '<'
+    },
     controller: MainSidebarController
 };

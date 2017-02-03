@@ -1,6 +1,6 @@
 <div ng-class="$ctrl.skin">
-    <navbar></navbar>
-    <main-sidebar></main-sidebar>
+    <navbar active-section="$ctrl.activeSection" on-active-section-change="$ctrl.activeSectionChange($event)"></navbar>
+    <main-sidebar active-section="$ctrl.activeSection"></main-sidebar>
     <div class="content-wrapper">
         <div class="row">
             <section class="content-header col-xs-12">

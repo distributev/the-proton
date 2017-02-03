@@ -3,33 +3,30 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar Menu -->
-        <ul class="sidebar-menu" ui-sref-active="active">
-            <li class="treeview active">
+        <ul class="sidebar-menu">
+            <li class="treeview" ui-sref-active="active" ng-show="$ctrl.activeSection === 'Process'">
                 <a href="#" ui-sref="main.processing.doAction"><i class="fa fa-dashboard"></i> <span>Processing</span>
                     <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
-                <ul class="treeview-menu">
+                <ul class="treeview-menu always-active">
                     <li ui-sref-active="active"><a href="#" ui-sref="main.processing.doAction"><i class="fa fa-arrow-right"></i> Do Action</a></li>
                     <li ui-sref-active="active"><a href="#" ui-sref="main.processing.quality"><i class="fa fa-check"></i> Quality</a></li>
                 </ul>
             </li>
-            <li class="treeview" ui-sref-active="active">
+            <li class="treeview" ui-sref-active="active" ng-show="$ctrl.activeSection === 'Configure'">
                 <a href="#" ui-sref="main.configuration.general"><i class="fa fa-cog"></i> <span>Configuration</span>
                     <span class="pull-right-container">
-                    <i class="fa fa-angle-left pull-right"></i>
                     </span>
                 </a>
-                <ul class="treeview-menu">
+                <ul class="treeview-menu always-active">
                     <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.general"><i class="fa fa-list-ul"></i> General</a></li>
                     <li class="treeview" ui-sref-active="active">
                         <a href="#" ui-sref="main.configuration.email.settings"><i class="fa fa-envelope"></i> <span>Email</span>
                             <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
-                        <ul class="treeview-menu">
+                        <ul class="treeview-menu always-active">
                             <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.settings"><i class="fa fa-gear"></i> Connection Settings</a></li>
                             <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.message"><i class="fa fa-envelope-o"></i> Email Message</a></li>
                             <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.attachments"><i class="fa fa-paperclip"></i> Attachments</a></li>
@@ -39,10 +36,9 @@
                     <li class="treeview" ui-sref-active="active">
                         <a href="#" ui-sref="main.configuration.upload.ftp"><i class="fa fa-cloud-upload"></i> <span>Upload</span>
                             <span class="pull-right-container">
-                            <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
-                        <ul class="treeview-menu">
+                        <ul class="treeview-menu always-active">
                             <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.upload.ftp"><i class="fa fa-upload"></i> FTP</a></li>
                             <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.upload.sftp"><i class="fa fa-key"></i> SFTP/SCP</a></li>
                         </ul>
@@ -50,7 +46,7 @@
                     <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.advanced"><i class="fa fa-window-restore"></i> Advanced</a></li>
                 </ul>
             </li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.configurationTemplates"><i class="fa fa-cogs"></i> <span>Configuration Templates</span></a></li>
+            <li ui-sref-active="active"><a href="#" ui-sref="main.configurationTemplates" ng-show="$ctrl.activeSection === 'Configuration Templates'"><i class="fa fa-cogs"></i> <span>Configuration Templates</span></a></li>
             <li ui-sref-active="active"><a href="#" ui-sref="main.loggingTracing"><i class="fa fa-search"></i> <span>Logging, Tracing...</span></a></li>
             <li ui-sref-active="active"><a href="#" ui-sref="main.help"><i class="fa fa-question"></i> <span>Help</span></a></li>
             <li ui-sref-active="active"><a href="#" ui-sref="main.about"><i class="fa fa-info"></i> <span>About</span></a></li>
