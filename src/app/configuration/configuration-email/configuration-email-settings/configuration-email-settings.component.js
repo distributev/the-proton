@@ -9,7 +9,7 @@ class ConfigurationEmailSettingsController {
     }
 
     $onInit() {
-        this.cloudProviders = this.configurationEmailService.getCloudProviders();
+        this.cloudProviders = _.filter(this.configurationEmailService.getCloudProviders(), each => each.name !== 'Mandrill');
         this.selectedCloudProvider = this.cloudProviders[0];
     }
 
