@@ -17,7 +17,7 @@ export default angular
         $stateProvider
             .state('main.configuration.upload', {
                 url: '/upload',
-                // redirectTo: 'main.configuration.upload.ftp',
+                redirectTo: 'main.configuration.upload.ftp',
                 component: 'configurationUpload'
             });
         $urlRouterProvider.otherwise('/');
