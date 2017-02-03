@@ -18,13 +18,13 @@ import {
     routeConfig
 } from './app.config';
 
-import navbar from '../components/navbar/navbar.component';
+import navbar from '../components/navbar/navbar.module';
 import footer from '../components/footer/footer.module';
 import main from './main/main.module';
 import breadcrumb from '../components/breadcrumb/breadcrumb.module';
 import constants from './app.constants';
-import mainSidebar from '../components/main-sidebar/main-sidebar.component';
-import controlSidebar from '../components/control-sidebar/control-sidebar.component';
+import mainSidebar from '../components/main-sidebar/main-sidebar.module';
+import controlSidebar from '../components/control-sidebar/control-sidebar.module';
 import skin from '../components/skin/skin.module';
 import processing from './processing/processing.module';
 import configuration from './configuration/configuration.module';

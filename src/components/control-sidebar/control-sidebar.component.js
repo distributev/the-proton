@@ -1,9 +1,6 @@
-import angular from 'angular';
-
 export class ControlSidebarController {
     /*@ngInject*/
     constructor(SkinService) {
-        this.message = 'World';
         this.skinService = SkinService;
     }
 
@@ -24,13 +21,10 @@ export class ControlSidebarController {
     }
 }
 
-export default angular.module('theProtonApp.control-sidebar', [])
-    .component('controlSidebar', {
-        template: require('./control-sidebar.html'),
-        bindings: {
-            message: '<',
-            onSkinChange: '&'
-        },
-        controller: ControlSidebarController
-    })
-    .name;
+export const ControlSidebarComponent = {
+    template: require('./control-sidebar.html'),
+    bindings: {
+        onSkinChange: '&'
+    },
+    controller: ControlSidebarController
+};
