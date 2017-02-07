@@ -30,6 +30,7 @@ import processing from './processing/processing.module';
 import configuration from './configuration/configuration.module';
 import configurationTemplates from './configuration-templates/configuration-templates.module';
 import loggingTracing from './logging-tracing/logging-tracing.module';
+import about from './about/about.module';
 import electronDialogButton from '../components/electron-dialog-button/electron-dialog-button.module';
 import variablesButton from '../components/variables-button/variables-button.module';
 import confirmationModal from '../components/confirmation-modal/confirmation-modal.module';
@@ -38,7 +39,7 @@ import './app.less';
 
 angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', navbar,
         footer, main, breadcrumb, constants, mainSidebar, controlSidebar, skin,
-        processing, configuration, configurationTemplates, loggingTracing, electronDialogButton, variablesButton, confirmationModal
+        processing, configuration, configurationTemplates, loggingTracing, about, electronDialogButton, variablesButton, confirmationModal
     ])
     .config(routeConfig)
     .run(($transitions, BreadcrumbService) => {
