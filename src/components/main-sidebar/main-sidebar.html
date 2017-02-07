@@ -14,6 +14,19 @@
                     <li ui-sref-active="active"><a href="#" ui-sref="main.processing.quality"><i class="fa fa-check"></i> Quality</a></li>
                 </ul>
             </li>
+            <li class="configuration-dropdown text-center" ng-show="$ctrl.activeSection === 'Configure'">
+                <div class="btn-group" uib-dropdown dropdown-append-to-body>
+                    <button id="single-button" type="button" class="btn  btn-sm btn-default" uib-dropdown-toggle>
+                        {{ $ctrl.selectedConfigTemplate || 'My Default Config Template' }} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" uib-dropdown-menu role="menu">
+                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'My Default Config Template'">My Default Config Template</a></li>
+                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'Invoices'">Invoices</a></li>
+                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'Statements'">Statements</a></li>
+                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'Payslips'">Payslips</a></li>
+                    </ul>
+                </div>
+            </li>
             <li class="treeview" ui-sref-active="active" ng-show="$ctrl.activeSection === 'Configure'">
                 <a href="#" ui-sref="main.configuration.general"><i class="fa fa-cog"></i> <span>Configuration</span>
                     <span class="pull-right-container">
