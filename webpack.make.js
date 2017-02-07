@@ -6,10 +6,12 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 import HtmlWebpackHarddiskPlugin from 'html-webpack-harddisk-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import fs from 'fs';
+import _ from 'lodash';
 import path from 'path';
 const componentHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/component-loader.js');
 const serviceHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/service-loader.js');
 const jadeHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/jade-loader.js');
+const dependencies = require('./package.json').dependencies;
 
 const port = process.env.PORT || 3000;
 
@@ -44,8 +46,6 @@ export default (options) => {
     } else {
         config.entry = {
             app: [
-                'webpack/hot/dev-server',
-                `webpack-dev-server/client?http://localhost:${port}`,
                 'babel-polyfill',
                 './src/app/app.js'
             ],
@@ -58,7 +58,6 @@ export default (options) => {
                 'angular-aria',
                 'angular-cookies',
                 'angular-resource',
-
                 'angular-sanitize',
 
                 'angular-ui-bootstrap',
@@ -69,9 +68,15 @@ export default (options) => {
                 'jquery-slimscroll',
                 'admin-lte/dist/js/app',
                 'brace',
-                'angular-ui-ace'
+                'angular-ui-ace',
+                'nodemailer-wellknown',
+                'rx-angular'
             ]
         };
+
+        if (DEV) {
+            config.entry.app.unshift('webpack/hot/dev-server', `webpack-dev-server/client?http://localhost:${port}`);
+        }
     }
 
     /**
@@ -241,10 +246,11 @@ export default (options) => {
             }
         });
     }
-
-    config.module.preLoaders.push({ test: /\.component\.js$/, loader: componentHotLoader, exclude: [/client\/lib/, /node_modules/, /\.spec\.js/, /components\/themes/] });
-    config.module.preLoaders.push({ test: /\.service\.js$/, loader: serviceHotLoader, exclude: [/client\/lib/, /node_modules/, /\.spec\.js/, /components\/themes/] })
-    config.module.postLoaders.push({ test: /\.html/, loader: jadeHotLoader, exclude: [/components\/themes/] });
+    if (DEV) {
+        config.module.preLoaders.push({ test: /\.component\.js$/, loader: componentHotLoader, exclude: [/client\/lib/, /node_modules/, /\.spec\.js/, /components\/themes/] });
+        config.module.preLoaders.push({ test: /\.service\.js$/, loader: serviceHotLoader, exclude: [/client\/lib/, /node_modules/, /\.spec\.js/, /components\/themes/] })
+        config.module.postLoaders.push({ test: /\.html/, loader: jadeHotLoader, exclude: [/components\/themes/] });
+    }
 
     /**
      * PostCSS
@@ -302,8 +308,6 @@ export default (options) => {
     }
     config.plugins.push(
         new webpack.optimize.OccurenceOrderPlugin(),
-        // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
-        new webpack.HotModuleReplacementPlugin(),
         new HtmlWebpackPlugin(htmlConfig),
         new HtmlWebpackHarddiskPlugin()
     );
@@ -344,6 +348,8 @@ export default (options) => {
 
     if (DEV) {
         config.plugins.push(
+            // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
+            new webpack.HotModuleReplacementPlugin(),
             // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
             // Define free global variables
             new webpack.DefinePlugin({

@@ -38,7 +38,9 @@ app.on('ready', function() {
 
     var mainWindow = createWindow('main', {
         width: 960,
-        height: 650
+        height: 650,
+        resizable: false,
+        icon: path.join(__dirname, '../assets/icons/png/64x64.png')
     });
 
     mainWindow.loadURL(url.format({

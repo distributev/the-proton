@@ -117,7 +117,7 @@ gulp.task('reload:renderer', done => {
     done();
 });
 
-gulp.task('bundle', ['webpack:main:dev', 'webpack:dev']);
+gulp.task('bundle', ['webpack:main', 'webpack:dist']);
 
 gulp.task('build', done => {
     runSequence(

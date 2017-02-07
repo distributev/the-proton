@@ -13,9 +13,7 @@ export default function(name, options) {
     var stateStoreFile = 'window-state-' + name + '.json';
     var defaultSize = {
         width: options.width,
-        height: options.height,
-        resizable: false,
-        icon: path.join(__dirname, '../assets/icons/png/64x64.png')
+        height: options.height
     };
     var state = {};
     var win;

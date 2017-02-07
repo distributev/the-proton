@@ -6,16 +6,16 @@ import webpack from 'webpack-stream';
 import makeElectronWebpackConfig from './../webpack.make.electron';
 import makeWebpackConfig from './../webpack.make';
 
-gulp.task('webpack:main:dev', () => {
-    const webpackDevConfig = makeElectronWebpackConfig({ DEV: true });
+gulp.task('webpack:main', () => {
+    const webpackDevConfig = makeElectronWebpackConfig();
     return gulp.src(webpackDevConfig.entry)
         .pipe(plumber())
         .pipe(webpack(webpackDevConfig))
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('webpack:dev', () => {
-    const webpackDevConfig = makeWebpackConfig({ DEV: true });
+gulp.task('webpack:dist', () => {
+    const webpackDevConfig = makeWebpackConfig({ BUILD: true });
     return gulp.src(webpackDevConfig.entry.app)
         .pipe(plumber())
         .pipe(webpack(webpackDevConfig))
