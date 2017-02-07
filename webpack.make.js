@@ -11,7 +11,6 @@ import path from 'path';
 const componentHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/component-loader.js');
 const serviceHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/service-loader.js');
 const jadeHotLoader = require.resolve('./node_modules/angular-hot-reloader/loaders/jade-loader.js');
-const dependencies = require('./package.json').dependencies;
 
 const port = process.env.PORT || 3000;
 
@@ -350,6 +349,7 @@ export default (options) => {
         config.plugins.push(
             // https://webpack.github.io/docs/hot-module-replacement-with-webpack.html
             new webpack.HotModuleReplacementPlugin(),
+
             // Reference: https://webpack.github.io/docs/list-of-plugins.html#defineplugin
             // Define free global variables
             new webpack.DefinePlugin({

@@ -10,11 +10,14 @@ import webpackConfig from './../webpack.dev';
 import express from 'express';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
+import gutil from 'gulp-util';
 
 const port = process.env.port || 3000;
 
 gulp.task('start', ['environment', 'copy:fonts:dev', 'inject'], () => {
+    let initialCompile = true;
     let compiler = webpack(webpackConfig);
+    gutil.log('Webpack Build Started...');
     let server = new WebpackDevServer(compiler, {
         contentBase: webpackConfig.output.path,
         hot: true,
@@ -26,14 +29,20 @@ gulp.task('start', ['environment', 'copy:fonts:dev', 'inject'], () => {
             colors: true,
         }
     });
-    server.listen(port, 'localhost', () => {
-        childProcess.spawn(electron, ['-r', 'babel-register', './src'], {
-                stdio: 'inherit'
-            })
-            .on('close', () => {
-                // User closed the app. Kill the host process.
-                process.exit();
+    compiler.plugin('done', function() {
+        if (initialCompile) {
+            initialCompile = false;
+            gutil.log('Webpack Build Done!');
+            server.listen(port, 'localhost', () => {
+                childProcess.spawn(electron, ['-r', 'babel-register', './src'], {
+                        stdio: 'inherit'
+                    })
+                    .on('close', () => {
+                        // User closed the app. Kill the host process.
+                        process.exit();
+                    });
             });
+        }
     });
 });
 
