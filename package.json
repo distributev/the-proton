@@ -58,7 +58,6 @@
         "bootstrap": "^3.3.7",
         "brace": "^0.9.1",
         "core-js": "^2.4.1",
-        "electron-config": "^0.2.1",
         "font-awesome": "^4.7.0",
         "fs-jetpack": "^0.10.2",
         "jquery": "2.2.3",
