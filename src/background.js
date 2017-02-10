@@ -50,6 +50,8 @@ app.on('ready', function() {
     }));
 
     if (env.name === 'development') {
+        var PATH_APP_NODE_MODULES = path.join(__dirname, 'node_modules');
+        require('module').globalPaths.push(PATH_APP_NODE_MODULES);
         // mainWindow.openDevTools();
     }
 });
