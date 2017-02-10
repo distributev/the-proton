@@ -1,17 +1,32 @@
 {
-    "name": "the-proton",
-    "productName": "The Proton App",
-    "version": "0.0.0",
+    "name": "theproton",
+    "description": "The Proton App",
+    "productName": "TheProtonApp",
+    "version": "0.0.1",
     "author": "Luis Manuel <luisman40@gmail.com>",
     "license": "MIT",
     "main": "background.js",
     "build": {
-        "appId": "com.distributev.the-proton",
+        "appId": "com.distributev.theprotonapp",
         "files": [
-            "dist/**/*",
-            "node_modules/**/*",
-            "package.json"
-        ]
+            "**/*"
+        ],
+        "mac": {
+            "target": "zip",
+            "icon": "./dist/assets/icons/mac/icon.icns"
+        },
+        "win": {
+            "target": "zip",
+            "icon": "./dist/assets/icons/win/icon.ico"
+        },
+        "linux": {
+            "target": "zip",
+            "icon": "./dist/assets/icons/png"
+        }
+    },
+    "directories": {
+        "output": "release",
+        "app": "dist"
     },
     "bin": {
         "electron": "./node_modules/.bin/electron"
@@ -43,6 +58,7 @@
         "bootstrap": "^3.3.7",
         "brace": "^0.9.1",
         "core-js": "^2.4.1",
+        "electron-config": "^0.2.1",
         "font-awesome": "^4.7.0",
         "fs-jetpack": "^0.10.2",
         "jquery": "2.2.3",

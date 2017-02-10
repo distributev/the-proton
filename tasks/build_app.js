@@ -16,7 +16,9 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 
 let projectDir = jetpack;
 let srcDir = jetpack.cwd('./src');
-let destDir = utils.getEnvName() === 'development' ? jetpack.cwd('./src') : jetpack.cwd('./dist');
+let destDir = () => {
+    return utils.getEnvName() === 'development' ? jetpack.cwd('./src') : jetpack.cwd('./dist');
+}
 
 let mainStylePath = srcDir.path('app/app.less');
 let stylesPath = [srcDir.path('{app,components}/**/*.less')];
@@ -46,9 +48,13 @@ gulp.task('inject:less', () => {
         .pipe(gulp.dest(`src/app`));
 });
 
+gulp.task('env:prod', () => {
+    return process.env.NODE_ENV = 'production';
+});
+
 gulp.task('environment', () => {
     let configFile = 'config/env_' + utils.getEnvName() + '.json';
-    projectDir.copy(configFile, destDir.path('env.json'), { overwrite: true });
+    projectDir.copy(configFile, destDir().path('env.json'), { overwrite: true });
 });
 
 gulp.task('copy:fonts:dev', () => {
@@ -65,7 +71,7 @@ gulp.task('copy:fonts', () => {
 
 gulp.task('copy:assets', () => {
     return gulp.src([srcDir.path('assets/**/*')])
-        .pipe(gulp.dest(destDir.path('assets')));
+        .pipe(gulp.dest(destDir().path('assets')));
 });
 
 gulp.task('copy:extras', () => {
@@ -76,7 +82,7 @@ gulp.task('copy:extras', () => {
             srcDir.path('index.html'),
             srcDir.path('package.json')
         ], { dot: true })
-        .pipe(gulp.dest(destDir.path()));
+        .pipe(gulp.dest(destDir().path()));
 });
 
 gulp.task('watch', () => {
@@ -128,6 +134,14 @@ gulp.task('build', done => {
         'copy:assets',
         'copy:fonts',
         'copy:extras',
+        done
+    );
+});
+
+gulp.task('build:prod', done => {
+    runSequence(
+        'env:prod',
+        'build',
         done
     );
 });

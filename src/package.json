@@ -1,9 +1,12 @@
 {
-    "name": "the-proton",
-    "productName": "The Proton App",
-    "version": "0.0.0",
+    "name": "theproton",
+    "description": "The Proton App",
+    "productName": "TheProtonApp",
+    "version": "0.0.1",
     "author": "Luis Manuel <luisman40@gmail.com>",
     "license": "MIT",
     "main": "background.js",
-    "dependencies": {}
+    "dependencies": {
+        "electron-config": "^0.2.1"
+    }
 }
