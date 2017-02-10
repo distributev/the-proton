@@ -6,7 +6,8 @@ Thumbs.db
 
 /app
 
-/dist
+/dist/**/*
+!dist/.gitkeep
 
 /coverage
 
