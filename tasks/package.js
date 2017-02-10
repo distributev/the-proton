@@ -60,13 +60,13 @@ gulp.task('build-win', ['build:prod'], (done) => {
         });
 });
 
-gulp.task('clean:package-win', () => del(['release/*win*.zip']));
+gulp.task('clean:package-win', () => del(['release/*win.zip']));
 
-gulp.task('clean:build-win-unpacked', () => del(['release/win-*']));
+gulp.task('clean:build-win-unpacked', () => del(['release/win-ia32-unpacked']));
 
-gulp.task('clean:package-linux', () => del(['release/*linux*.zip']));
+gulp.task('clean:package-linux', () => del(['release/*linux.zip']));
 
-gulp.task('clean:build-linux-unpacked', () => del(['release/linux-*']));
+gulp.task('clean:build-linux-unpacked', () => del(['release/linux-ia32-unpacked']));
 
 gulp.task('clean:package-mac', () => del(['release/*mac.zip']));
 
