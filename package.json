@@ -82,7 +82,7 @@
         "chai": "^3.5.0",
         "css-loader": "^0.26.1",
         "del": "^2.2.2",
-        "electron": "^1.4.13",
+        "electron": "beta",
         "electron-builder": "^8.6.0",
         "electron-connect": "^0.6.1",
         "electron-mocha": "^3.0.0",
