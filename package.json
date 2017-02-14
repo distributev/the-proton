@@ -12,15 +12,15 @@
             "**/*"
         ],
         "mac": {
-            "target": "zip",
+            "target": "dir",
             "icon": "./dist/assets/icons/mac/icon.icns"
         },
         "win": {
-            "target": "zip",
+            "target": "dir",
             "icon": "./dist/assets/icons/win/icon.ico"
         },
         "linux": {
-            "target": "zip",
+            "target": "dir",
             "icon": "./dist/assets/icons/png"
         }
     },
@@ -89,6 +89,7 @@
         "express": "^4.14.0",
         "extract-text-webpack-plugin": "^1.0.1",
         "file-loader": "^0.9.0",
+        "fs-extra": "^2.0.0",
         "gulp": "^3.9.0",
         "gulp-batch": "^1.0.5",
         "gulp-inject": "^4.2.0",
@@ -98,6 +99,7 @@
         "gulp-sort": "^2.0.0",
         "gulp-util": "^3.0.6",
         "gulp-watch": "^4.3.5",
+        "gulp-zip": "^4.0.0",
         "html-webpack-harddisk-plugin": "^0.0.2",
         "html-webpack-plugin": "^2.26.0",
         "imports-loader": "^0.7.0",
@@ -125,5 +127,8 @@
         "webpack-hot-middleware": "^2.15.0",
         "webpack-stream": "^3.2.0",
         "ws": "^1.1.1"
+    },
+    "optionalDependencies": {
+        "windows-shortcuts": "^0.1.4"
     }
 }
