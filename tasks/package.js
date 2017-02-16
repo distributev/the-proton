@@ -8,6 +8,7 @@ const builder = require('electron-builder');
 import plumber from 'gulp-plumber';
 import runSequence from 'run-sequence';
 import packageConfig from '../package.json';
+import file from 'gulp-file';
 
 gulp.task('build-mac', ['build:prod'], (done) => {
 
@@ -90,30 +91,18 @@ gulp.task('copy:package-win:64', done => {
     });
 });
 
-gulp.task('package-win:shortcut:32', done => {
-    const shortcut = require('windows-shortcuts');
-    let appPath = `%__CD__%release/${packageConfig.productName}-${packageConfig.version}-win-ia32`;
-    let shortcutPath = appPath + `/${packageConfig.productName}.lnk`;
-    let exePath = appPath + `/_internal/${packageConfig.productName}.exe`;
-    shortcut.create(shortcutPath, exePath, err => {
-        if (err) {
-            done(err);
-        }
-        else done();
-    });
+gulp.task('package-win:shortcut:32', () => {
+    let destDir = `release/${packageConfig.productName}-${packageConfig.version}-win-ia32`;
+    let content = `start "" "_internal\\${packageConfig.productName}.exe"`;
+    return file(`${packageConfig.productName}.cmd`, content, { src: true })
+        .pipe(gulp.dest(destDir));
 });
 
-gulp.task('package-win:shortcut:64', done => {
-    const shortcut = require('windows-shortcuts');
-    let appPath = `%__CD__%release/${packageConfig.productName}-${packageConfig.version}-win-x64`;
-    let shortcutPath = appPath + `/${packageConfig.productName}.lnk`;
-    let exePath = appPath + `/_internal/${packageConfig.productName}.exe`;
-    shortcut.create(shortcutPath, exePath, err => {
-        if (err) {
-            done(err);
-        }
-        else done();
-    });
+gulp.task('package-win:shortcut:64', () => {
+    let destDir = `release/${packageConfig.productName}-${packageConfig.version}-win-x64`;
+    let content = `start "" "_internal\\${packageConfig.productName}.exe"`;
+    return file(`${packageConfig.productName}.cmd`, content, { src: true })
+        .pipe(gulp.dest(destDir));
 });
 
 gulp.task('package-win:zip:32', () => {
@@ -129,8 +118,6 @@ gulp.task('package-win:zip:64', () => {
 });
 
 gulp.task('clean:package-win-unpacked', () => del([
-    // 'release/win-ia32-unpacked',
-    // 'release/win-unpacked',
     'release/*win-*',
     '!release/*.zip'
 ]));
