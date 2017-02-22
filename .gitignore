@@ -14,3 +14,6 @@ Thumbs.db
 /src/index.html
 
 /_internal/electronData
+
+/config
+!/config/environment
