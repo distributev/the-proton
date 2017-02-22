@@ -369,10 +369,6 @@ export default (options) => {
         };
         config.debug = false;
     }
-    // config.noParse = ['electron-config']
-    config.externals = [{
-        'electron-config': 'electron-config'
-    }];
 
     config.node = {
         __dirname: false,

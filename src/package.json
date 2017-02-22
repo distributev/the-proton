@@ -6,7 +6,5 @@
     "author": "Luis Manuel <luisman40@gmail.com>",
     "license": "MIT",
     "main": "background.js",
-    "dependencies": {
-        "electron-config": "^0.2.1"
-    }
+    "dependencies": {}
 }

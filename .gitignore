@@ -12,3 +12,5 @@ Thumbs.db
 
 /release
 /src/index.html
+
+/_internal/electronData

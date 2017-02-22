@@ -1,16 +1,10 @@
-import Config from 'electron-config';
-const config = new Config({
-    defaults: {
-        skin: 'blue-light'
-    },
-    name: 'internal/config'
-});
-
 export class Skin {
 
     /*@ngInject*/
-    constructor($http) {
+    constructor($http, $q, ConfigService) {
         this.$http = $http;
+        this.$q = $q;
+        this.ConfigService = ConfigService;
     }
 
     getSkins() {
@@ -31,10 +25,15 @@ export class Skin {
     }
 
     getSkin() {
-        return 'skin-' + config.get('skin');
+        return this.$q((resolve, reject) => {
+            this.ConfigService.get('skin').then(skin => {
+                    resolve('skin-' + skin);
+                })
+                .catch(reject);
+        });
     }
 
     setSkin(skin) {
-        config.set('skin', skin.replace('skin-', ''));
+        return this.ConfigService.set({ skin: skin.replace('skin-', '') });
     }
 }

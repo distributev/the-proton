@@ -20,6 +20,7 @@ import {
 
 import navbar from '../components/navbar/navbar.module';
 import footer from '../components/footer/footer.module';
+import config from '../components/config/config.module';
 import main from './main/main.module';
 import breadcrumb from '../components/breadcrumb/breadcrumb.module';
 import constants from './app.constants';
@@ -38,7 +39,7 @@ import confirmationModal from '../components/confirmation-modal/confirmation-mod
 import './app.less';
 
 angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', navbar,
-        footer, main, breadcrumb, constants, mainSidebar, controlSidebar, skin,
+        footer, config, main, breadcrumb, constants, mainSidebar, controlSidebar, skin,
         processing, configuration, configurationTemplates, loggingTracing, about, electronDialogButton, variablesButton, confirmationModal
     ])
     .config(routeConfig)

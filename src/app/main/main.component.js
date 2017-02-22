@@ -1,18 +1,20 @@
 class MainController {
 
     /*@ngInject*/
-    constructor($http, SkinService) {
+    constructor($http, SkinService, $timeout) {
         this.$http = $http;
         this.skinService = SkinService;
+        this.$timeout = $timeout;
     }
 
     $onInit() {
-        this.skin = this.skinService.getSkin();
         this.activeSection = 'Process';
     }
 
     $onChanges(changes) {
-        this.onLayoutChange();
+        this.$timeout(() => {
+            this.onLayoutChange();
+        });
     }
 
     onLayoutChange() {
@@ -33,7 +35,9 @@ class MainController {
 }
 
 export const MainComponent = {
-    bindings: {},
+    bindings: {
+        skin: '<'
+    },
     template: require('./main.html'),
     controller: MainController
 }

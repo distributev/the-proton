@@ -13,6 +13,8 @@ let electron = electronConnect.server.create({ stopOnClose: true });
 import utils from './utils';
 import runSequence from 'run-sequence';
 import gulpLoadPlugins from 'gulp-load-plugins';
+import packageConfig from '../package.json';
+import gulpNgConfig from 'gulp-ng-config';
 
 let projectDir = jetpack;
 let srcDir = jetpack.cwd('./src');
@@ -53,8 +55,14 @@ gulp.task('env:prod', () => {
 });
 
 gulp.task('environment', () => {
-    let configFile = 'config/env_' + utils.getEnvName() + '.json';
+    let configFile = 'config/environment/' + utils.getEnvName() + '.json';
     projectDir.copy(configFile, destDir().path('env.json'), { overwrite: true });
+});
+
+gulp.task('ngEnvConfig', ['environment'], function() {
+    gulp.src(destDir().path('env.json'))
+        .pipe(gulpNgConfig(`theProtonApp.environment`, { createModule: true, wrap: 'ES6' }))
+        .pipe(gulp.dest(srcDir.path('components/config/')))
 });
 
 gulp.task('copy:fonts:dev', () => {
@@ -83,6 +91,11 @@ gulp.task('copy:extras', () => {
             srcDir.path('package.json')
         ], { dot: true })
         .pipe(gulp.dest(destDir().path()));
+});
+
+gulp.task('copy:templates', () => {
+    return gulp.src(['templates/**/*'])
+        .pipe(gulp.dest(destDir().path('templates')));
 });
 
 gulp.task('watch', () => {
@@ -129,11 +142,12 @@ gulp.task('build', done => {
     runSequence(
         'clean:dist',
         'inject',
-        'bundle',
-        'environment',
+        'ngEnvConfig',
         'copy:assets',
         'copy:fonts',
         'copy:extras',
+        'bundle',
+        'copy:templates',
         done
     );
 });

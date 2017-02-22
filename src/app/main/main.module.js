@@ -11,6 +11,12 @@ export default angular
             .state('main', {
                 url: '/',
                 redirectTo: 'main.processing.doAction',
+                resolve: {
+                    skin: function(SkinService) {
+                        'ngInject';
+                        return SkinService.getSkin();
+                    }
+                },
                 component: 'main'
             });
         $urlRouterProvider.otherwise('/');

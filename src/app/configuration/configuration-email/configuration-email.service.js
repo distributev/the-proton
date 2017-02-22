@@ -91,12 +91,4 @@ export class ConfigurationEmail {
             }
         ];
     }
-
-    getSkin() {
-        return 'skin-' + config.get('skin');
-    }
-
-    setSkin(skin) {
-        config.set('skin', skin.replace('skin-', ''));
-    }
 }

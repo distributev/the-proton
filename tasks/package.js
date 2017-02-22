@@ -133,7 +133,30 @@ gulp.task('copy:zip:mac', () => {
         .pipe(gulp.dest('release'))
 });
 
-gulp.task('clean:build-mac-unpacked', () => del(['release/mac']));
+gulp.task('copy:package-mac', done => {
+    let destDir = `release/${packageConfig.productName}-${packageConfig.version}-mac/`;
+    fs.ensureDir(destDir, err => {
+        if (err) done(err);
+        fs.copy('release/mac', destDir, err => {
+            if (err) done(err);
+            done();
+        });
+    });
+});
+
+gulp.task('copy:config:mac', () => {
+    let destDir = `release/${packageConfig.productName}-${packageConfig.version}-mac/config`;
+    return gulp.src(['config/**/*'])
+        .pipe(gulp.dest(destDir));
+});
+
+gulp.task('package-mac:zip', () => {
+    return gulp.src([`release/${packageConfig.productName}-${packageConfig.version}-mac/{,**/*}`, `release/*-mac/*.app{/**/*}`], { base: 'release' })
+        .pipe(zip(`${packageConfig.productName}-${packageConfig.version}-mac.zip`))
+        .pipe(gulp.dest('release'));
+});
+
+gulp.task('clean:package-mac-unpacked', () => del(['release/mac', `release/${packageConfig.productName}-${packageConfig.version}-mac`]));
 
 gulp.task('package-win', done => {
     runSequence(
@@ -163,8 +186,10 @@ gulp.task('package-mac', done => {
     runSequence(
         'clean:package-mac',
         'build-mac',
+        // 'copy:package-mac',
+        // 'package-mac:zip',
         'copy:zip:mac',
-        'clean:build-mac-unpacked',
+        'clean:package-mac-unpacked',
         done
     );
 });

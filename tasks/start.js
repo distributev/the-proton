@@ -14,7 +14,7 @@ import gutil from 'gulp-util';
 
 const port = process.env.port || 3000;
 
-gulp.task('start', ['environment', 'copy:fonts:dev', 'inject'], () => {
+gulp.task('start', ['ngEnvConfig', 'copy:fonts:dev', 'inject'], () => {
     let initialCompile = true;
     let compiler = webpack(webpackConfig);
     gutil.log('Webpack Build Started...');
