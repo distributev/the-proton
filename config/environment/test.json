@@ -2,6 +2,8 @@
     "name": "test",
     "description": "Add here any environment specific stuff you like.",
     "userData": "../_internal/electronData",
-    "configPath": "../config/internal/config.json",
-    "templatesPath": "../templates"
+    "configPath": "../",
+    "configFile": "config/internal/config.json",
+    "templatesPath": "../templates",
+    "defaultTemplateFile": "config/settings.xml"
 }

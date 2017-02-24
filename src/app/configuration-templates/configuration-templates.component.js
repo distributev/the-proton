@@ -9,23 +9,16 @@ class ConfigurationTemplatesController {
 
     $onInit() {
         this.formData = {
-            templates: [{
-                name: 'My Default Config Template(*)',
-                path: './config/settings.xml',
-                howTo: 'Fallback used when no other configuration',
-                active: false
-            }, {
-                name: 'invoices',
-                path: './config/invoices.xml',
-                howTo: 'Fallback used when no other configuration',
-                active: false
-            }, {
-                name: 'statements',
-                path: './config/statements.xml',
-                howTo: 'Fallback used when no other configuration',
-                active: false
-            }]
+            templates: []
         };
+        angular.forEach(this.templates, (template, index) => {
+            this.formData.templates.push({
+                name: template.theproton.settings.template,
+                path: './config/' + template.theproton.settings.filename,
+                howTo: 'Fallback used when no other configuration',
+                active: false
+            });
+        });
     }
 
     $onChanges(changes) {}
@@ -73,7 +66,9 @@ class ConfigurationTemplatesController {
 }
 
 export const ConfigurationTemplatesComponent = {
-    bindings: {},
+    bindings: {
+        templates: '<'
+    },
     template: require('./configuration-templates.html'),
     controller: ConfigurationTemplatesController
 };

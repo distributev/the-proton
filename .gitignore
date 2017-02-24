@@ -17,3 +17,6 @@ Thumbs.db
 
 /config
 !/config/environment
+
+/src/env.json
+/src/components/config/env.js

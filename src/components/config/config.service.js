@@ -4,10 +4,11 @@ import path from 'path';
 export class Config {
 
     /*@ngInject*/
-    constructor($http, $q, configPath, templatesPath) {
+    constructor($http, $q, configPath, configFile, templatesPath) {
         this.$http = $http;
         this.$q = $q;
         this.configPath = configPath;
+        this.configFile = configFile;
         this.templatesPath = templatesPath;
         this.getConfig().then(config => {
             this.config = config;
@@ -16,7 +17,7 @@ export class Config {
 
     initConfig() {
         return this.$q((resolve, reject) => {
-            fs.readJson(path.join(__dirname, this.templatesPath, 'config/internal/config.json'), (err, data) => {
+            fs.readJson(path.join(__dirname, this.templatesPath, this.configFile), (err, data) => {
                 if (err) {
                     reject(err);
                 } else {
@@ -28,7 +29,7 @@ export class Config {
 
     getConfig() {
         return this.$q((resolve, reject) => {
-            fs.readJson(path.join(__dirname, this.configPath), (err, data) => {
+            fs.readJson(path.join(__dirname, this.configPath, this.configFile), (err, data) => {
                 if (err) {
                     if (err.message.indexOf('ENOENT') !== -1) {
                         this.initConfig().then(() => {
@@ -55,7 +56,7 @@ export class Config {
     set(object) {
         return this.$q((resolve, reject) => {
             this.config = Object.assign({}, this.config, object);
-            fs.outputJson(path.join(__dirname, this.configPath), this.config, err => {
+            fs.outputJson(path.join(__dirname, this.configPath, this.configFile), this.config, err => {
                 if (err) reject(err);
                 else resolve();
             });

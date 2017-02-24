@@ -36,7 +36,8 @@ class MainController {
 
 export const MainComponent = {
     bindings: {
-        skin: '<'
+        skin: '<',
+        defaultTemplate: '<'
     },
     template: require('./main.html'),
     controller: MainController

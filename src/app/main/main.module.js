@@ -12,9 +12,13 @@ export default angular
                 url: '/',
                 redirectTo: 'main.processing.doAction',
                 resolve: {
-                    skin: function(SkinService) {
+                    skin: (SkinService) => {
                         'ngInject';
                         return SkinService.getSkin();
+                    },
+                    defaultTemplate: (ConfigurationTemplatesService) => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getDefault();
                     }
                 },
                 component: 'main'
