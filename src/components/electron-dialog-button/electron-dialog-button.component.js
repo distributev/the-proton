@@ -14,6 +14,7 @@ class ElectronDialogButtonController {
     onClick() {
         let options = {
             title: this.dialogTitle || ('Select ' + (this.dialogType === 'folder' ? 'Folder' : 'File')),
+            defaultPath: this.defaultPath,
             properties: [
                 'open' + (this.dialogType === 'folder' ? 'Directory' : 'File'),
             ]
@@ -36,6 +37,7 @@ export const ElectronDialogButtonComponent = {
         buttonLabel: '<',
         dialogType: '<',
         dialogTitle: '<',
+        defaultPath: '<',
         onPathSelected: '&'
     },
     template: require('./electron-dialog-button.html'),

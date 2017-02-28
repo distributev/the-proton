@@ -1,30 +1,55 @@
+import path from 'path';
+
 class EditTemplateModalController {
-    constructor($timeout) {
+    constructor($timeout, ConfigurationTemplatesService, configPath, defaultSettingsFile) {
         'ngInject';
         this.$timeout = $timeout;
+        this.ConfigurationTemplatesService = ConfigurationTemplatesService;
+        this.configPath = configPath;
+        this.defaultSettingsFile = defaultSettingsFile;
     }
 
     $onInit() {
-        if (!this.resolve.template) this.resolve.template = { name: '' };
-        this.resolve.template.copyFrom = this.resolve.template.copyFrom || './config/default/defaults.xml';
+        this.dialogDefaultPath = this.defaultSettingsFile;
+        if (!this.resolve.template) {
+            this.isNewTemplate = true;
+            this.resolve.template = { name: '' };
+        }
+        this.resolve.template.copyFrom = this.resolve.template.copyFrom || './' + this.dialogDefaultPath;
         this.updateForm();
     }
 
     $onChanges(changes) {}
 
     updateForm() {
-        this.resolve.template.path = './config/' + _.kebabCase(this.resolve.template.name);
-        this.resolve.template.howTo = '<config>' + this.resolve.template.path + '</config>';
+        if (!this.resolve.template.path || this.isNewTemplate) {
+            this.resolve.template.path = './config/' + (this.resolve.template.name ? _.kebabCase(this.resolve.template.name) : '<template-name>') + '.xml';
+            this.resolve.template.howTo = '<config>' + this.resolve.template.path + '</config>';
+        }
     }
 
-    selectFile({ path }) {
+    selectFile($event) {
         this.$timeout(() => {
-            this.resolve.template.copyFrom = path;
+            this.resolve.template.copyFrom = './' + path.relative(path.join(__dirname, this.configPath), $event.path);
         });
     }
 
     ok() {
-        this.close({ $value: this.resolve.template });
+        if (this.isNewTemplate && this.resolve.template.copyFrom) {
+            let filePath = path.join(__dirname, this.configPath, this.resolve.template.copyFrom);
+            this.ConfigurationTemplatesService.getTemplate(filePath)
+                .then(template => {
+                    this.resolve.template.data = template;
+                    this.resolve.template.data.theproton.settings.template = this.resolve.template.name;
+                    this.resolve.template.data.theproton.settings.filename = this.resolve.template.path.substr(9);
+                    this.close({ $value: this.resolve.template });
+                })
+                .catch(console.warn);
+        } else {
+            this.resolve.template.data.theproton.settings.template = this.resolve.template.name;
+            this.resolve.template.data.theproton.settings.filename = this.resolve.template.path.substr(9);
+            this.close({ $value: this.resolve.template });
+        }
     }
 
     cancel() {

@@ -48,7 +48,43 @@ export class ConfigurationTemplates {
     }
 
     getTemplates() {
-        return this.getXmlFiles(path.join(__dirname, this.configPath, 'config/'));
+        return this.getXmlFiles(path.join(__dirname, this.configPath, 'config/'))
+            .then(templates => {
+                let index = _.findIndex(templates, template => {
+                    return template.theproton.settings.filename === 'settings.xml';
+                });
+                templates.splice(0, 0, templates.splice(index, 1)[0]);
+                return this.$q.resolve(templates);
+            });
+    }
+
+    setTemplates(templates) {
+        let promises = [];
+        templates.forEach(tpl => promises.push(this.setTemplate(tpl)));
+        return this.$q.all(promises);
+    }
+
+    getTemplate(filePath) {
+        return fs.readFileAsync(filePath)
+            .then(data => this.parseXml(data));
+    }
+
+    setTemplate(data) {
+        let filename = data.theproton.settings.filename;
+        let template = {};
+        return this.getTemplates()
+            .then(templates => {
+                template = _.find(templates, { 'theproton.settings.filename': filename });
+                if (template) {
+                    template = Object.assign({}, template, data);
+                } else {
+                    template = data;
+                }
+                return this.buildXml(template);
+            })
+            .then(xmlData => {
+                return fs.outputFileAsync(path.join(__dirname, this.configPath, 'config', filename), xmlData);
+            });
     }
 
     getXmlFiles(filePath) {
@@ -57,7 +93,7 @@ export class ConfigurationTemplates {
                 let promises = [];
                 files.forEach(filename => {
                     if (path.extname(filename) === '.xml') {
-                        let src = path.join(__dirname, this.templatesPath, 'config/', filename);
+                        let src = path.join(filePath, filename);
                         promises.push(
                             fs.readFileAsync(src).then(data => this.parseXml(data))
                         );
@@ -82,7 +118,8 @@ export class ConfigurationTemplates {
         return this.$q((resolve, reject) => {
             const builder = new xml.Builder();
             try {
-                resolve(builder.buildObject(data));
+                let result = builder.buildObject(data);
+                resolve(result);
             } catch (err) {
                 reject(err);
             }

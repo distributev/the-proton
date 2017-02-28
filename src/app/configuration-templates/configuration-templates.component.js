@@ -1,22 +1,25 @@
 import _ from 'lodash';
 
 class ConfigurationTemplatesController {
-    constructor($state, $uibModal) {
+    constructor($state, $uibModal, ConfigurationTemplatesService, defaultSettingsFile) {
         'ngInject';
         this.$state = $state;
         this.$uibModal = $uibModal;
+        this.ConfigurationTemplatesService = ConfigurationTemplatesService;
+        this.defaultSettingsFile = defaultSettingsFile;
     }
 
     $onInit() {
         this.formData = {
             templates: []
         };
-        angular.forEach(this.templates, (template, index) => {
+        angular.forEach(this.templates, template => {
             this.formData.templates.push({
                 name: template.theproton.settings.template,
                 path: './config/' + template.theproton.settings.filename,
-                howTo: 'Fallback used when no other configuration',
-                active: false
+                howTo: '<config>' + './config/' + template.theproton.settings.filename + '</config>',
+                active: false,
+                data: template
             });
         });
     }
@@ -24,7 +27,16 @@ class ConfigurationTemplatesController {
     $onChanges(changes) {}
 
     onSubmit() {
+        this.formData.templates.forEach((template, index) => template = this.formData.templates[index].data);
+        this.ConfigurationTemplatesService.setTemplates(_.map(this.formData.templates, 'data'))
+            .then(data => {
+                console.log('Templates updated');
+            })
+            .catch(console.warn);
+    }
 
+    onCancel() {
+        this.$state.reload();
     }
 
     showAddOrEditModal(template) {
