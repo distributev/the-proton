@@ -69,7 +69,7 @@ export class ConfigurationTemplates {
         return this.getXmlFiles(path.join(__dirname, this.configPath, 'config/'))
             .then(templates => {
                 let index = _.findIndex(templates, template => {
-                    return template.fileName === 'settings.xml';
+                    return path.basename(template.path) === 'settings.xml';
                 });
                 templates.splice(0, 0, templates.splice(index, 1)[0]);
                 return this.$q.resolve(templates);

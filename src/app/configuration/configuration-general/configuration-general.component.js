@@ -22,6 +22,14 @@ class ConfigurationGeneralController {
 
     loadTemplate(template) {
         this.template = template;
+        this.$uibModal.open({
+            animation: true,
+            component: 'feedbackModal',
+            size: 'sm',
+            resolve: {
+                message: () => `Configuration '${this.template.name}' loaded!`
+            }
+        });
     }
 
     onSubmit() {
