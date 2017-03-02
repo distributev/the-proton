@@ -13,7 +13,7 @@
         <div class="form-group" ng-show="$ctrl.isNewTemplate">
             <label for="copyFrom" class="col-xs-3">Copy initial values from</label>
             <div class="col-xs-7">
-                <input type="text" class="form-control" id="copyFrom" placeholder="" ng-model="$ctrl.resolve.template.copyFrom">
+                <input type="text" class="form-control" id="copyFrom" placeholder="" ng-model="$ctrl.copyFrom">
                 <p class="help-block"><em>(configuration values should be copied from the same version of software)</em></p>
             </div>
             <div class="col-xs-2">
@@ -31,7 +31,7 @@
         <div class="form-group">
             <label for="howTo" class="col-xs-3">How to use it</label>
             <div class="col-xs-7">
-                <input type="text" class="form-control" id="howTo" placeholder="Invoices" ng-model="$ctrl.resolve.template.howTo" readonly>
+                <input type="text" class="form-control" id="howTo" placeholder="Invoices" ng-model="$ctrl.howTo" readonly>
             </div>
         </div>
     </div>

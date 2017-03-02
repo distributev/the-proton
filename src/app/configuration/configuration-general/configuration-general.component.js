@@ -2,45 +2,68 @@ import electron from 'electron';
 const { dialog } = electron.remote;
 
 class ConfigurationGeneralController {
-    constructor($state, $timeout) {
+    constructor($state, $timeout, $uibModal, ConfigurationTemplatesService) {
         'ngInject';
         this.$state = $state;
         this.$timeout = $timeout;
-        this.formData = {}
+        this.$uibModal = $uibModal;
+        this.ConfigurationTemplatesService = ConfigurationTemplatesService;
     }
 
-    $onInit() {}
+    $onInit() {
+        this.currentTemplateSubscription = this.ConfigurationTemplatesService.subscribe(template => this.loadTemplate(template));
+    }
 
     $onChanges(changes) {}
 
-    onSubmit() {
+    $onDestroy() {
+        this.currentTemplateSubscription.dispose();
+    }
 
+    loadTemplate(template) {
+        this.template = template;
+    }
+
+    onSubmit() {
+        this.ConfigurationTemplatesService.setTemplate(this.template)
+            .then(() => {
+                this.$uibModal.open({
+                    animation: true,
+                    component: 'feedbackModal',
+                    size: 'sm',
+                    resolve: {
+                        message: () => `Configuration settings saved!`
+                    }
+                });
+            })
     }
 
     variableSelected({ variable, target }) {
         this.$timeout(() => {
             let targetInput = angular.element(target).parents('.form-group').find('input')[0];
             let inputModel = targetInput.getAttribute('ng-model').split('.').pop();
-            this.formData[inputModel] = this.formData[inputModel] ? this.formData[inputModel] + variable.name : variable.name;
+            this.template[inputModel] = this.template[inputModel] ? this.template[inputModel] + variable.name : variable.name;
             targetInput.focus();
         });
     }
 
     outputSelected({ path }) {
         this.$timeout(() => {
-            this.formData.outputFolder = path;
+            this.template.outputFolder = path;
         });
     }
 
     quarantineSelected({ path }) {
         this.$timeout(() => {
-            this.formData.quarantineFolder = path;
+            this.template.quarantineFolder = path;
         });
     }
 }
 
 export const ConfigurationGeneralComponent = {
-    bindings: {},
+    bindings: {
+        template: '<'
+    },
     template: require('./configuration-general.html'),
     controller: ConfigurationGeneralController
 };

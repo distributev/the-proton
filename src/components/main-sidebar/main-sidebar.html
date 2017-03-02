@@ -17,13 +17,10 @@
             <li class="configuration-dropdown text-center" ng-show="$ctrl.activeSection === 'Configure'">
                 <div class="btn-group" uib-dropdown dropdown-append-to-body>
                     <button id="single-button" type="button" class="btn  btn-sm btn-default" uib-dropdown-toggle>
-                        {{ $ctrl.selectedConfigTemplate || 'My Default Config Template' }} <span class="caret"></span>
+                        {{ $ctrl.currentTemplate.name }} <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" uib-dropdown-menu role="menu">
-                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'My Default Config Template'">My Default Config Template</a></li>
-                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'Invoices'">Invoices</a></li>
-                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'Statements'">Statements</a></li>
-                        <li><a ng-click="$ctrl.selectedConfigTemplate = 'Payslips'">Payslips</a></li>
+                        <li><a ng-repeat="template in $ctrl.templates" ng-click="$ctrl.onTemplateClick(template)">{{template.name}}</a></li>
                     </ul>
                 </div>
             </li>

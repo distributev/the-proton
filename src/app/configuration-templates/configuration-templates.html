@@ -17,7 +17,7 @@
                                 <tr ng-repeat="template in $ctrl.formData.templates" ng-click="$ctrl.onTemplateClick(template)" ng-class="{ 'info': template.active }">
                                     <td>{{template.name + ($first? ' (*)': '')}}</td>
                                     <td>{{template.path}}</td>
-                                    <td>{{template.howTo}}</td>
+                                    <td>{{'&lt;config&gt;' + template.path + '&lt;/config&gt;'}}</td>
                                 </tr>
                             </tbody>
                         </table>

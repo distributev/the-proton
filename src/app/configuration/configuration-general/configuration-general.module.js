@@ -13,7 +13,13 @@ export default angular
         $stateProvider
             .state('main.configuration.general', {
                 url: '/general',
-                component: 'configurationGeneral'
+                component: 'configurationGeneral',
+                resolve: {
+                    template: ConfigurationTemplatesService => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getCurrentTemplate();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })

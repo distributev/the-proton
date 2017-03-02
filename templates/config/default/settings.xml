@@ -6,7 +6,7 @@
 		<template>My Default Config Template</template>
 
 		<!-- file name  -->
-		<filename>settings.xml</filename>
+		<filename>{{built-in1}}.txt</filename>
 
 		<!-- where to place the output files -->
 		<outputfolder>output/{{custom1}}</outputfolder>

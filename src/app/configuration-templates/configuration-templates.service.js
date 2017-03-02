@@ -4,6 +4,7 @@ import fsExtra from 'fs-extra';
 const fs = Promise.promisifyAll(fsExtra);
 import path from 'path';
 import xml from 'xml2js';
+import rx from 'rx-angular';
 
 export class ConfigurationTemplates {
 
@@ -11,9 +12,26 @@ export class ConfigurationTemplates {
     constructor($http, $q, configPath, templatesPath, defaultTemplateFile) {
         this.$http = $http;
         this.$q = $q;
+        this.subject = new rx.Subject();
         this.configPath = configPath;
         this.templatesPath = templatesPath;
         this.defaultTemplateFile = defaultTemplateFile;
+    }
+
+    getCurrentTemplate() {
+        if (!this.currentTemplate) {
+            return this.getDefault();
+        }
+        return this.$q.resolve(this.currentTemplate);
+    }
+
+    setCurrentTemplate(template) {
+        this.currentTemplate = template;
+        this.subject.onNext(template);
+    }
+
+    subscribe(template) {
+        return this.subject.subscribe(template);
     }
 
     initDefault() {
@@ -37,7 +55,7 @@ export class ConfigurationTemplates {
     getDefault() {
         return fs.readFileAsync(path.join(__dirname, this.configPath, this.defaultTemplateFile))
             .then(data => {
-                return this.parseXml(data);
+                return this.parseXml(data, this.defaultTemplateFile);
             })
             .catch(err => {
                 if (err.message.indexOf('ENOENT') !== -1) {
@@ -51,7 +69,7 @@ export class ConfigurationTemplates {
         return this.getXmlFiles(path.join(__dirname, this.configPath, 'config/'))
             .then(templates => {
                 let index = _.findIndex(templates, template => {
-                    return template.theproton.settings.filename === 'settings.xml';
+                    return template.fileName === 'settings.xml';
                 });
                 templates.splice(0, 0, templates.splice(index, 1)[0]);
                 return this.$q.resolve(templates);
@@ -66,15 +84,15 @@ export class ConfigurationTemplates {
 
     getTemplate(filePath) {
         return fs.readFileAsync(filePath)
-            .then(data => this.parseXml(data));
+            .then(data => this.parseXml(data, filePath));
     }
 
     setTemplate(data) {
-        let filename = data.theproton.settings.filename;
+        let filePath = data.path;
         let template = {};
         return this.getTemplates()
             .then(templates => {
-                template = _.find(templates, { 'theproton.settings.filename': filename });
+                template = _.find(templates, { 'path': filePath });
                 if (template) {
                     template = Object.assign({}, template, data);
                 } else {
@@ -83,7 +101,7 @@ export class ConfigurationTemplates {
                 return this.buildXml(template);
             })
             .then(xmlData => {
-                return fs.outputFileAsync(path.join(__dirname, this.configPath, 'config', filename), xmlData);
+                return fs.outputFileAsync(path.join(__dirname, this.configPath, filePath), xmlData);
             });
     }
 
@@ -95,7 +113,7 @@ export class ConfigurationTemplates {
                     if (path.extname(filename) === '.xml') {
                         let src = path.join(filePath, filename);
                         promises.push(
-                            fs.readFileAsync(src).then(data => this.parseXml(data))
+                            fs.readFileAsync(src).then(data => this.parseXml(data, src))
                         );
                     }
                 });
@@ -103,12 +121,45 @@ export class ConfigurationTemplates {
             });
     }
 
-    parseXml(data) {
+    parseXml(data, filePath) {
         return this.$q((resolve, reject) => {
             xml.parseString(data, { trim: true, explicitArray: false }, (err, result) => {
                 if (err) reject(err);
                 else {
-                    resolve(result);
+                    resolve({
+                        path: ('./' + path.relative(path.join(__dirname, this.configPath), filePath)) || '',
+                        name: result.theproton.settings.template || '',
+                        fileName: result.theproton.settings.filename || '',
+                        outputFolder: result.theproton.settings.outputfolder || '',
+                        quarantineDocuments: result.theproton.settings.quarantinefiles === 'true' ? true : false,
+                        quarantineFolder: result.theproton.settings.quarantinefolder || '',
+                        sendDocuments: result.theproton.settings.sendfiles === 'true' ? true : false,
+                        deleteDocuments: result.theproton.settings.deletefiles === 'true' ? true : false,
+                        htmlEmail: result.theproton.settings.htmlemail === 'true' ? true : false,
+                        emailServer: {
+                            host: result.theproton.settings.emailserver.host || '',
+                            port: result.theproton.settings.emailserver.port || '',
+                            userId: result.theproton.settings.emailserver.userid || '',
+                            userPassword: result.theproton.settings.emailserver.userpassword || '',
+                            useSsl: result.theproton.settings.emailserver.usessl === 'true' ? true : false,
+                            useTls: result.theproton.settings.emailserver.usetls === 'true' ? true : false,
+                            debug: result.theproton.settings.emailserver.debug === 'true' ? true : false,
+                            fromAddress: result.theproton.settings.emailserver.fromaddress || '',
+                            name: result.theproton.settings.emailserver.name || ''
+                        },
+                        emailSettings: {
+                            to: result.theproton.settings.emailsettings.to || '',
+                            cc: result.theproton.settings.emailsettings.cc || '',
+                            bcc: result.theproton.settings.emailsettings.bcc || '',
+                            subject: result.theproton.settings.emailsettings.subject || '',
+                            text: result.theproton.settings.emailsettings.text || '',
+                            html: result.theproton.settings.emailsettings.html || ''
+                        },
+                        uploadSettings: {
+                            ftpCommand: result.theproton.settings.ftpcommand || '',
+                            sftpCommand: result.theproton.settings.sftpcommand || ''
+                        }
+                    });
                 }
             });
         });
@@ -118,7 +169,43 @@ export class ConfigurationTemplates {
         return this.$q((resolve, reject) => {
             const builder = new xml.Builder();
             try {
-                let result = builder.buildObject(data);
+                let result = builder.buildObject({
+                    theproton: {
+                        settings: {
+                            template: data.name || '',
+                            filename: data.fileName || '',
+                            outputfolder: data.outputFolder || '',
+                            quarantinefiles: data.quarantineDocuments ? 'true' : 'false',
+                            quarantinefolder: data.quarantineFolder || '',
+                            sendfiles: data.sendDocuments ? 'true' : 'false',
+                            deletefiles: data.deleteDocuments ? 'true' : 'false',
+                            htmlemail: data.htmlEmail === 'true' ? true : false,
+                            emailserver: {
+                                host: data.emailServer.host || '',
+                                port: data.emailServer.port || '',
+                                userid: data.emailServer.userId || '',
+                                userpassword: data.emailServer.userPassword || '',
+                                usessl: data.emailServer.useSsl === 'true' ? true : false,
+                                usetls: data.emailServer.useTls === 'true' ? true : false,
+                                debug: data.emailServer.debug === 'true' ? true : false,
+                                fromaddress: data.emailServer.fromAddress || '',
+                                name: data.emailServer.name || ''
+                            },
+                            emailsettings: {
+                                to: data.emailSettings.to || '',
+                                cc: data.emailSettings.cc || '',
+                                bcc: data.emailSettings.bcc || '',
+                                subject: data.emailSettings.subject || '',
+                                text: data.emailSettings.text || '',
+                                html: data.emailSettings.html || ''
+                            },
+                            uploadsettings: {
+                                ftpcommand: data.uploadSettings.ftpCommand || '',
+                                sftpcommand: data.uploadSettings.sftpCommand || ''
+                            }
+                        }
+                    }
+                });
                 resolve(result);
             } catch (err) {
                 reject(err);

@@ -14,23 +14,28 @@ class ConfigurationTemplatesController {
             templates: []
         };
         angular.forEach(this.templates, template => {
-            this.formData.templates.push({
-                name: template.theproton.settings.template,
-                path: './config/' + template.theproton.settings.filename,
-                howTo: '<config>' + './config/' + template.theproton.settings.filename + '</config>',
-                active: false,
-                data: template
-            });
+            let tpl = angular.copy(template);
+            tpl.name = template.name;
+            tpl.path = template.path;
+            tpl.active = false;
+            this.formData.templates.push(template);
         });
     }
 
     $onChanges(changes) {}
 
     onSubmit() {
-        this.formData.templates.forEach((template, index) => template = this.formData.templates[index].data);
-        this.ConfigurationTemplatesService.setTemplates(_.map(this.formData.templates, 'data'))
-            .then(data => {
-                console.log('Templates updated');
+        this.formData.templates.forEach((template, index) => template = this.formData.templates[index]);
+        this.ConfigurationTemplatesService.setTemplates(this.formData.templates)
+            .then(() => {
+                this.$uibModal.open({
+                    animation: true,
+                    component: 'feedbackModal',
+                    size: 'sm',
+                    resolve: {
+                        message: () => `Configuration Templates saved!`
+                    }
+                });
             })
             .catch(console.warn);
     }
