@@ -15,7 +15,13 @@ export default angular
         $stateProvider
             .state('main.configuration.email.message', {
                 url: '/message',
-                component: 'configurationEmailMessage'
+                component: 'configurationEmailMessage',
+                resolve: {
+                    template: ConfigurationTemplatesService => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getCurrentTemplate();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })

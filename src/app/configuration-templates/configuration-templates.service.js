@@ -144,8 +144,8 @@ export class ConfigurationTemplates {
                             useSsl: result.theproton.settings.emailserver.usessl === 'true' ? true : false,
                             useTls: result.theproton.settings.emailserver.usetls === 'true' ? true : false,
                             debug: result.theproton.settings.emailserver.debug === 'true' ? true : false,
-                            fromAddress: result.theproton.settings.emailserver.fromaddress || '',
-                            name: result.theproton.settings.emailserver.name || ''
+                            fromEmailAddress: result.theproton.settings.emailserver.fromaddress || '',
+                            fromName: result.theproton.settings.emailserver.name || ''
                         },
                         emailSettings: {
                             to: result.theproton.settings.emailsettings.to || '',
@@ -179,17 +179,17 @@ export class ConfigurationTemplates {
                             quarantinefolder: data.quarantineFolder || '',
                             sendfiles: data.sendDocuments ? 'true' : 'false',
                             deletefiles: data.deleteDocuments ? 'true' : 'false',
-                            htmlemail: data.htmlEmail === 'true' ? true : false,
+                            htmlemail: data.htmlEmail ? 'true' : 'false',
                             emailserver: {
                                 host: data.emailServer.host || '',
                                 port: data.emailServer.port || '',
                                 userid: data.emailServer.userId || '',
                                 userpassword: data.emailServer.userPassword || '',
-                                usessl: data.emailServer.useSsl === 'true' ? true : false,
-                                usetls: data.emailServer.useTls === 'true' ? true : false,
-                                debug: data.emailServer.debug === 'true' ? true : false,
-                                fromaddress: data.emailServer.fromAddress || '',
-                                name: data.emailServer.name || ''
+                                usessl: data.emailServer.useSsl ? 'true' : 'false',
+                                usetls: data.emailServer.useTls ? 'true' : 'false',
+                                debug: data.emailServer.debug ? 'true' : 'false',
+                                fromaddress: data.emailServer.fromEmailAddress || '',
+                                name: data.emailServer.fromName || ''
                             },
                             emailsettings: {
                                 to: data.emailSettings.to || '',
@@ -211,5 +211,13 @@ export class ConfigurationTemplates {
                 reject(err);
             }
         });
+    }
+
+    getFile(filePath) {
+        return fs.readFileAsync(filePath, 'utf8');
+    }
+
+    saveFile(filePath, data) {
+        return fs.outputFileAsync(filePath, data);
     }
 }

@@ -19,15 +19,29 @@ class ElectronDialogButtonController {
                 'open' + (this.dialogType === 'folder' ? 'Directory' : 'File'),
             ]
         }
-        dialog.showOpenDialog(options, paths => {
-            if (paths && paths[0]) {
-                this.onPathSelected({
-                    $event: {
-                        path: paths[0]
-                    }
-                });
-            }
-        });
+
+        if (this.saveDialog) {
+            dialog.showSaveDialog(options, filename => {
+                if (filename) {
+                    this.onPathSelected({
+                        $event: {
+                            path: filename
+                        }
+                    });
+                }
+            });
+        } else {
+            dialog.showOpenDialog(options, paths => {
+                if (paths && paths[0]) {
+                    this.onPathSelected({
+                        $event: {
+                            path: paths[0]
+                        }
+                    });
+                }
+            });
+        }
+
     }
 
 }
@@ -38,6 +52,7 @@ export const ElectronDialogButtonComponent = {
         dialogType: '<',
         dialogTitle: '<',
         defaultPath: '<',
+        saveDialog: '<',
         onPathSelected: '&'
     },
     template: require('./electron-dialog-button.html'),

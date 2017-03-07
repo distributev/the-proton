@@ -13,7 +13,13 @@ export default angular
         $stateProvider
             .state('main.configuration.email.settings', {
                 url: '/settings',
-                component: 'configurationEmailSettings'
+                component: 'configurationEmailSettings',
+                resolve: {
+                    template: ConfigurationTemplatesService => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getCurrentTemplate();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })
