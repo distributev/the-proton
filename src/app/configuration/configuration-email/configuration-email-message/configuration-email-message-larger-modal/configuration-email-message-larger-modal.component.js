@@ -42,6 +42,10 @@ class ConfigurationEmailMessageLargerModalController {
             targetInput.focus();
         });
     }
+
+    toggleMessagePreview() {
+        // TODO: Implement
+    }
 }
 
 export const ConfigurationEmailMessageLargerModalComponent = {

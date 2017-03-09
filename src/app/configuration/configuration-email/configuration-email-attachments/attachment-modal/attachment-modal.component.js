@@ -1,17 +1,19 @@
+import path from 'path';
+
 class AttachmentModalController {
-    constructor($timeout) {
+    constructor($timeout, configPath) {
         'ngInject';
         this.$timeout = $timeout;
+        this.configPath = configPath;
     }
 
     $onInit() {}
 
     $onChanges(changes) {}
 
-    selectFile({ path }) {
+    selectFile($event) {
         this.$timeout(() => {
-            this.resolve.path = path;
-            // angular.element($event.target).parents('.form-group').find('input')[0].focus();
+            this.resolve.path = './' + path.relative(path.join(__dirname, this.configPath), $event.path);
         });
     }
 
@@ -19,7 +21,7 @@ class AttachmentModalController {
         this.$timeout(() => {
             let targetInput = angular.element(target).parents('.form-group').find('input')[0];
             let inputModel = targetInput.getAttribute('ng-model').split('.').pop();
-            this.formData[inputModel] = this.formData[inputModel] ? this.formData[inputModel] + variable.name : variable.name;
+            this.resolve[inputModel] = this.resolve[inputModel] ? this.resolve[inputModel] + variable.name : variable.name;
             targetInput.focus();
         });
     }

@@ -15,7 +15,13 @@ export default angular
         $stateProvider
             .state('main.configuration.email.attachments', {
                 url: '/attachments',
-                component: 'configurationEmailAttachments'
+                component: 'configurationEmailAttachments',
+                resolve: {
+                    template: ConfigurationTemplatesService => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getCurrentTemplate();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })

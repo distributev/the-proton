@@ -126,6 +126,7 @@ export class ConfigurationTemplates {
             xml.parseString(data, { trim: true, explicitArray: false }, (err, result) => {
                 if (err) reject(err);
                 else {
+                    // console.log(result.theproton.settings);
                     resolve({
                         path: ('./' + path.relative(path.join(__dirname, this.configPath), filePath)) || '',
                         name: result.theproton.settings.template || '',
@@ -154,6 +155,13 @@ export class ConfigurationTemplates {
                             subject: result.theproton.settings.emailsettings.subject || '',
                             text: result.theproton.settings.emailsettings.text || '',
                             html: result.theproton.settings.emailsettings.html || ''
+                        },
+                        attachments: {
+                            items: result.theproton.settings.attachments.items || [],
+                            archive: {
+                                archiveAttachments: result.theproton.settings.attachments.archive.archiveattachments === 'true' ? true : false,
+                                archiveFilename: result.theproton.settings.attachments.archive.archivefilename || ''
+                            }
                         },
                         uploadSettings: {
                             ftpCommand: result.theproton.settings.ftpcommand || '',

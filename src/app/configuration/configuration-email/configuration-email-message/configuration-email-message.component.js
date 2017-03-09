@@ -135,6 +135,10 @@ class ConfigurationEmailMessageController {
             })
             .catch(console.warn);
     }
+
+    toggleMessagePreview() {
+        // TODO: Implement
+    }
 }
 
 export const ConfigurationEmailMessageComponent = {
