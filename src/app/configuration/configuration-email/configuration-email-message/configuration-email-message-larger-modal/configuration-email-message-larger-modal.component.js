@@ -27,7 +27,7 @@ class ConfigurationEmailMessageLargerModalController {
 
     variableSelected({ variable, target }) {
         this.$timeout(() => {
-            let targetInput = angular.element(target).parents('.modal-body').find('input,textarea');
+            let targetInput = angular.element(target).parents('.modal-body').find('textarea');
             let inputModel;
             if (targetInput.length > 1) {
                 if (this.activeTab === 0) {
