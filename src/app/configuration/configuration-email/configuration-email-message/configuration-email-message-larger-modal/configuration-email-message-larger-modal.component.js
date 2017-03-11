@@ -1,7 +1,9 @@
 class ConfigurationEmailMessageLargerModalController {
-    constructor($timeout) {
+    constructor($timeout, $sce, $interpolate) {
         'ngInject';
         this.$timeout = $timeout;
+        this.$sce = $sce;
+        this.$interpolate = $interpolate;
     }
 
     $onInit() {
@@ -44,7 +46,16 @@ class ConfigurationEmailMessageLargerModalController {
     }
 
     toggleMessagePreview() {
-        // TODO: Implement
+        this.showPreview = !this.showPreview;
+    }
+
+    getPreview(tpl) {
+        // TODO: implement Variables logic
+        return this.$interpolate(tpl)({ custom1: 'Value' });
+    }
+
+    getTrustedHtml() {
+        return this.$sce.trustAsHtml(this.getPreview(this.template.emailSettings.html));
     }
 }
 

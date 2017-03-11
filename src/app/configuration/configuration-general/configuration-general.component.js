@@ -46,6 +46,10 @@ class ConfigurationGeneralController {
             })
     }
 
+    onCancel() {
+        this.$state.reload();
+    }
+
     variableSelected({ variable, target }) {
         this.$timeout(() => {
             let targetInput = angular.element(target).parents('.form-group').find('input')[0];

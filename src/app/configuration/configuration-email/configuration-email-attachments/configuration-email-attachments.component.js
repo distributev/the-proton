@@ -15,18 +15,6 @@ class ConfigurationEmailAttachmentsController {
 
     $onInit() {
         this.selectedAttachment = [];
-        this.formData = {
-            selectedAttachment: [],
-            attachments: [{
-                    path: '{{custom1}}'
-                },
-                {
-                    path: '{{custom2}}'
-                }
-            ],
-            archive: false,
-            archiveFileName: 'reports-{{custom3}}.zip'
-        };
         this.currentTemplateSubscription = this.ConfigurationTemplatesService.subscribe(template => this.loadTemplate(template));
     }
 
@@ -50,18 +38,25 @@ class ConfigurationEmailAttachmentsController {
     }
 
     onSubmit() {
-        console.log(this.template);
-        // this.ConfigurationTemplatesService.setTemplate(this.template)
-        //     .then(() => {
-        //         this.$uibModal.open({
-        //             animation: true,
-        //             component: 'feedbackModal',
-        //             size: 'sm',
-        //             resolve: {
-        //                 message: () => `Configuration settings saved!`
-        //             }
-        //         });
-        //     });
+        angular.forEach(this.template.attachments.items.attachment, (attachment, index) => {
+            attachment.$.order = index;
+            delete attachment.$$hashKey;
+        });
+        this.ConfigurationTemplatesService.setTemplate(this.template)
+            .then(() => {
+                this.$uibModal.open({
+                    animation: true,
+                    component: 'feedbackModal',
+                    size: 'sm',
+                    resolve: {
+                        message: () => `Configuration settings saved!`
+                    }
+                });
+            });
+    }
+
+    onCancel() {
+        this.$state.reload();
     }
 
     getSelectedAttachment() {
@@ -104,7 +99,7 @@ class ConfigurationEmailAttachmentsController {
 
     removeAttachment(attachment) {
         if (attachment) {
-            _.remove(this.template.attachments.items.attachment, { '$.path': attachment.$.path });
+            _.remove(this.template.attachments.items.attachment, o => o.$.path === attachment.$.path);
         }
     }
 

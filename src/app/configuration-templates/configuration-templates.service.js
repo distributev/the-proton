@@ -40,6 +40,8 @@ export class ConfigurationTemplates {
                 let promises = [];
                 let src = path.join(__dirname, this.templatesPath, 'config');
                 let dest = path.join(__dirname, this.configPath, 'config');
+                let tplSrc = path.join(__dirname, this.templatesPath, 'templates');
+                let tplDest = path.join(__dirname, this.configPath, 'templates');
                 promises.push(fs.copyAsync(src, dest, {
                     override: false,
                     filter: srcPath => {
@@ -48,6 +50,7 @@ export class ConfigurationTemplates {
                     }
                 }));
                 promises.push(fs.copyAsync(path.join(src, 'default/settings.xml'), path.join(dest, 'default/settings.xml'), { override: false }));
+                promises.push(fs.copyAsync(tplSrc, tplDest, { override: false }));
                 return this.$q.all(promises);
             });
     }
@@ -126,7 +129,10 @@ export class ConfigurationTemplates {
             xml.parseString(data, { trim: true, explicitArray: false }, (err, result) => {
                 if (err) reject(err);
                 else {
-                    // console.log(result.theproton.settings);
+
+                    if (result.theproton.settings.attachments.items && result.theproton.settings.attachments.items.attachment && !_.isArray(result.theproton.settings.attachments.items.attachment)) {
+                        result.theproton.settings.attachments.items.attachment = [result.theproton.settings.attachments.items.attachment];
+                    }
                     resolve({
                         path: ('./' + path.relative(path.join(__dirname, this.configPath), filePath)) || '',
                         name: result.theproton.settings.template || '',
@@ -206,6 +212,13 @@ export class ConfigurationTemplates {
                                 subject: data.emailSettings.subject || '',
                                 text: data.emailSettings.text || '',
                                 html: data.emailSettings.html || ''
+                            },
+                            attachments: {
+                                items: data.attachments.items || '',
+                                archive: {
+                                    archiveattachments: data.attachments.archive.archiveAttachments ? 'true' : 'false',
+                                    archivefilename: data.attachments.archive.archiveFilename || ''
+                                }
                             },
                             uploadsettings: {
                                 ftpcommand: data.uploadSettings.ftpCommand || '',

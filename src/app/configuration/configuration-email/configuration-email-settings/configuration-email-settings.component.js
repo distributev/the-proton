@@ -46,6 +46,10 @@ class ConfigurationEmailSettingsController {
             })
     }
 
+    onCancel() {
+        this.$state.reload();
+    }
+
     showWellKnownServicesModal() {
         let modalInstance = this.$uibModal.open({
             animation: true,

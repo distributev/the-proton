@@ -50,22 +50,25 @@
         </div>
         <div class="form-group single-button">
             <div class="col-xs-2 btn-preview-message">
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showPreview = !$ctrl.showPreview" ng-show="!$ctrl.showPreview">Preview</br>Message</button>
-                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.showPreview = !$ctrl.showPreview" ng-show="$ctrl.showPreview">Edit</br>Message</button>
+                <button type="button" class="btn btn-flat btn-default col-xs-12" ng-click="$ctrl.toggleMessagePreview()">{{$ctrl.showPreview ? 'Edit' : 'Preview'}}</br>Message</button>
             </div>
             <div class="col-xs-7 input-container">
                 <uib-tabset active="$ctrl.activeTab" class="nav-tabs-custom">
                     <uib-tab index="0" heading="HTML" disable="!$ctrl.template.htmlEmail">
-                        <div ui-ace ng-model="$ctrl.template.emailSettings.html"></div>
+                        <div ui-ace ng-model="$ctrl.template.emailSettings.html" ng-show="!$ctrl.showPreview"></div>
+                        <iframe class="message-preview-container" srcdoc="{{$ctrl.getTrustedHtml()}}" ng-show="$ctrl.showPreview" frameborder="0"></iframe>
                     </uib-tab>
                     <uib-tab index="1" heading="Text">
-                        <textarea class="form-control" rows="9" ng-model="$ctrl.template.emailSettings.text"></textarea>
+                        <textarea class="form-control" rows="9" ng-model="$ctrl.template.emailSettings.text" ng-show="!$ctrl.showPreview"></textarea>
+                        <div class="message-preview-container" ng-show="$ctrl.showPreview">
+                            {{$ctrl.getPreview($ctrl.template.emailSettings.text)}}
+                        </div>
                     </uib-tab>
                 </uib-tabset>
             </div>
             <div class="col-xs-3 buttons-container buttons-container-vertical">
-                <electron-dialog-button class="col-xs-12" button-label="'Save Template'" dialog-title="'Please select where to save the message template'" on-path-selected="$ctrl.saveTemplate($event)" save-dialog="true"></electron-dialog-button>
-                <electron-dialog-button class="col-xs-12" button-label="'Load Template'" dialog-title="'Please select the message template to load'" dialog-type="'file'" on-path-selected="$ctrl.templateSelected($event)"></electron-dialog-button>
+                <electron-dialog-button class="col-xs-12" button-label="'Save Template'" dialog-title="'Please select where to save the message template'" on-path-selected="$ctrl.saveTemplate($event)" save-dialog="true" default-path="$ctrl.getMessageDefaultPath()"></electron-dialog-button>
+                <electron-dialog-button class="col-xs-12" button-label="'Load Template'" dialog-title="'Please select the message template to load'" dialog-type="'file'" on-path-selected="$ctrl.templateSelected($event)" default-path="$ctrl.getMessageDefaultPath()"></electron-dialog-button>
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
             </div>
         </div>
@@ -78,7 +81,7 @@
         <div class="form-group text-right">
             <div class="col-xs-12">
                 <button type="submit" class="btn btn-flat btn-info">Save</button>
-                <button type="button" class="btn btn-flat btn-default">Cancel</button>
+                <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
             </div>
         </div>
     </form>

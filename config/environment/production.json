@@ -4,7 +4,7 @@
     "userData": "_internal/electronData",
     "configPath": "../../../../",
     "configFile": "config/internal/config.json",
-    "templatesPath": "templates",
+    "templatesPath": "theproton-template",
     "defaultTemplateFile": "config/settings.xml",
     "defaultSettingsFile": "config/default/settings.xml"
 }

@@ -1,19 +1,24 @@
 import fsExtra from 'fs-extra';
+import path from 'path';
 import Promise from 'bluebird';
 const fs = Promise.promisifyAll(fsExtra);
 
 class ConfigurationEmailMessageController {
-    constructor($state, $uibModal, $timeout, ConfigurationTemplatesService) {
+    constructor($state, $uibModal, $timeout, $sce, $interpolate, ConfigurationTemplatesService, configPath) {
         'ngInject';
         this.$state = $state;
         this.$uibModal = $uibModal;
         this.$timeout = $timeout;
+        this.$sce = $sce;
+        this.$interpolate = $interpolate;
         this.ConfigurationTemplatesService = ConfigurationTemplatesService;
+        this.configPath = configPath;
     }
 
     $onInit() {
         this.currentTemplateSubscription = this.ConfigurationTemplatesService.subscribe(template => this.loadTemplate(template));
         this.activeTab = 1;
+        console.log(this.getMessageDefaultPath());
     }
 
     $onChanges(changes) {}
@@ -46,6 +51,10 @@ class ConfigurationEmailMessageController {
                     }
                 });
             });
+    }
+
+    onCancel() {
+        this.$state.reload();
     }
 
     htmlEmailToggle() {
@@ -137,7 +146,20 @@ class ConfigurationEmailMessageController {
     }
 
     toggleMessagePreview() {
-        // TODO: Implement
+        this.showPreview = !this.showPreview;
+    }
+
+    getMessageDefaultPath() {
+        return path.join(__dirname, this.configPath, 'templates', this.activeTab === 0 ? 'html' : 'text');
+    }
+
+    getPreview(tpl) {
+        // TODO: implement Variables logic
+        return this.$interpolate(tpl)({ custom1: 'Value' });
+    }
+
+    getTrustedHtml() {
+        return this.$sce.trustAsHtml(this.getPreview(this.template.emailSettings.html));
     }
 }
 
