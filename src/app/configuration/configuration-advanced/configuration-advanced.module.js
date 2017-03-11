@@ -13,7 +13,13 @@ export default angular
         $stateProvider
             .state('main.configuration.advanced', {
                 url: '/advanced',
-                component: 'configurationAdvanced'
+                component: 'configurationAdvanced',
+                resolve: {
+                    template: ConfigurationTemplatesService => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getCurrentTemplate();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })

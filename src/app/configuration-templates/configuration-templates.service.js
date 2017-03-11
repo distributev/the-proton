@@ -172,7 +172,8 @@ export class ConfigurationTemplates {
                         uploadSettings: {
                             ftpCommand: result.theproton.settings.ftpcommand || '',
                             sftpCommand: result.theproton.settings.sftpcommand || ''
-                        }
+                        },
+                        failJobIfAnyDistributionFails: result.theproton.settings.failjobifanydistributionfails === 'true' ? 'true' : 'false',
                     });
                 }
             });
@@ -223,7 +224,8 @@ export class ConfigurationTemplates {
                             uploadsettings: {
                                 ftpcommand: data.uploadSettings.ftpCommand || '',
                                 sftpcommand: data.uploadSettings.sftpCommand || ''
-                            }
+                            },
+                            failjobifanydistributionfails: data.failJobIfAnyDistributionFails || 'false',
                         }
                     }
                 });
