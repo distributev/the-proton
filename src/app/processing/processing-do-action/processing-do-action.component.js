@@ -1,13 +1,13 @@
-import electron from 'electron';
-const { dialog } = electron.remote;
+import path from 'path';
 
 class ProcessingDoActionController {
-    constructor($state, $timeout, $uibModal) {
+    constructor($state, $timeout, $uibModal, JobService) {
         'ngInject';
         this.$state = $state;
         this.$timeout = $timeout;
         this.formData = {}
         this.$uibModal = $uibModal;
+        this.JobService = JobService;
     }
 
     $onInit() {}
@@ -18,6 +18,20 @@ class ProcessingDoActionController {
         this.$timeout(() => {
             this.formData.filePath = path;
         });
+    }
+
+    doAction() {
+        let job = {
+            command: this.formData.filePath.split(' ')[0],
+            args: this.formData.filePath.split(' ').slice(1),
+            documentName: path.basename(this.formData.filePath).split('.')[0],
+            type: 'test'
+        };
+        console.log(job);
+        this.JobService.createJob(job)
+            .then(job => this.JobService.runJob(job))
+            .then(job => console.log('Running Job: ', job.id))
+            .catch(console.warn);
     }
 
     showConfirmModal() {
@@ -33,7 +47,7 @@ class ProcessingDoActionController {
 
         modalInstance.result.then(result => {
             if (result) {
-                // TODO: Process job
+                this.doAction();
             }
         }, reason => {
             // console.log('modal-component dismissed with reason: ' + reason);

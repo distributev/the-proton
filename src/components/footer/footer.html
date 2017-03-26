@@ -3,7 +3,7 @@
     <div class="col-xs-9 pull-right text-right">
         <div class="row">
             <div class="col-xs-7">
-                <uib-progressbar class="progress-striped active" max="100" value="75" type="success"></uib-progressbar>
+                <uib-progressbar class="progress-striped active" max="100" value="$ctrl.progress" type="success"></uib-progressbar>
             </div>
             <span ng-show="!$ctrl.errors && !$ctrl.warnings"><i class="fa fa-circle text-success active"></i> Great. No Errors/No Warnings</span>
             <span ng-show="$ctrl.errors"><i class="fa fa-minus-circle text-danger"></i> Ups... Error(s)</span>
@@ -11,7 +11,7 @@
         </div>
     </div>
     <!-- Default to the left -->
-    <span>1 doc(s) in queue</span>
+    <span>{{$ctrl.activeJobs.length}} doc(s) in queue</span>
 </div>
 
 <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

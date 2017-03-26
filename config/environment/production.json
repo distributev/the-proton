@@ -6,5 +6,8 @@
     "configFile": "config/internal/config.json",
     "templatesPath": "theproton-template",
     "defaultTemplateFile": "config/settings.xml",
-    "defaultSettingsFile": "config/default/settings.xml"
+    "defaultSettingsFile": "config/default/settings.xml",
+    "outputPath": "output",
+    "tempPath": "temp",
+    "logsPath": "logs"
 }

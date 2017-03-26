@@ -6,5 +6,8 @@
     "author": "Luis Manuel <luisman40@gmail.com>",
     "license": "MIT",
     "main": "background.js",
-    "dependencies": {}
+    "dependencies": {
+        "chokidar": "^1.6.1",
+        "winston": "^2.3.1"
+    }
 }

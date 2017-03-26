@@ -360,6 +360,11 @@ export default (options) => {
         );
     }
 
+    config.externals = {
+        chokidar: 'chokidar',
+        winston: 'winston'
+    }
+
     config.cache = DEV;
 
     if (TEST) {

@@ -1,11 +1,15 @@
 class LoggingTracingController {
-    constructor($state, LoggingService, $timeout) {
+    constructor($state, LoggingService, LoggerService, $timeout) {
         'ngInject';
         this.$state = $state;
         this.LoggingService = LoggingService;
+        this.LoggerService = LoggerService;
     }
 
     $onInit() {
+        // this.JobService.getJobs()
+        //     .then(console.log)
+        //     .catch(console.warn);
         this.getCurrentJobs().then(jobs => this.currentJobs = jobs);
         this.getInfoLogs().then(logs => {
             this.infoLogs = logs
@@ -45,13 +49,10 @@ class LoggingTracingController {
     }
 
     clearAllLogs() {
+
         this.infoLogs = '';
         this.warningLogs = '';
         this.errorLogs = '';
-    }
-
-    clearErrorLogs() {
-
     }
 }
 
