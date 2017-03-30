@@ -94,8 +94,8 @@ gulp.task('copy:extras', () => {
 });
 
 gulp.task('copy:templates', () => {
-    return gulp.src(['templates/**/*'])
-        .pipe(gulp.dest(destDir().path('templates')));
+    return gulp.src(['theproton-template/**/*'])
+        .pipe(gulp.dest(destDir().path('theproton-template')));
 });
 
 gulp.task('watch', () => {

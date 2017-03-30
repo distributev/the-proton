@@ -1,12 +1,14 @@
-const Promise = require('bluebird');
-const fsExtra = require('fs-extra');
-const fs = Promise.promisifyAll(fsExtra);
-const logger = require('winston');
+'use_strict'
 
-const total = randomIntFromInterval(20, 60);
-const outputPath = 'output/';
-const args = process.argv.slice(2);
-let random = randomIntFromInterval(1, 100);
+var Promise = require('bluebird');
+var fsExtra = require('fs-extra');
+var fs = Promise.promisifyAll(fsExtra);
+var logger = require('winston');
+
+var total = randomIntFromInterval(20, 60);
+var outputPath = 'output/';
+var args = process.argv.slice(2);
+var random = randomIntFromInterval(1, 100);
 if (args.find(x => x === '--warning')) random = 20;
 if (args.find(x => x === '--error')) random = 5;
 if (args.find(x => x === '--success')) random = 70;
