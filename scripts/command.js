@@ -6,7 +6,6 @@ const logger = require('winston');
 const total = randomIntFromInterval(20, 60);
 const outputPath = 'output/';
 const args = process.argv.slice(2);
-console.log('args', args);
 let random = randomIntFromInterval(1, 100);
 if (args.find(x => x === '--warning')) random = 20;
 if (args.find(x => x === '--error')) random = 5;

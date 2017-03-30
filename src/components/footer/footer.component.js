@@ -21,12 +21,11 @@ export class FooterController {
     }
 
     initJobsWatcher() {
-        let stopProgress;
         this.jobsSubscription = this.JobService.subscribe(jobs => {
             this.$timeout(() => {
-                this.activeJobs = jobs;
-                if (jobs.length) {
-                    stopProgress = this.$interval(() => {
+                this.activeJobs = jobs || [];
+                if (jobs && jobs.length) {
+                    this.stopProgress = this.stopProgress ? this.stopProgress : this.$interval(() => {
                         if (this.progress < 100) {
                             this.progress += 20;
                         } else {
@@ -35,7 +34,7 @@ export class FooterController {
                     }, 1000);
                 } else {
                     this.progress = 0;
-                    this.$interval.cancel(stopProgress);
+                    this.$interval.cancel(this.stopProgress);
                 }
             });
         });
@@ -46,9 +45,6 @@ export class FooterController {
             this.$timeout(() => {
                 this.errors = logs.errors.size ? true : false;
                 this.warnings = logs.warnings.size ? true : false;
-                if (logs.warnings.size || logs.errors.size) {
-                    console.log('warning or error', logs);
-                }
             });
         });
     }

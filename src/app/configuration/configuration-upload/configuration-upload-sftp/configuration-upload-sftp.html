@@ -3,7 +3,7 @@
         <div class="form-group">
             <label for="command" class="col-xs-2 control-label">Command</label>
             <div class="col-xs-8 input-container">
-                <input type="text" class="form-control" id="command" placeholder="" ng-model="$ctrl.formData.command">
+                <input type="text" class="form-control" id="command" placeholder="" ng-model="$ctrl.template.uploadSettings.sftpCommand">
             </div>
             <div class="col-xs-2 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -14,7 +14,7 @@
         </div>
         <div class="form-group text-right">
             <div class="col-xs-12">
-                <button type="button" class="btn btn-flat btn-info">Save</button>
+                <button type="submit" class="btn btn-flat btn-info">Save</button>
                 <button type="button" class="btn btn-flat btn-default">Cancel</button>
             </div>
         </div>

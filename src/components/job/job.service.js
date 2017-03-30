@@ -5,6 +5,7 @@ const fs = Promise.promisifyAll(fsExtra);
 import path from 'path';
 import { spawn } from 'child_process';
 import chokidar from 'chokidar';
+import moment from 'moment';
 
 export class Job {
 
@@ -16,36 +17,35 @@ export class Job {
         this.currentState = {};
         this.subject = new rx.Subject();
         this.configPath = configPath
-        this.tempPath = tempPath;
+        this.tempPath = path.join(__dirname, this.configPath, tempPath);
         this.getJobs()
             .then(jobs => {
-                console.log(jobs);
                 this.jobs = jobs;
             });
-        // this.jobs = [];
         this.initJobsWatcher();
     }
 
     initJobsWatcher() {
-        this.jobsWatcher = chokidar.watch(path.join(__dirname, this.configPath, this.tempPath), {})
+        this.jobsWatcher = chokidar.watch(this.tempPath, {})
             .on('add', path => {
-                console.warn(`Added job: ${path}`);
+                console.log(`Added job: ${path}`);
                 this.subject.onNext(this.jobs);
 
             })
             .on('unlink', path => {
-                console.warn(`Removed job: ${path}`);
+                console.log(`Removed job: ${path}`);
                 this.subject.onNext(this.jobs);
             });
     }
 
     getJobs() {
         if (typeof this.jobs === 'undefined') {
-            return fs.readdirAsync(path.join(__dirname, this.configPath, this.tempPath))
+            return fs.ensureDirAsync(this.tempPath)
+                .then(() => fs.readdirAsync(this.tempPath))
                 .then(files => {
                     let promises = [];
                     for (let filename of files) {
-                        promises.push(fsExtra.readJsonAsync(path.join(__dirname, this.configPath, this.tempPath, filename)));
+                        promises.push(fs.readJsonAsync(path.join(this.tempPath, filename)));
                     }
                     return this.$q.all(promises);
                 });
@@ -54,10 +54,10 @@ export class Job {
     }
 
     createJob(job) {
-        job.id = Date.now();
-        job.submitted = new Date(job.id * 1000).toLocaleString();
+        job.id = moment().valueOf();
+        job.submitted = moment(job.id).format('L LTS');
         job.status = 'Runing. Please wait.';
-        job.filePath = path.join(__dirname, this.configPath, this.tempPath, `${job.documentName}_${job.type}_${job.id}.job`);
+        job.filePath = path.join(this.tempPath, `${job.documentName}_${job.type}_${job.id}.job`);
         return fs.outputFileAsync(job.filePath, JSON.stringify(job)).then(() => job);
     }
 
@@ -72,7 +72,6 @@ export class Job {
         const external = spawn(job.command, job.args);
 
         external.stdout.on('data', (data) => {
-            console.log(`stdout: ${data.toString()}`);
             if (data.toString().startsWith('warn:')) {
                 this.LoggerService.warn(data.toString().substr(6));
             } else if (data.toString().startsWith('info:')) {
@@ -83,7 +82,6 @@ export class Job {
         });
 
         external.stderr.on('data', (data) => {
-            console.log(`stderr: ${data.toString()}`);
             this.LoggerService.error(data.toString());
             if (data.toString().startsWith('error:')) {
                 this.LoggerService.error(data.toString().substr(8));
@@ -93,7 +91,6 @@ export class Job {
         });
 
         external.on('close', (code) => {
-            console.log(`Job ${job.id} finished with exit code ${code}`);
             this.LoggerService.debug(`Job ${job.id} finished with exit code ${code}`);
             this.removeJob(job);
         });

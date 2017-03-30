@@ -13,7 +13,13 @@ export default angular
         $stateProvider
             .state('main.configuration.upload.ftp', {
                 url: '/ftp',
-                component: 'configurationUploadFtp'
+                component: 'configurationUploadFtp',
+                resolve: {
+                    template: ConfigurationTemplatesService => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getCurrentTemplate();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })

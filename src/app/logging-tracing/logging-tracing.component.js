@@ -1,58 +1,65 @@
+import moment from 'moment';
+
 class LoggingTracingController {
-    constructor($state, LoggingService, LoggerService, $timeout) {
+    constructor($state, $interval, LoggerService, JobService, $timeout) {
         'ngInject';
         this.$state = $state;
-        this.LoggingService = LoggingService;
+        this.$interval = $interval;
         this.LoggerService = LoggerService;
+        this.JobService = JobService;
     }
 
     $onInit() {
-        // this.JobService.getJobs()
-        //     .then(console.log)
-        //     .catch(console.warn);
-        this.getCurrentJobs().then(jobs => this.currentJobs = jobs);
-        this.getInfoLogs().then(logs => {
-            this.infoLogs = logs
+        this.observables = [];
+        this.logTailSize = 10;
+        this.JobService.getJobs()
+            .then(jobs => {
+                this.currentJobs = jobs;
+                return this.LoggerService.initLogger();
+            })
+            .then(() => {
+                this.observables.push(this.LoggerService.tail(this.logTailSize).subscribe(logsTail => {
+                    this.errorLogs = logsTail.errors;
+                    this.warningLogs = logsTail.warnings;
+                    this.infoLogs = logsTail.info;
+                }));
+            })
+            .catch(console.warn);
+        moment.relativeTimeThreshold('ss', 1);
+        this.refreshInterval = this.$interval(() => {
+            angular.forEach(this.currentJobs, job => {
+                job.elapsed = moment(job.id).fromNow();
+            }, 1000);
         });
-        this.getWarningLogs().then(logs => this.warningLogs = logs);
-        this.getErrorLogs().then(logs => this.errorLogs = logs);
     }
 
     $onChanges(changes) {}
 
-    getCurrentJobs() {
-        return this.LoggingService.getCurrentJobs();
-    }
-
-    getInfoLogs() {
-        return this.LoggingService.getInfoLogs();
-    }
-
-    getWarningLogs() {
-        return this.LoggingService.getWarningLogs();
-    }
-
-    getErrorLogs() {
-        return this.LoggingService.getErrorLogs();
+    $onDestroy() {
+        this.$interval.cancel(this.refreshInterval);
+        angular.forEach(this.observables, obs => obs.dispose());
     }
 
     clearInfoLogs() {
-        this.infoLogs = '';
+        this.LoggerService.clear('info')
+            .then(() => this.infoLogs = [])
+            .catch(console.warn);
     }
 
     clearWarningLogs() {
-        this.warningLogs = '';
+        this.LoggerService.clear('warnings')
+            .then(() => this.warningLogs = [])
+            .catch(console.warn);
     }
 
     clearErrorLogs() {
-        this.errorLogs = '';
+        this.LoggerService.clear('errors')
+            .then(() => this.errorLogs = [])
+            .catch(console.warn);
     }
 
     clearAllLogs() {
-
-        this.infoLogs = '';
-        this.warningLogs = '';
-        this.errorLogs = '';
+        this.LoggerService.clearAll();
     }
 }
 

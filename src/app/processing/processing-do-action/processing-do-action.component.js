@@ -27,7 +27,6 @@ class ProcessingDoActionController {
             documentName: path.basename(this.formData.filePath).split('.')[0],
             type: 'test'
         };
-        console.log(job);
         this.JobService.createJob(job)
             .then(job => this.JobService.runJob(job))
             .then(job => console.log('Running Job: ', job.id))

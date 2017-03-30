@@ -13,7 +13,13 @@ export default angular
         $stateProvider
             .state('main.configuration.upload.sftp', {
                 url: '/sftp',
-                component: 'configurationUploadSftp'
+                component: 'configurationUploadSftp',
+                resolve: {
+                    template: ConfigurationTemplatesService => {
+                        'ngInject'
+                        return ConfigurationTemplatesService.getCurrentTemplate();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })
