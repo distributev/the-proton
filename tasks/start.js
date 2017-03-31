@@ -14,7 +14,7 @@ import gutil from 'gulp-util';
 
 const port = process.env.port || 3000;
 
-gulp.task('start', ['ngEnvConfig', 'copy:fonts:dev', 'inject'], () => {
+gulp.task('start', ['clean:config', 'ngEnvConfig', 'copy:fonts:dev', 'inject'], () => {
     let initialCompile = true;
     let compiler = webpack(webpackConfig);
     gutil.log('Webpack Build Started...');
@@ -45,6 +45,7 @@ gulp.task('start', ['ngEnvConfig', 'copy:fonts:dev', 'inject'], () => {
         }
     });
 });
+
 
 gulp.task('start:dist', ['build'], () => {
     childProcess.spawn(electron, ['./dist'], {

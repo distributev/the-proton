@@ -27,6 +27,8 @@ let stylesPath = [srcDir.path('{app,components}/**/*.less')];
 
 let plugins = gulpLoadPlugins();
 
+gulp.task('clean:config', () => del(['config/**', '!config', '!config/environment/**'], { dot: true }));
+
 gulp.task('clean:dist', () => del(['dist/**/*', '!dist/.gitkeep'], { dot: true }));
 
 gulp.task('inject', cb => {
