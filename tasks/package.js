@@ -94,14 +94,18 @@ gulp.task('copy:package-win:64', done => {
 gulp.task('package-win:shortcut:32', () => {
     let destDir = `release/${packageConfig.productName}-${packageConfig.version}-win-ia32`;
     let content = `start "" "_internal\\${packageConfig.productName}.exe"`;
-    return file(`${packageConfig.productName}.cmd`, content, { src: true })
+    return file(`${packageConfig.productName}.cmd`, content, {
+            src: true
+        })
         .pipe(gulp.dest(destDir));
 });
 
 gulp.task('package-win:shortcut:64', () => {
     let destDir = `release/${packageConfig.productName}-${packageConfig.version}-win-x64`;
     let content = `start "" "_internal\\${packageConfig.productName}.exe"`;
-    return file(`${packageConfig.productName}.cmd`, content, { src: true })
+    return file(`${packageConfig.productName}.cmd`, content, {
+            src: true
+        })
         .pipe(gulp.dest(destDir));
 });
 
@@ -124,7 +128,7 @@ gulp.task('clean:package-win-unpacked', () => del([
 
 gulp.task('clean:package-linux', () => del(['release/*linux.zip']));
 
-gulp.task('clean:build-linux-unpacked', () => del(['release/linux-ia32-unpacked']));
+gulp.task('clean:package-linux-unpacked', () => del(['release/linux-ia32-unpacked']));
 
 gulp.task('clean:package-mac', () => del(['release/*mac.zip']));
 
@@ -151,7 +155,9 @@ gulp.task('copy:config:mac', () => {
 });
 
 gulp.task('package-mac:zip', () => {
-    return gulp.src([`release/${packageConfig.productName}-${packageConfig.version}-mac/{,**/*}`, `release/*-mac/*.app{/**/*}`], { base: 'release' })
+    return gulp.src([`release/${packageConfig.productName}-${packageConfig.version}-mac/{,**/*}`, `release/*-mac/*.app{/**/*}`], {
+            base: 'release'
+        })
         .pipe(zip(`${packageConfig.productName}-${packageConfig.version}-mac.zip`))
         .pipe(gulp.dest('release'));
 });
@@ -177,7 +183,7 @@ gulp.task('package-linux', done => {
     runSequence(
         'clean:package-linux',
         'build-linux',
-        'clean:build-linux-unpacked',
+        'clean:package-linux-unpacked',
         done
     );
 });
@@ -195,3 +201,30 @@ gulp.task('package-mac', done => {
 });
 
 gulp.task('package-osx', ['package-mac']);
+
+gulp.task('package-mac:e2e', done => {
+    runSequence(
+        'clean:package-mac-unpacked',
+        'clean:package-mac',
+        'build-mac',
+        done
+    );
+});
+
+gulp.task('package-win:e2e', done => {
+    runSequence(
+        'clean:package-win-unpacked',
+        'clean:package-win',
+        'build-win',
+        done
+    );
+});
+
+gulp.task('package-linux:e2e', done => {
+    runSequence(
+        'clean:package-linux-unpacked',
+        'clean:package-linux',
+        'build-linux',
+        done
+    );
+});

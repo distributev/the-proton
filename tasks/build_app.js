@@ -149,7 +149,6 @@ gulp.task('build', done => {
         'copy:fonts',
         'copy:extras',
         'bundle',
-        'copy:templates',
         done
     );
 });
@@ -158,6 +157,7 @@ gulp.task('build:prod', done => {
     runSequence(
         'env:prod',
         'build',
+        'copy:templates',
         done
     );
 });
