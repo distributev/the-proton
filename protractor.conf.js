@@ -14,7 +14,7 @@ if (os.platform() === 'darwin') {
 exports.config = {
     framework: 'mocha',
 
-    directConnect: true,
+    // directConnect: true,
 
     specs: ['./e2e/**/*.spec.js'],
 
