@@ -11,13 +11,10 @@ class LoggingTracingController {
 
     $onInit() {
         this.observables = [];
-        this.logTailSize = 10;
+        this.logTailSize = 20;
         this.JobService.getJobs()
             .then(jobs => {
                 this.currentJobs = jobs;
-                return this.LoggerService.initLogger();
-            })
-            .then(() => {
                 this.observables.push(this.LoggerService.tail(this.logTailSize).subscribe(logsTail => {
                     this.errorLogs = logsTail.errors;
                     this.warningLogs = logsTail.warnings;
@@ -59,7 +56,12 @@ class LoggingTracingController {
     }
 
     clearAllLogs() {
-        this.LoggerService.clearAll();
+        this.LoggerService.clearAll()
+            .then(() => {
+                this.infoLogs = [];
+                this.warningLogs = [];
+                this.errorLogs = [];
+            });
     }
 }
 

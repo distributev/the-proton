@@ -1,3 +1,3 @@
 @echo off
 
-node scripts\command.js
+node scripts\command.js %*

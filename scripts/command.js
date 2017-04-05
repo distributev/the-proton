@@ -7,13 +7,13 @@ var logger = require('winston');
 
 var total = randomIntFromInterval(20, 60);
 var outputPath = 'output/';
-var args = process.argv.slice(2);
+var args = process.argv.slice(2) || [];
 var random = randomIntFromInterval(1, 100);
 if (args.find(x => x === '--warning')) random = 20;
 if (args.find(x => x === '--error')) random = 5;
 if (args.find(x => x === '--success')) random = 70;
 logger.info('random', random);
-
+logger.info('Command args:', args);
 
 Promise.resolve(Array.from(Array(total)))
     .each((item, index) => {

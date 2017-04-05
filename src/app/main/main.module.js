@@ -19,6 +19,9 @@ export default angular
                     defaultTemplate: (ConfigurationTemplatesService) => {
                         'ngInject'
                         return ConfigurationTemplatesService.getDefault();
+                    },
+                    logger: (LoggerService) => {
+                        LoggerService.initLogger();
                     }
                 },
                 component: 'main'
