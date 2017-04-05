@@ -61,7 +61,7 @@ gulp.task('build-e2e', ['build'], function () {
 // Downloads the selenium webdriver
 gulp.task('webdriver_update', webdriver_update);
 
-gulp.task('test:e2e', ['pree2e', 'webdriver_update'], () => {
+gulp.task('test:e2e', ['pree2e', 'webdriver_update'], done => {
     gulp.src('e2e/**/*.spec.js')
         .pipe(protractor({
             configFile: 'protractor.conf.js',
@@ -70,7 +70,7 @@ gulp.task('test:e2e', ['pree2e', 'webdriver_update'], () => {
             throw e
         })
         .on('end', () => {
-            process.exit()
+            done();
         });
 });
 
