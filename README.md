@@ -12,3 +12,7 @@ This is a work in progress, please refer to [this issue](https://github.com/dist
 - `gulp package-win` for Windows ia32 and x64 packages
 - `gulp package-linux` for Linux ia32 and x64 packages
 - `gulp package-osx` for MacOS (OSX) x64 package
+
+## To run the e2e tests
+
+-  `gulp test:e2e`

@@ -61,19 +61,6 @@ gulp.task('build-e2e', ['build'], function () {
 // Downloads the selenium webdriver
 gulp.task('webdriver_update', webdriver_update);
 
-gulp.task('test:e2e', ['pree2e', 'webdriver_update'], done => {
-    gulp.src('e2e/**/*.spec.js')
-        .pipe(protractor({
-            configFile: 'protractor.conf.js',
-        }))
-        .on('error', e => {
-            throw e
-        })
-        .on('end', () => {
-            done();
-        });
-});
-
 gulp.task('pree2e', done => {
     if (os.platform() === 'darwin') {
         runSequence(
@@ -91,4 +78,25 @@ gulp.task('pree2e', done => {
             done
         );
     }
+});
+
+gulp.task('e2e', done => {
+    gulp.src('e2e/**/*.spec.js')
+        .pipe(protractor({
+            configFile: 'protractor.conf.js',
+        }))
+        .on('error', e => {
+            throw e
+        })
+        .on('end', () => {
+            done();
+        });
+});
+
+gulp.task('test:e2e', ['webdriver_update'], done => {
+    runSequence(
+        'pree2e',
+        'e2e',
+        done
+    );
 });

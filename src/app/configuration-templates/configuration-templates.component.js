@@ -28,13 +28,17 @@ class ConfigurationTemplatesController {
         this.formData.templates.forEach((template, index) => template = this.formData.templates[index]);
         this.ConfigurationTemplatesService.setTemplates(this.formData.templates)
             .then(() => {
-                this.$uibModal.open({
+                let modalInstance = this.$uibModal.open({
                     animation: true,
                     component: 'feedbackModal',
                     size: 'sm',
                     resolve: {
                         message: () => `Configuration Templates saved!`
                     }
+                });
+
+                modalInstance.result.then(() => {
+                    this.$state.reload();
                 });
             })
             .catch(console.warn);
