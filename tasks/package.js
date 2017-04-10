@@ -14,7 +14,8 @@ gulp.task('build-mac', ['build:prod'], (done) => {
 
     builder.build({
             targets: builder.Platform.MAC.createTarget(),
-            devMetadata: {
+            publish: 'onTagOrDraft',
+            config: {
                 directories: {
                     app: 'dist'
                 }
@@ -32,7 +33,7 @@ gulp.task('build-linux', ['build:prod'], (done) => {
 
     builder.build({
             targets: builder.Platform.LINUX.createTarget(null, builder.Arch.ia32, builder.Arch.x64),
-            devMetadata: {
+            config: {
                 directories: {
                     app: 'dist'
                 }
@@ -50,7 +51,7 @@ gulp.task('build-win', ['build:prod'], (done) => {
 
     builder.build({
             targets: builder.Platform.WINDOWS.createTarget(null, builder.Arch.ia32, builder.Arch.x64),
-            devMetadata: {
+            config: {
                 directories: {
                     app: 'dist'
                 }

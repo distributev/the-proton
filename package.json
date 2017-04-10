@@ -1,19 +1,30 @@
 {
     "name": "theproton",
     "description": "The Proton App",
-    "productName": "TheProtonApp",
+    "productName": "theproton",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/distributev/the-proton.git"
+    },
     "version": "0.0.1",
     "author": "Luis Manuel <luisman40@gmail.com>",
     "license": "MIT",
     "main": "background.js",
     "build": {
         "appId": "com.distributev.theprotonapp",
+        "directories": {
+            "output": "release",
+            "app": "src"
+        },
         "asar": false,
         "files": [
             "**/*"
         ],
+        "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
         "mac": {
             "target": "zip",
+            "artifactName": "${productName}-${version}-${os}.${ext}",
+            "publish": "github",
             "icon": "./dist/assets/icons/mac/icon.icns"
         },
         "win": {
@@ -24,10 +35,6 @@
             "target": "dir",
             "icon": "./dist/assets/icons/png"
         }
-    },
-    "directories": {
-        "output": "release",
-        "app": "src"
     },
     "bin": {
         "electron": "./node_modules/.bin/electron"
@@ -61,6 +68,7 @@
         "brace": "^0.9.1",
         "chokidar": "^1.6.1",
         "core-js": "^2.4.1",
+        "electron-updater": "^1.11.2",
         "font-awesome": "^4.7.0",
         "fs-jetpack": "^0.10.2",
         "jquery": "2.2.3",
@@ -91,7 +99,7 @@
         "css-loader": "^0.26.1",
         "del": "^2.2.2",
         "electron": "^1.6.2",
-        "electron-builder": "^8.6.0",
+        "electron-builder": "^16.8.2",
         "electron-connect": "^0.6.1",
         "electron-mocha": "^3.0.0",
         "eslint": "^3.19.0",
