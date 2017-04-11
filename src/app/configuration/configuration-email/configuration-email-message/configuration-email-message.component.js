@@ -24,6 +24,7 @@ class ConfigurationEmailMessageController {
     $onChanges(changes) {}
 
     $onDestroy() {
+        this.ConfigurationTemplatesService.setCurrentTemplate(this.template);
         this.currentTemplateSubscription.dispose();
     }
 
@@ -54,7 +55,8 @@ class ConfigurationEmailMessageController {
     }
 
     onCancel() {
-        this.$state.reload();
+        this.ConfigurationTemplatesService.resetCurrentTemplate()
+            .then(template => this.template = template);
     }
 
     htmlEmailToggle() {

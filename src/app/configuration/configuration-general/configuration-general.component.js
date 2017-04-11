@@ -17,6 +17,7 @@ class ConfigurationGeneralController {
     $onChanges(changes) {}
 
     $onDestroy() {
+        this.ConfigurationTemplatesService.setCurrentTemplate(this.template);
         this.currentTemplateSubscription.dispose();
     }
 
@@ -47,7 +48,8 @@ class ConfigurationGeneralController {
     }
 
     onCancel() {
-        this.$state.reload();
+        this.ConfigurationTemplatesService.resetCurrentTemplate()
+            .then(template => this.template = template);
     }
 
     variableSelected({ variable, target }) {

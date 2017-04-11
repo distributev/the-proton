@@ -13,6 +13,7 @@ export class ConfigurationTemplates {
         this.$http = $http;
         this.$q = $q;
         this.subject = new rx.Subject();
+        this.changesSubject = new rx.Subject();
         this.configPath = configPath;
         this.templatesPath = templatesPath;
         this.defaultTemplateFile = defaultTemplateFile;
@@ -25,9 +26,23 @@ export class ConfigurationTemplates {
         return this.$q.resolve(this.currentTemplate);
     }
 
-    setCurrentTemplate(template) {
+    setCurrentTemplate(template, notify) {
         this.currentTemplate = template;
-        this.subject.onNext(template);
+        if (notify) this.subject.onNext(template);
+        return this.$q.resolve(this.currentTemplate);
+    }
+
+    resetCurrentTemplate() {
+        let template;
+        return this.getCurrentTemplate()
+            .then(currentTemplate => {
+                template = currentTemplate;
+                return this.getTemplates();
+            })
+            .then(templates => {
+                template = _.find(templates, { 'path': template.path });
+                return this.setCurrentTemplate(template);
+            });
     }
 
     subscribe(template) {
@@ -105,7 +120,8 @@ export class ConfigurationTemplates {
             })
             .then(xmlData => {
                 return fs.outputFileAsync(path.join(__dirname, this.configPath, filePath), xmlData);
-            });
+            })
+            .then(() => this.setCurrentTemplate(template));
     }
 
     getXmlFiles(filePath) {

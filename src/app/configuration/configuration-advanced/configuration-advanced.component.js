@@ -13,6 +13,7 @@ class ConfigurationAdvancedController {
     $onChanges(changes) {}
 
     $onDestroy() {
+        this.ConfigurationTemplatesService.setCurrentTemplate(this.template);
         this.currentTemplateSubscription.dispose();
     }
 
@@ -43,7 +44,8 @@ class ConfigurationAdvancedController {
     }
 
     onCancel() {
-        this.$state.reload();
+        this.ConfigurationTemplatesService.resetCurrentTemplate()
+            .then(template => this.template = template);
     }
 }
 

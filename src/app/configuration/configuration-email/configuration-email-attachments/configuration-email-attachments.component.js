@@ -21,6 +21,7 @@ class ConfigurationEmailAttachmentsController {
     $onChanges(changes) {}
 
     $onDestroy() {
+        this.ConfigurationTemplatesService.setCurrentTemplate(this.template);
         this.currentTemplateSubscription.dispose();
     }
 
@@ -56,7 +57,8 @@ class ConfigurationEmailAttachmentsController {
     }
 
     onCancel() {
-        this.$state.reload();
+        this.ConfigurationTemplatesService.resetCurrentTemplate()
+            .then(template => this.template = template);
     }
 
     getSelectedAttachment() {

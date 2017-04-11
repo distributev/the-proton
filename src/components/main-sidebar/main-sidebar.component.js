@@ -22,7 +22,7 @@ export class MainSidebarController {
 
     onTemplateClick(template) {
         this.currentTemplate = template;
-        this.ConfigurationTemplatesService.setCurrentTemplate(template);
+        this.ConfigurationTemplatesService.setCurrentTemplate(template, true);
     }
 
     quit() {
