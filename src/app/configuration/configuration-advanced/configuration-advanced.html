@@ -1,29 +1,39 @@
 <div class="col-xs-12">
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-            <li class="active"><a href="#" aria-expanded="true">Advanced Settings</a></li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.about" aria-expanded="false">License</a></li>
+            <li class="active"><a href="#tab-advanced-settings" aria-expanded="true" data-toggle="tab">Advanced Settings</a></li>
+            <li><a href="#tab-license" aria-expanded="false" data-toggle="tab">License</a></li>
         </ul>
         <div class="tab-content">
-            <form class="form-horizontal" name="advancedForm" ng-submit="$ctrl.onSubmit()">
-                <div class="form-group">
-                    <div class="col-xs-12">If any distribution fails...</div>
+            <div class="tab-pane active" role="tabpanel" id="#tab-advanced-settings">
+                <form class="form-horizontal" name="advancedForm" ng-submit="$ctrl.onSubmit()">
+                    <div class="form-group">
+                        <div class="col-xs-12">If any distribution fails...</div>
+                        <div class="col-xs-12">
+                            <label class="radio-inline">
+                                    <input type="radio" name="distFail" id="distFail1" value="true" ng-model="$ctrl.template.failJobIfAnyDistributionFails"> Fail
+                                </label>
+                            <label class="radio-inline">
+                                    <input type="radio" name="distFail" id="distFail2" value="false" ng-model="$ctrl.template.failJobIfAnyDistributionFails"> Continue
+                                </label>
+                        </div>
+                    </div>
+                    <div class="form-group text-right">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-flat btn-info">Save</button>
+                            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="tab-pane" role="tabpanel" id="tab-license">
+                <div class="row">
                     <div class="col-xs-12">
-                        <label class="radio-inline">
-                                <input type="radio" name="distFail" id="distFail1" value="true" ng-model="$ctrl.template.failJobIfAnyDistributionFails"> Fail
-                            </label>
-                        <label class="radio-inline">
-                                <input type="radio" name="distFail" id="distFail2" value="false" ng-model="$ctrl.template.failJobIfAnyDistributionFails"> Continue
-                            </label>
+                        <p>Est id sit ad laborum et ea irure nisi veniam occaecat anim irure exercitation. Consequat reprehenderit qui anim veniam proident pariatur in non qui velit culpa cupidatat irure. Quis voluptate occaecat consectetur enim laboris enim
+                            id et eu.</p>
                     </div>
                 </div>
-                <div class="form-group text-right">
-                    <div class="col-xs-12">
-                        <button type="submit" class="btn btn-flat btn-info">Save</button>
-                        <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
-                    </div>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

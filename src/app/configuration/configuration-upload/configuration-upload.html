@@ -1,12 +1,20 @@
 <div class="col-xs-12">
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.upload.ftp" aria-expanded="true">FTP</a></li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.upload.sftp" aria-expanded="false">SFTP/SCP</a></li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.about" aria-expanded="false">License</a></li>
+            <li ng-class="{ 'active': $ctrl.$state.is('main.configuration.upload.ftp') && !$ctrl.showLicenseTab}"><a href="#" ui-sref="main.configuration.upload.ftp" aria-expanded="true"  ng-click="$ctrl.showLicenseTab = false">FTP</a></li>
+            <li ng-class="{ 'active': $ctrl.$state.is('main.configuration.upload.sftp') && !$ctrl.showLicenseTab}"><a href="#" ui-sref="main.configuration.upload.sftp" aria-expanded="false"  ng-click="$ctrl.showLicenseTab = false">SFTP/SCP</a></li>
+            <li ng-class="{ 'active': $ctrl.showLicenseTab}"><a href="" aria-expanded="false"  ng-click="$ctrl.showLicenseTab = true">License</a></li>
         </ul>
         <div class="tab-content">
-            <ui-view></ui-view>
+            <ui-view ng-show="!$ctrl.showLicenseTab"></ui-view>
+            <div class="tab-pane" role="tabpanel" id="tab-license" ng-class="{ show: $ctrl.showLicenseTab }">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p>Est id sit ad laborum et ea irure nisi veniam occaecat anim irure exercitation. Consequat reprehenderit qui anim veniam proident pariatur in non qui velit culpa cupidatat irure. Quis voluptate occaecat consectetur enim laboris enim
+                            id et eu.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -1,15 +1,23 @@
 <div class="col-xs-12">
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
-            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.settings" aria-expanded="true">Connection Settings</a></li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.message" aria-expanded="false">Email Message</a></li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.attachments" aria-expanded="false">Attachments</a></li>
-            <li ui-sref-active="active"><a href="#" ui-sref="main.configuration.email.cloud" aria-expanded="false">Cloud Email Providers</a></li>
-            <!--<li ui-sref-active="active"><a href="#" ui-sref="main.loggingTracing" aria-expanded="false">Logging, Tracing...</a></li>-->
-            <li ui-sref-active="active"><a href="#" ui-sref="main.about" aria-expanded="false">License</a></li>
+            <li ng-class="{ 'active': $ctrl.$state.is('main.configuration.email.settings') && !$ctrl.showLicenseTab}"><a href="#tab-email-settings" ui-sref="main.configuration.email.settings" aria-expanded="true" ng-click="$ctrl.showLicenseTab = false">Connection Settings</a></li>
+            <li ng-class="{ 'active': $ctrl.$state.is('main.configuration.email.message') && !$ctrl.showLicenseTab}"><a href="#tab-email-message" ui-sref="main.configuration.email.message" aria-expanded="false" ng-click="$ctrl.showLicenseTab = false">Email Message</a></li>
+            <li ng-class="{ 'active': $ctrl.$state.is('main.configuration.email.attachments') && !$ctrl.showLicenseTab}"><a href="#tab-email-attachments" ui-sref="main.configuration.email.attachments" aria-expanded="false" ng-click="$ctrl.showLicenseTab = false">Attachments</a></li>
+            <li ng-class="{ 'active': $ctrl.$state.is('main.configuration.email.cloud') && !$ctrl.showLicenseTab}"><a href="#tab-email-cloud" ui-sref="main.configuration.email.cloud" aria-expanded="false" ng-click="$ctrl.showLicenseTab = false">Cloud Email Providers</a></li>
+            <!--<li ng-class="active"><a href="#" ui-sref="main.loggingTracing" aria-expanded="false">Logging, Tracing...</a></li>-->
+            <li ng-class="{ 'active': $ctrl.showLicenseTab }"><a href="#tab-license" aria-expanded="false" ng-click="$ctrl.showLicenseTab = true" data-toggle="tab">License</a></li>
         </ul>
         <div class="tab-content">
-            <ui-view></ui-view>
+            <ui-view ng-show="!$ctrl.showLicenseTab"></ui-view>
+            <div id="tab-license" class="tab-pane" role="tabpanel" ng-class="{ show: $ctrl.showLicenseTab }">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p>Est id sit ad laborum et ea irure nisi veniam occaecat anim irure exercitation. Consequat reprehenderit qui anim veniam proident pariatur in non qui velit culpa cupidatat irure. Quis voluptate occaecat consectetur enim laboris enim
+                            id et eu.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

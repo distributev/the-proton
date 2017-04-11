@@ -14,6 +14,14 @@ export default angular
             .state('main.loggingTracing', {
                 url: 'logging-tracing',
                 component: 'loggingTracing'
+            })
+            .state('main.processing.doAction.loggingTracing', {
+                url: 'logging-tracing',
+                component: 'loggingTracing'
+            })
+            .state('main.processing.quality.loggingTracing', {
+                url: 'logging-tracing',
+                component: 'loggingTracing'
             });
         $urlRouterProvider.otherwise('/');
     })
