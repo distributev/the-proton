@@ -1,4 +1,11 @@
 <div class="col-xs-12">
+    <div class="alert alert-info alert-changes" role="alert" ng-show="$ctrl.showPendingChanges">
+        <div>
+            <i class="glyphicon glyphicon-info-sign"></i> Changes detected
+            <button type="button" class="btn btn-flat btn-info" ng-click="$ctrl.onSubmit()">Save</button>
+            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+        </div>
+    </div>
     <div class="nav-tabs-custom">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-general" aria-expanded="true" data-toggle="tab">General</a></li>
@@ -10,7 +17,7 @@
                     <div class="form-group">
                         <label for="fileName" class="col-xs-3 control-label">File Name</label>
                         <div class="col-xs-5 input-container">
-                            <input type="text" class="form-control" id="fileName" placeholder="File Name" ng-model="$ctrl.template.fileName">
+                            <input type="text" class="form-control" id="fileName" placeholder="File Name" ng-model="$ctrl.form.fileName">
                         </div>
                         <div class="col-xs-4 buttons-container">
                             <variables-button class="col-xs-6" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -19,7 +26,7 @@
                     <div class="form-group">
                         <label for="outputFolder" class="col-xs-3 control-label">Output Folder</label>
                         <div class="col-xs-5 input-container">
-                            <input type="text" class="form-control" id="outputFolder" placeholder="Output Folder" ng-model="$ctrl.template.outputFolder">
+                            <input type="text" class="form-control" id="outputFolder" placeholder="Output Folder" ng-model="$ctrl.form.outputFolder">
                         </div>
                         <div class="col-xs-4 buttons-container">
                             <electron-dialog-button class="col-xs-6" dialog-type="'folder'" on-path-selected="$ctrl.outputSelected($event)"></electron-dialog-button>
@@ -29,7 +36,7 @@
                     <div class="form-group">
                         <label for="quarantineFolder" class="col-xs-3 control-label">Quarantine Folder </br> <span class="text-italic"><em><small>(should be a local folder)</small></em></span></label>
                         <div class="col-xs-5 input-container">
-                            <input type="text" class="form-control" id="quarantineFolder" placeholder="Quarantine Folder" ng-model="$ctrl.template.quarantineFolder">
+                            <input type="text" class="form-control" id="quarantineFolder" placeholder="Quarantine Folder" ng-model="$ctrl.form.quarantineFolder">
                         </div>
                         <div class="col-xs-4 buttons-container">
                             <electron-dialog-button class="col-xs-6" dialog-type="'folder'" on-path-selected="$ctrl.quarantineSelected($event)"></electron-dialog-button>
@@ -41,7 +48,7 @@
                         <div class="col-xs-5 input-container">
                             <div class="checkbox">
                                 <label for="sendDocuments">
-                                    <input type="checkbox" id="sendDocuments" ng-model="$ctrl.template.sendDocuments">
+                                    <input type="checkbox" id="sendDocuments" ng-model="$ctrl.form.sendDocuments">
                                     Send documents
                                 </label>
                             </div>
@@ -52,7 +59,7 @@
                         <div class="col-xs-5 input-container">
                             <div class="checkbox">
                                 <label for="deleteDocuments">
-                                    <input type="checkbox" id="deleteDocuments" ng-model="$ctrl.template.deleteDocuments">
+                                    <input type="checkbox" id="deleteDocuments" ng-model="$ctrl.form.deleteDocuments">
                                     Delete documents
                                 </label>
                             </div>
@@ -63,7 +70,7 @@
                         <div class="col-xs-5 input-container">
                             <div class="checkbox">
                                 <label for="quarantineDocuments">
-                                    <input type="checkbox" id="quarantineDocuments" ng-model="$ctrl.template.quarantineDocuments">
+                                    <input type="checkbox" id="quarantineDocuments" ng-model="$ctrl.form.quarantineDocuments">
                                     Quarantine Documents
                                 </label>
                             </div>
@@ -75,8 +82,8 @@
                     </div>
                     <div class="form-group text-right">
                         <div class="col-xs-12">
-                            <button type="submit" class="btn btn-flat btn-info">Save</button>
-                            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+                            <button type="submit" class="btn btn-flat btn-info" ng-disabled="!$ctrl.showPendingChanges">Save</button>
+                            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()" ng-disabled="!$ctrl.showPendingChanges">Cancel</button>
                         </div>
                     </div>
                 </form>

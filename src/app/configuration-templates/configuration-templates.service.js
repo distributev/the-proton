@@ -26,10 +26,21 @@ export class ConfigurationTemplates {
         return this.$q.resolve(this.currentTemplate);
     }
 
-    setCurrentTemplate(template, notify) {
-        this.currentTemplate = template;
-        if (notify) this.subject.onNext(template);
-        return this.$q.resolve(this.currentTemplate);
+    setCurrentTemplate(data, notify) {
+        let filePath = data.path;
+        let template = {};
+        return this.getTemplates()
+            .then(templates => {
+                template = _.find(templates, { 'path': filePath });
+                if (template) {
+                    template = Object.assign({}, template, data);
+                } else {
+                    template = data;
+                }
+                this.currentTemplate = template;
+                if (notify) this.subject.onNext(this.currentTemplate);
+                return this.$q.resolve(this.currentTemplate);
+            });
     }
 
     resetCurrentTemplate() {
@@ -51,7 +62,7 @@ export class ConfigurationTemplates {
 
     initDefault() {
         return fs.readFileAsync(path.join(__dirname, this.templatesPath, this.defaultTemplateFile))
-            .then(data => {
+            .then(() => {
                 let promises = [];
                 let src = path.join(__dirname, this.templatesPath, 'config');
                 let dest = path.join(__dirname, this.configPath, 'config');

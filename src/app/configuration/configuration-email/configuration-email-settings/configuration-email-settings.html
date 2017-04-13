@@ -1,4 +1,11 @@
 <div class="tab-pane active" role="tabpanel" id="tab-email-general">
+    <div class="alert alert-info alert-changes" role="alert" ng-show="$ctrl.showPendingChanges">
+        <div>
+            <i class="glyphicon glyphicon-info-sign"></i> Changes detected
+            <button type="button" class="btn btn-flat btn-info" ng-click="$ctrl.onSubmit()">Save</button>
+            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+        </div>
+    </div>
     <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
         <div class="form-group">
             <label class="col-xs-3 control-label">Well-Known Services</label>
@@ -9,7 +16,7 @@
         <div class="form-group">
             <label for="fromName" class="col-xs-3 control-label">From Name</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="fromName" placeholder="From Name" ng-model="$ctrl.template.emailServer.fromName">
+                <input type="text" class="form-control" id="fromName" placeholder="From Name" ng-model="$ctrl.form.emailServer.fromName">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -18,7 +25,7 @@
         <div class="form-group">
             <label for="fromEmailAddress" class="col-xs-3 control-label">From Email Address</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="fromEmailAddress" placeholder="from@emailaddress.com" ng-model="$ctrl.template.emailServer.fromEmailAddress">
+                <input type="text" class="form-control" id="fromEmailAddress" placeholder="from@emailaddress.com" ng-model="$ctrl.form.emailServer.fromEmailAddress">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -27,7 +34,7 @@
         <div class="form-group">
             <label for="host" class="col-xs-3 control-label">Host</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="host" placeholder="Email Server Host" ng-model="$ctrl.template.emailServer.host">
+                <input type="text" class="form-control" id="host" placeholder="Email Server Host" ng-model="$ctrl.form.emailServer.host">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -36,7 +43,7 @@
         <div class="form-group">
             <label for="username" class="col-xs-3 control-label">User Name</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="username" placeholder="From Email User ID" ng-model="$ctrl.template.emailServer.userId">
+                <input type="text" class="form-control" id="username" placeholder="From Email User ID" ng-model="$ctrl.form.emailServer.userId">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -45,7 +52,7 @@
         <div class="form-group">
             <label for="password" class="col-xs-3 control-label">Password</label>
             <div class="col-xs-6 input-container">
-                <input type="password" class="form-control" id="password" placeholder="*********" ng-model="$ctrl.template.emailServer.userPassword">
+                <input type="password" class="form-control" id="password" placeholder="*********" ng-model="$ctrl.form.emailServer.userPassword">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -54,7 +61,7 @@
         <div class="form-group">
             <label for="port" class="col-xs-3 control-label">Port</label>
             <div class="col-xs-6 input-container">
-                <input type="text" class="form-control" id="port" placeholder="25" ng-model="$ctrl.template.emailServer.port">
+                <input type="text" class="form-control" id="port" placeholder="25" ng-model="$ctrl.form.emailServer.port">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -65,7 +72,7 @@
             <div class="col-xs-6 input-container">
                 <div class="checkbox">
                     <label for="ssl">
-                                <input type="checkbox" id="ssl" ng-model="$ctrl.template.emailServer.useSsl">
+                                <input type="checkbox" id="ssl" ng-model="$ctrl.form.emailServer.useSsl">
                                 SSL Enabled
                             </label>
                 </div>
@@ -76,7 +83,7 @@
             <div class="col-xs-6 input-container">
                 <div class="checkbox">
                     <label for="tls">
-                                <input type="checkbox" id="tls" ng-model="$ctrl.template.emailServer.useTls">
+                                <input type="checkbox" id="tls" ng-model="$ctrl.form.emailServer.useTls">
                                 TLS Enabled
                             </label>
                 </div>
@@ -107,8 +114,8 @@
         </div>
         <div class="form-group text-right">
             <div class="col-xs-12">
-                <button type="submit" class="btn btn-flat btn-info">Save</button>
-                <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+                <button type="submit" class="btn btn-flat btn-info" ng-disabled="!$ctrl.showPendingChanges">Save</button>
+                <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()" ng-disabled="!$ctrl.showPendingChanges">Cancel</button>
             </div>
         </div>
     </form>

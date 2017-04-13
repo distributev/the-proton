@@ -1,7 +1,5 @@
-import fsExtra from 'fs-extra';
 import path from 'path';
-import Promise from 'bluebird';
-const fs = Promise.promisifyAll(fsExtra);
+import _ from 'lodash';
 
 class ConfigurationEmailMessageController {
     constructor($state, $uibModal, $timeout, $sce, $interpolate, ConfigurationTemplatesService, configPath) {
@@ -16,33 +14,50 @@ class ConfigurationEmailMessageController {
     }
 
     $onInit() {
-        this.currentTemplateSubscription = this.ConfigurationTemplatesService.subscribe(template => this.loadTemplate(template));
         this.activeTab = 1;
-        console.log(this.getMessageDefaultPath());
+        this.form = angular.copy(_.pick(this.template, [
+                'path',
+                'name',
+                'emailSettings',
+                'htmlEmail',
+                'path'
+            ]));
+        this.currentTemplateSubscription = this.ConfigurationTemplatesService.subscribe(template => this.loadTemplate(template));
     }
 
     $onChanges(changes) {}
 
+    $doCheck() {
+        this.saved = angular.copy(_.pick(this.template, _.keys(this.form)));
+        if (!angular.equals(this.form, this.saved)) {
+            this.showPendingChanges = true;
+        }
+        else {
+            this.showPendingChanges = false;
+        }
+    }
+
     $onDestroy() {
-        this.ConfigurationTemplatesService.setCurrentTemplate(this.template);
+        this.ConfigurationTemplatesService.setCurrentTemplate(this.form);
         this.currentTemplateSubscription.dispose();
     }
 
     loadTemplate(template) {
-        this.template = template;
+        this.form = angular.copy(_.pick(template, _.keys(this.form)));
         this.$uibModal.open({
             animation: true,
             component: 'feedbackModal',
             size: 'sm',
             resolve: {
-                message: () => `Configuration '${this.template.name}'loaded!`
+                message: () => `Configuration '${this.form.name}'loaded!`
             }
         });
     }
 
     onSubmit() {
-        this.ConfigurationTemplatesService.setTemplate(this.template)
-            .then(() => {
+        this.ConfigurationTemplatesService.setTemplate(this.form)
+            .then(template => {
+                this.template = angular.copy(template);
                 this.$uibModal.open({
                     animation: true,
                     component: 'feedbackModal',
@@ -56,11 +71,11 @@ class ConfigurationEmailMessageController {
 
     onCancel() {
         this.ConfigurationTemplatesService.resetCurrentTemplate()
-            .then(template => this.template = template);
+            .then(template => this.form = template);
     }
 
     htmlEmailToggle() {
-        if (!this.template.htmlEmail && this.activeTab === 0) {
+        if (!this.form.htmlEmail && this.activeTab === 0) {
             this.activeTab = 1;
         }
     }
@@ -73,10 +88,10 @@ class ConfigurationEmailMessageController {
             resolve: {
                 email: () => {
                     return {
-                        htmlEmail: this.template.htmlEmail,
+                        htmlEmail: this.form.htmlEmail,
                         emailSettings: {
-                            text: this.template.emailSettings.text,
-                            html: this.template.emailSettings.html
+                            text: this.form.emailSettings.text,
+                            html: this.form.emailSettings.html
                         }
                     }
                 }
@@ -84,9 +99,9 @@ class ConfigurationEmailMessageController {
         });
 
         modalInstance.result.then(result => {
-            this.template.htmlEmail = result.htmlEmail;
-            this.template.emailSettings.text = result.emailSettings.text;
-            this.template.emailSettings.html = result.emailSettings.html;
+            this.form.htmlEmail = result.htmlEmail;
+            this.form.emailSettings.text = result.emailSettings.text;
+            this.form.emailSettings.html = result.emailSettings.html;
         }, reason => {
             // console.log('modal-component dismissed with reason: ' + reason);
         });
@@ -105,7 +120,7 @@ class ConfigurationEmailMessageController {
             } else {
                 inputModel = targetInput[0].getAttribute('ng-model').split('.').pop();
             }
-            this.template.emailSettings[inputModel] = this.template.emailSettings[inputModel] ? this.template.emailSettings[inputModel] + variable.name : variable.name;
+            this.form.emailSettings[inputModel] = this.form.emailSettings[inputModel] ? this.form.emailSettings[inputModel] + variable.name : variable.name;
             targetInput.focus();
         });
     }
@@ -115,11 +130,11 @@ class ConfigurationEmailMessageController {
             .then(data => {
                 if (this.activeTab === 0) {
                     this.$timeout(() => {
-                        this.template.emailSettings.html = angular.copy(data);
+                        this.form.emailSettings.html = angular.copy(data);
                     });
                 } else {
                     this.$timeout(() => {
-                        this.template.emailSettings.text = angular.copy(data);
+                        this.form.emailSettings.text = angular.copy(data);
                     });
                 }
             })
@@ -129,9 +144,9 @@ class ConfigurationEmailMessageController {
     saveTemplate($event) {
         let data;
         if (this.activeTab === 0) {
-            data = this.template.emailSettings.html;
+            data = this.form.emailSettings.html;
         } else {
-            data = this.template.emailSettings.text;
+            data = this.form.emailSettings.text;
         }
         this.ConfigurationTemplatesService.saveFile($event.path, data)
             .then(() => {
@@ -161,7 +176,7 @@ class ConfigurationEmailMessageController {
     }
 
     getTrustedHtml() {
-        return this.$sce.trustAsHtml(this.getPreview(this.template.emailSettings.html));
+        return this.$sce.trustAsHtml(this.getPreview(this.form.emailSettings.html));
     }
 }
 

@@ -1,4 +1,11 @@
 <div class="tab-pane active row" role="tabpanel" id="tab-email-attachments">
+    <div class="alert alert-info alert-changes" role="alert" ng-show="$ctrl.showPendingChanges">
+        <div>
+            <i class="glyphicon glyphicon-info-sign"></i> Changes detected
+            <button type="button" class="btn btn-flat btn-info" ng-click="$ctrl.onSubmit()">Save</button>
+            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+        </div>
+    </div>
     <div class="col-xs-12">
         <form class="form-horizontal" name="attachmentForm" novalidate>
             <dix class="panel panel-default col-xs-12">
@@ -7,7 +14,7 @@
                     <div class="form-group single-button">
                         <div class="col-xs-10">
                             <select name="attachments" id="attachments" class="form-control" multiple size="15" ng-model="$ctrl.selectedAttachment">
-                                <option ng-repeat="attachment in $ctrl.template.attachments.items.attachment" ng-value="attachment">{{attachment.$.path}}</option>
+                                <option ng-repeat="attachment in $ctrl.form.attachments.items.attachment" ng-value="attachment">{{attachment.$.path}}</option>
                             </select>
                         </div>
                         <div class="col-xs-2 buttons-container-vertical">
@@ -29,7 +36,7 @@
                         <div class="col-xs-9">
                             <div class="checkbox">
                                 <label for="archive">
-                                    <input type="checkbox" id="archive" ng-model="$ctrl.template.attachments.archive.archiveAttachments"/>
+                                    <input type="checkbox" id="archive" ng-model="$ctrl.form.attachments.archive.archiveAttachments"/>
                                     Archive all attachments together
                                 </label>
                             </div>
@@ -38,7 +45,7 @@
                     <div class="form-group single-button">
                         <label for="archiveFileName" class="col-xs-3 control-label">Archive File Name</label>
                         <div class="col-xs-7 input-container">
-                            <input type="text" class="form-control" id="archiveFileName" ng-model="$ctrl.template.attachments.archive.archiveFilename" ng-disabled="!$ctrl.template.attachments.archive.archiveAttachments" />
+                            <input type="text" class="form-control" id="archiveFileName" ng-model="$ctrl.form.attachments.archive.archiveFilename" ng-disabled="!$ctrl.form.attachments.archive.archiveAttachments" />
                         </div>
                         <div class="col-xs-2 buttons-container">
                             <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -48,8 +55,8 @@
     </div>
     <div class="form-group text-right">
         <div class="col-xs-12">
-            <button type="button" class="btn btn-flat btn-info" ng-click="$ctrl.onSubmit()">Save</button>
-            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+            <button type="button" class="btn btn-flat btn-info" ng-click="$ctrl.onSubmit()" ng-disabled="!$ctrl.showPendingChanges">Save</button>
+            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()" ng-disabled="!$ctrl.showPendingChanges">Cancel</button>
         </div>
     </div>
     </form>

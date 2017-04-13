@@ -1,9 +1,16 @@
 <div class="tab-pane active" role="tabpanel" id="tab-email-message">
+    <div class="alert alert-info alert-changes" role="alert" ng-show="$ctrl.showPendingChanges">
+        <div>
+            <i class="glyphicon glyphicon-info-sign"></i> Changes detected
+            <button type="button" class="btn btn-flat btn-info" ng-click="$ctrl.onSubmit()">Save</button>
+            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+        </div>
+    </div>
     <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
         <div class="form-group single-button">
             <label for="to" class="col-xs-2 control-label">To</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="to" placeholder="" ng-model="$ctrl.template.emailSettings.to">
+                <input type="text" class="form-control" id="to" placeholder="" ng-model="$ctrl.form.emailSettings.to">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -12,7 +19,7 @@
         <div class="form-group single-button">
             <label for="cc" class="col-xs-2 control-label">CC</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="cc" placeholder="" ng-model="$ctrl.template.emailSettings.cc">
+                <input type="text" class="form-control" id="cc" placeholder="" ng-model="$ctrl.form.emailSettings.cc">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -21,7 +28,7 @@
         <div class="form-group single-button">
             <label for="bcc" class="col-xs-2 control-label">BCC</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="bcc" placeholder="" ng-model="$ctrl.template.emailSettings.bcc">
+                <input type="text" class="form-control" id="bcc" placeholder="" ng-model="$ctrl.form.emailSettings.bcc">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -30,7 +37,7 @@
         <div class="form-group single-button">
             <label for="subject" class="col-xs-2 control-label">Subject</label>
             <div class="col-xs-7 input-container">
-                <input type="text" class="form-control" id="subject" placeholder="" ng-model="$ctrl.template.emailSettings.subject">
+                <input type="text" class="form-control" id="subject" placeholder="" ng-model="$ctrl.form.emailSettings.subject">
             </div>
             <div class="col-xs-3 buttons-container">
                 <variables-button class="col-xs-12" on-variable-selected="$ctrl.variableSelected($event)"></variables-button>
@@ -41,7 +48,7 @@
             <div class="col-xs-10 input-container">
                 <div class="checkbox">
                     <label for="htmlEmail">
-                        <input type="checkbox" id="htmlEmail" ng-model="$ctrl.template.htmlEmail" ng-change="$ctrl.htmlEmailToggle()">
+                        <input type="checkbox" id="htmlEmail" ng-model="$ctrl.form.htmlEmail" ng-change="$ctrl.htmlEmailToggle()">
                         HTML email
                     </label>
                 </div>
@@ -54,14 +61,14 @@
             </div>
             <div class="col-xs-7 input-container">
                 <uib-tabset active="$ctrl.activeTab" class="nav-tabs-custom">
-                    <uib-tab index="0" heading="HTML" disable="!$ctrl.template.htmlEmail">
-                        <div ui-ace ng-model="$ctrl.template.emailSettings.html" ng-show="!$ctrl.showPreview"></div>
+                    <uib-tab index="0" heading="HTML" disable="!$ctrl.form.htmlEmail">
+                        <div ui-ace ng-model="$ctrl.form.emailSettings.html" ng-show="!$ctrl.showPreview"></div>
                         <iframe class="message-preview-container" srcdoc="{{$ctrl.getTrustedHtml()}}" ng-show="$ctrl.showPreview" frameborder="0"></iframe>
                     </uib-tab>
                     <uib-tab index="1" heading="Text">
-                        <textarea class="form-control" rows="9" ng-model="$ctrl.template.emailSettings.text" ng-show="!$ctrl.showPreview"></textarea>
+                        <textarea class="form-control" rows="9" ng-model="$ctrl.form.emailSettings.text" ng-show="!$ctrl.showPreview"></textarea>
                         <div class="message-preview-container" ng-show="$ctrl.showPreview">
-                            {{$ctrl.getPreview($ctrl.template.emailSettings.text)}}
+                            {{$ctrl.getPreview($ctrl.form.emailSettings.text)}}
                         </div>
                     </uib-tab>
                 </uib-tabset>
@@ -80,8 +87,8 @@
         </div>
         <div class="form-group text-right">
             <div class="col-xs-12">
-                <button type="submit" class="btn btn-flat btn-info">Save</button>
-                <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
+                <button type="submit" class="btn btn-flat btn-info" ng-disabled="!$ctrl.showPendingChanges">Save</button>
+                <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()" ng-disabled="!$ctrl.showPendingChanges">Cancel</button>
             </div>
         </div>
     </form>
