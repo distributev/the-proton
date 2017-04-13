@@ -13,15 +13,33 @@ export default angular
         $stateProvider
             .state('main.loggingTracing', {
                 url: 'logging-tracing',
-                component: 'loggingTracing'
+                component: 'loggingTracing',
+                resolve: {
+                    logs: LoggerService => {
+                        'ngInject'
+                        return LoggerService.getLogs();
+                    }
+                }
             })
             .state('main.processing.doAction.loggingTracing', {
                 url: 'logging-tracing',
-                component: 'loggingTracing'
+                component: 'loggingTracing',
+                resolve: {
+                    logs: LoggerService => {
+                        'ngInject'
+                        return LoggerService.getLogs();
+                    }
+                }
             })
             .state('main.processing.quality.loggingTracing', {
                 url: 'logging-tracing',
-                component: 'loggingTracing'
+                component: 'loggingTracing',
+                resolve: {
+                    logs: LoggerService => {
+                        'ngInject'
+                        return LoggerService.getLogs();
+                    }
+                }
             });
         $urlRouterProvider.otherwise('/');
     })

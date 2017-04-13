@@ -4,9 +4,9 @@ import fsExtra from 'fs-extra';
 const fs = Promise.promisifyAll(fsExtra);
 import path from 'path';
 import winston from 'winston';
-import { spawn } from 'child_process';
 import chokidar from 'chokidar';
-import moment from 'moment';
+import { Tail } from 'tail';
+import readline from 'readline';
 
 export class Logger {
 
@@ -22,6 +22,12 @@ export class Logger {
         this.subject = new rx.Subject();
         this.configPath = configPath;
         this.logsPath = path.join(__dirname, configPath, logsPath);
+        this.logsTail = {
+            errors: [],
+            warnings: [],
+            info: [],
+            debug: []
+        };
         // this.initLogger();
     }
 
@@ -38,36 +44,56 @@ export class Logger {
                             filename: path.join(this.logsPath, 'info.log'),
                             level: 'info',
                             tailable: true,
+                            json: false,
                             maxSize: 1000000,
                             maxFiles: 10,
-                            timestamp: () => new Date().toISOString()
+                            timestamp: () => new Date().toISOString(),
+                            formatter: function(options) {
+                                return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (options.message ? options.message : '') +
+                                (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+                            }
                         }),
                         new(winston.transports.File)({
                             name: 'warn-file',
                             filename: path.join(this.logsPath, 'warnings.log'),
                             level: 'warn',
                             tailable: true,
+                            json: false,
                             maxSize: 1000000,
                             maxFiles: 10,
-                            timestamp: () => new Date().toISOString()
+                            timestamp: () => new Date().toISOString(),
+                            formatter: function(options) {
+                                return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (options.message ? options.message : '') +
+                                (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+                            }
                         }),
                         new(winston.transports.File)({
                             name: 'error-file',
                             filename: path.join(this.logsPath, 'errors.log'),
                             level: 'error',
                             tailable: true,
+                            json: false,
                             maxSize: 1000000,
                             maxFiles: 10,
-                            timestamp: () => new Date().toISOString()
+                            timestamp: () => new Date().toISOString(),
+                            formatter: function(options) {
+                                return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (options.message ? options.message : '') +
+                                (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+                            }
                         }),
                         new(winston.transports.File)({
                             name: 'debug-file',
                             filename: path.join(this.logsPath, 'debug.log'),
                             level: 'debug',
                             tailable: true,
+                            json: false,
                             maxSize: 1000000,
                             maxFiles: 10,
-                            timestamp: () => new Date().toISOString()
+                            timestamp: () => new Date().toISOString(),
+                            formatter: function(options) {
+                                return options.timestamp() +' '+ options.level.toUpperCase() +' '+ (options.message ? options.message : '') +
+                                (options.meta && Object.keys(options.meta).length ? '\n\t'+ JSON.stringify(options.meta) : '' );
+                            }
                         })
                     ]
                 });
@@ -129,19 +155,19 @@ export class Logger {
     }
 
     info(log) {
-        this.logger.info(`[${new Date().toISOString()}] INFO: ${log}`);
+        this.logger.info(log);
     }
 
     warn(log) {
-        this.logger.warn(`[${new Date().toISOString()}] WARNING: ${log}`);
+        this.logger.warn(log);
     }
 
     error(log) {
-        this.logger.error(`[${new Date().toISOString()}] ERROR: ${log}`);
+        this.logger.error(log);
     }
 
     debug(log) {
-        this.logger.debug(`[${new Date().toISOString()}] DEBUG: ${log}`);
+        this.logger.debug(log);
     }
 
     clear(logLevel) {
@@ -155,37 +181,115 @@ export class Logger {
             .then(() => fs.truncateAsync(path.join(this.logsPath, `debug.log`), 0));
     }
 
-    tail(size) {
-        var options = {
-            limit: size,
-            order: 'desc'
-        };
+    getLogs() {
+        return this.$q.all({
+            errors: this.getErrorLogs(),
+            warnings: this.getWarningsLogs(),
+            info: this.getInfoLogs(),
+            debug: this.getDebugLogs()
+        });
+        // this.logger.query({ order: 'desc' }, (err, results) => {
+        //     if (err) reject(err);
+        //     angular.forEach(results, (logs, transport) => {
+        //         angular.forEach(logs.reverse(), log => {
+        //             if (transport === 'error-file' && log.level === 'error' && !this.logsTail.errors.find(msg => msg === log.message)) this.logsTail.errors.push(log.message);
+        //             if (transport === 'warn-file' && log.level === 'warn' && !this.logsTail.warnings.find(msg => msg === log.message)) this.logsTail.warnings.push(log.message);
+        //             if (transport === 'info-file' && log.level === 'info' && !this.logsTail.info.find(msg => msg === log.message)) this.logsTail.info.push(log.message);
+        //             if (transport === 'debug-file' && log.level === 'debug' && !this.logsTail.debug.find(msg => msg === log.message)) this.logsTail.debug.push(log.message);
+        //         });
+        //     });
+        //     resolve(this.logsTail);
+        // });
+    }
 
+    getErrorLogs() {
+        return this.$q((resolve) => {
+            let errors = [];
+            readline.createInterface({
+                input: fs.createReadStream(this.logsPath, `errors.log`)
+            }).on('line', (line) => {
+                if (line !== '' && !this.logsTail.errors.find(msg => msg === line)) errors.push(line);
+            }).on('close', () => {
+                return resolve(errors);
+            });
+        });
+    }
+
+    getWarningLogs() {
+        return this.$q((resolve) => {
+            let warnings = [];
+            readline.createInterface({
+                input: fs.createReadStream(this.logsPath, `warnings.log`)
+            }).on('line', (line) => {
+                if (line !== '' && !this.logsTail.warnings.find(msg => msg === line)) warnings.push(line);
+            }).on('close', () => {
+                return resolve(warnings);
+            });
+        });
+    }
+
+    getInfoLogs() {
+        return this.$q((resolve) => {
+            let info = [];
+            readline.createInterface({
+                input: fs.createReadStream(this.logsPath, `info.log`)
+            }).on('line', (line) => {
+                if (line !== '' && !this.logsTail.info.find(msg => msg === line)) info.push(line);
+            }).on('close', () => {
+                return resolve(info);
+            });
+        });
+    }
+
+    getDebugLogs() {
+        return this.$q((resolve) => {
+            let debug = [];
+            readline.createInterface({
+                input: fs.createReadStream(this.logsPath, `debug.log`)
+            }).on('line', (line) => {
+                if (line !== '' && !this.logsTail.debug.find(msg => msg === line)) debug.push(line);
+            }).on('close', () => {
+                return resolve(debug);
+            });
+        });
+    }
+
+    tail() {
         return rx.Observable.create(observable => {
-            this.logger.query(options, (err, results) => {
-                if (err) observable.onError(err);
-                this.logsTail = {
-                    errors: [],
-                    warnings: [],
-                    info: [],
-                    debug: []
-                };
-                angular.forEach(results, (logs, transport) => {
-                    angular.forEach(logs.reverse(), log => {
-                        if (transport === 'error-file' && log.level === 'error' && !this.logsTail.errors.find(msg => msg === log.message)) this.logsTail.errors.push(log.message);
-                        if (transport === 'warn-file' && log.level === 'warn' && !this.logsTail.warnings.find(msg => msg === log.message)) this.logsTail.warnings.push(log.message);
-                        if (transport === 'info-file' && log.level === 'info' && !this.logsTail.info.find(msg => msg === log.message)) this.logsTail.info.push(log.message);
-                        if (transport === 'debug-file' && log.level === 'debug' && !this.logsTail.debug.find(msg => msg === log.message)) this.logsTail.debug.push(log.message);
-                    });
-                });
-                observable.onNext(this.logsTail);
-                this.logger.on('logging', (transport, level, message, meta) => {
-                    if (transport.name === 'error-file' && level === 'error' && !this.logsTail.errors.find(msg => msg === message)) this.logsTail.errors.push(message);
-                    if (transport.name === 'warn-file' && level === 'warn' && !this.logsTail.warnings.find(msg => msg === message)) this.logsTail.warnings.push(message);
-                    if (transport.name === 'info-file' && level === 'info' && !this.logsTail.info.find(msg => msg === message)) this.logsTail.info.push(message);
-                    if (transport.name === 'debug-file' && level === 'debug' && !this.logsTail.debug.find(msg => msg === message)) this.logsTail.debug.push(message);
+            const errorTail = new Tail(path.join(this.logsPath, `errors.log`), { fromBeginning: true });
+            errorTail.on("line", data => {
+                if (data !== '' && !this.logsTail.errors.find(msg => msg === data)) {
+                    this.logsTail.errors.push(data);
                     observable.onNext(this.logsTail);
-                });
+                }
+            });
+            const warningTail = new Tail(path.join(this.logsPath, `warnings.log`), { fromBeginning: true });
+            warningTail.on("line", data => {
+                if (data !== '' && !this.logsTail.warnings.find(msg => msg === data)) {
+                    this.logsTail.warnings.push(data);
+                    observable.onNext(this.logsTail);
+                }
+            });
+            const infoTail = new Tail(path.join(this.logsPath, `info.log`), { fromBeginning: true });
+            infoTail.on("line", data => {
+                if (data !== '' && !this.logsTail.info.find(msg => msg === data)) {
+                    this.logsTail.info.push(data);
+                    observable.onNext(this.logsTail);
+                }
+            });
+            const debugTail = new Tail(path.join(this.logsPath, `debug.log`), { fromBeginning: true });
+            debugTail.on("line", data => {
+                if (data !== '' && !this.logsTail.debug.find(msg => msg === data)) {
+                    this.logsTail.debug.push(data);
+                    observable.onNext(this.logsTail);
+                }
+            });
+            return rx.Disposable.create(() => {
+                console.log('disposed');
+                errorTail.unwatch();
+                warningTail.unwatch();
+                infoTail.unwatch();
+                if (debugTail) debugTail.unwatch();
             });
         });
     }

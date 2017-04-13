@@ -31,7 +31,9 @@
                     <div class="panel panel-default">
                         <div class="panel-body row">
                             <h5 class="text-info col-xs-12">Info Log Tail</h5>
-                            <div class="text-info col-xs-12" ng-repeat="log in $ctrl.infoLogs | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
+                            <div class="tail-body">
+                                <div class="text-info col-xs-12" ng-repeat="log in $ctrl.logs.info | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -39,7 +41,9 @@
                     <div class="panel panel-default">
                         <div class="panel-body row">
                             <h5 class="text-warning col-xs-12">Warning Log Tail</h5>
-                            <div class="text-warning col-xs-12" ng-repeat="log in $ctrl.warningLogs | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
+                            <div class="tail-body half">
+                                <div class="text-warning col-xs-12" ng-repeat="log in $ctrl.logs.warnings | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -47,7 +51,9 @@
                     <div class="panel panel-default">
                         <div class="panel-body row">
                             <h5 class="text-danger col-xs-12">Error Log Tail</h5>
-                            <div class="text-danger col-xs-12" ng-repeat="log in $ctrl.errorLogs | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
+                            <div class="tail-body half">
+                                <div class="text-danger col-xs-12" ng-repeat="log in $ctrl.logs.errors | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>

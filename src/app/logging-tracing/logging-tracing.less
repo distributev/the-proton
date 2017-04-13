@@ -1,3 +1,33 @@
-.logging-tail-panel > div {
-    font-size: 10px;
+logging-tracing {
+    .box {
+        margin-bottom: 0;
+    }
+
+    .table {
+        margin-bottom: 10px;
+    }
+
+    .logging-tail-panel {
+        padding-left: 5px;
+
+        &:first-child {
+            padding-right: 5px;
+            padding-left: 15px;
+        }
+
+        > div {
+            font-size: 10px;
+            margin-bottom: 10px;
+
+            .tail-body {
+                overflow: auto;
+                height: 235px;
+                width: 100%;
+            }
+
+            .tail-body.half {
+                height: 79px;
+            }
+        }
+    }
 }

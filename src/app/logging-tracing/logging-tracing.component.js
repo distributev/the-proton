@@ -11,14 +11,13 @@ class LoggingTracingController {
 
     $onInit() {
         this.observables = [];
-        this.logTailSize = 20;
         this.JobService.getJobs()
             .then(jobs => {
                 this.currentJobs = jobs;
-                this.observables.push(this.LoggerService.tail(this.logTailSize).subscribe(logsTail => {
-                    this.errorLogs = logsTail.errors;
-                    this.warningLogs = logsTail.warnings;
-                    this.infoLogs = logsTail.info;
+                this.observables.push(this.LoggerService.tail().subscribe(logsTail => {
+                    this.logs.errors.concat(logsTail.errors);
+                    this.logs.warnings.concat(logsTail.warnings);
+                    this.logs.info.concat(logsTail.info);
                 }));
             })
             .catch(console.warn);
@@ -39,34 +38,36 @@ class LoggingTracingController {
 
     clearInfoLogs() {
         this.LoggerService.clear('info')
-            .then(() => this.infoLogs = [])
+            .then(() => this.logs.info = [])
             .catch(console.warn);
     }
 
     clearWarningLogs() {
         this.LoggerService.clear('warnings')
-            .then(() => this.warningLogs = [])
+            .then(() => this.logs.warnings = [])
             .catch(console.warn);
     }
 
     clearErrorLogs() {
         this.LoggerService.clear('errors')
-            .then(() => this.errorLogs = [])
+            .then(() => this.logs.errors = [])
             .catch(console.warn);
     }
 
     clearAllLogs() {
         this.LoggerService.clearAll()
             .then(() => {
-                this.infoLogs = [];
-                this.warningLogs = [];
-                this.errorLogs = [];
+                this.logs.info = [];
+                this.logs.warnings = [];
+                this.logs.errors = [];
             });
     }
 }
 
 export const LoggingTracingComponent = {
-    bindings: {},
+    bindings: {
+        logs: '<'
+    },
     template: require('./logging-tracing.html'),
     controller: LoggingTracingController
 };

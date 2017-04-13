@@ -3,8 +3,8 @@
     "description": "The Proton App",
     "productName": "theproton",
     "repository": {
-      "type": "git",
-      "url": "git+https://github.com/distributev/the-proton.git"
+        "type": "git",
+        "url": "git+https://github.com/distributev/the-proton.git"
     },
     "version": "0.0.1",
     "author": "Luis Manuel <luisman40@gmail.com>",
@@ -79,6 +79,7 @@
         "nodemailer-wellknown": "^0.2.1",
         "rx-angular": "^1.1.3",
         "source-map-support": "^0.4.2",
+        "tail": "^1.2.1",
         "through2": "^2.0.3",
         "winston": "^2.3.1",
         "xml2js": "^0.4.17"
