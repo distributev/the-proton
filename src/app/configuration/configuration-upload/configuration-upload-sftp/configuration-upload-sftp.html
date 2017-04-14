@@ -1,11 +1,4 @@
 <div class="tab-pane active">
-    <div class="alert alert-info alert-changes" role="alert" ng-show="$ctrl.showPendingChanges">
-        <div>
-            <i class="glyphicon glyphicon-info-sign"></i> Changes detected
-            <button type="button" class="btn btn-flat btn-info" ng-click="$ctrl.onSubmit()">Save</button>
-            <button type="button" class="btn btn-flat btn-default" ng-click="$ctrl.onCancel()">Cancel</button>
-        </div>
-    </div>
     <form class="form-horizontal" ng-submit="$ctrl.onSubmit()">
         <div class="form-group">
             <label for="command" class="col-xs-2 control-label">Command</label>

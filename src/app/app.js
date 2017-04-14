@@ -39,17 +39,61 @@ import confirmationModal from '../components/confirmation-modal/confirmation-mod
 import feedbackModal from '../components/feedback-modal/feedback-modal.module';
 import job from '../components/job/job.module';
 import logger from '../components/logger/logger.module';
+import changesDetected from '../components/changes-detected/changes-detected.module';
 
 import './app.less';
 
 angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', luegg, navbar,
         footer, config, main, breadcrumb, constants, mainSidebar, controlSidebar, skin,
         processing, configuration, configurationTemplates, loggingTracing, about, electronDialogButton,
-        variablesButton, confirmationModal, feedbackModal, job, logger
+        variablesButton, confirmationModal, feedbackModal, job, logger, changesDetected
     ])
     .config(routeConfig)
-    .run(($transitions, BreadcrumbService) => {
+    .run(($transitions, $uibModal, $q, BreadcrumbService, LoggerService, ConfigurationTemplatesService) => {
         'ngInject';
+        ConfigurationTemplatesService.getDefault()
+            .then(() => LoggerService.initLogger())
+            .then(() => {
+                $transitions.onExit({ exiting: 'main.configuration.**' }, ($transition$) => {
+                    return ConfigurationTemplatesService.checkForChanges()
+                        .then(changes => {
+                            if (changes && !$transition$.to().name.startsWith('main.configuration')) {
+                                return $uibModal.open({
+                                    animation: true,
+                                    component: 'confirmationModal',
+                                    size: 'sm',
+                                    resolve: {
+                                        title: () => 'Unsaved Changes',
+                                        message: () => 'You have unsaved changes!',
+                                        okLabel: () => 'Save',
+                                        cancelLabel: () => 'Cancel'
+                                    }
+                                }).result.then(result => {
+                                    if (result) {
+                                        return ConfigurationTemplatesService.setTemplate()
+                                            .then(() => {
+                                                return $uibModal.open({
+                                                    animation: true,
+                                                    component: 'feedbackModal',
+                                                    size: 'sm',
+                                                    resolve: {
+                                                        message: () => `Configuration settings saved!`
+                                                    }
+                                                }).result.then(() => $q.resolve(true), () => $q.resolve(true));
+                                            });
+                                    } else {
+                                        return $q.resolve(false);
+                                    }
+                                }, () => {
+                                    return $q.resolve(false);
+                                });
+                            } else {
+                                return $q.resolve(true)
+                            }
+                        });
+                });
+            });
+
         $transitions.onSuccess({}, ($transition$) => {
             BreadcrumbService.setCurrentState($transition$.treeChanges().to);
         });

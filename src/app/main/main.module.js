@@ -15,13 +15,6 @@ export default angular
                     skin: (SkinService) => {
                         'ngInject';
                         return SkinService.getSkin();
-                    },
-                    defaultTemplate: (ConfigurationTemplatesService) => {
-                        'ngInject'
-                        return ConfigurationTemplatesService.getDefault();
-                    },
-                    logger: (LoggerService) => {
-                        return LoggerService.initLogger();
                     }
                 },
                 component: 'main'

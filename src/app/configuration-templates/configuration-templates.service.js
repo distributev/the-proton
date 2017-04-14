@@ -14,9 +14,12 @@ export class ConfigurationTemplates {
         this.$q = $q;
         this.subject = new rx.Subject();
         this.changesSubject = new rx.Subject();
+        this.resetSubject = new rx.Subject();
         this.configPath = configPath;
         this.templatesPath = templatesPath;
         this.defaultTemplateFile = defaultTemplateFile;
+        this.getSavedTemplate()
+            .then(template => this.savedTemplate = template);
     }
 
     getCurrentTemplate() {
@@ -39,7 +42,11 @@ export class ConfigurationTemplates {
                 }
                 this.currentTemplate = template;
                 if (notify) this.subject.onNext(this.currentTemplate);
-                return this.$q.resolve(this.currentTemplate);
+                this.checkForChanges()
+                    .then(changes => {
+                        this.changesSubject.onNext(changes);
+                        return this.$q.resolve(this.currentTemplate);
+                    });
             });
     }
 
@@ -52,12 +59,42 @@ export class ConfigurationTemplates {
             })
             .then(templates => {
                 template = _.find(templates, { 'path': template.path });
-                return this.setCurrentTemplate(template);
+                this.checkForChanges()
+                    .then(changes => {
+                        this.changesSubject.onNext(changes);
+                        this.resetSubject.onNext(template);
+                        return this.setCurrentTemplate(template);
+                    });
             });
+    }
+
+    checkForChanges() {
+        return this.getSavedTemplate()
+            .then(savedTemplate => {
+                if (!angular.equals(this.currentTemplate, savedTemplate)) {
+                    return this.$q.resolve(true);
+                } else {
+                    return this.$q.resolve(false);
+                }
+            });
+    }
+
+    getSavedTemplate() {
+        return this.getCurrentTemplate()
+            .then(currentTemplate => this.getTemplate(currentTemplate.path));
+
     }
 
     subscribe(template) {
         return this.subject.subscribe(template);
+    }
+
+    subscribeToChanges(template) {
+        return this.changesSubject.subscribe(template);
+    }
+
+    subscribeToReset(template) {
+        return this.resetSubject.subscribe(template);
     }
 
     initDefault() {
@@ -117,6 +154,7 @@ export class ConfigurationTemplates {
     }
 
     setTemplate(data) {
+        data = data || this.currentTemplate;
         let filePath = data.path;
         let template = {};
         return this.getTemplates()

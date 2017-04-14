@@ -15,49 +15,49 @@ class ConfigurationEmailAttachmentsController {
 
     $onInit() {
         this.selectedAttachment = [];
-        this.form = angular.copy(_.pick(this.template, [
-                'path',
-                'name',
-                'attachments'
-            ]));
         this.currentTemplateSubscription = this.ConfigurationTemplatesService.subscribe(template => this.loadTemplate(template));
+        this.resetTemplateSubscription = this.ConfigurationTemplatesService.subscribeToChanges(changes => this.showPendingChanges = changes);
+        this.resetTemplateSubscription = this.ConfigurationTemplatesService.subscribeToReset(template => this.template = template);
     }
 
-    $onChanges(changes) {}
+    $onChanges(changes) {
+        if (changes.template) {
+            this.template = angular.copy(this.template);
+        }
+    }
 
     $doCheck() {
-        this.saved = angular.copy(_.pick(this.template, _.keys(this.form)));
-        if (!angular.equals(this.form, this.saved)) {
-            this.showPendingChanges = true;
-        }
-        else {
-            this.showPendingChanges = false;
+        if (!angular.equals(this.template, this.previousTemplate)) {
+            this.ConfigurationTemplatesService.setCurrentTemplate(angular.copy(this.template))
+            .then(() => {
+                this.previousTemplate = angular.copy(this.template);
+            });
         }
     }
 
     $onDestroy() {
-        this.ConfigurationTemplatesService.setCurrentTemplate(this.form);
         this.currentTemplateSubscription.dispose();
     }
 
     loadTemplate(template) {
-        this.form = angular.copy(_.pick(template, _.keys(this.form)));
-        this.$uibModal.open({
-            animation: true,
-            component: 'feedbackModal',
-            size: 'sm',
-            resolve: {
-                message: () => `Configuration '${this.form.name}'loaded!`
-            }
-        });
+        if (this.template.path !== template.path) {
+            this.$uibModal.open({
+                animation: true,
+                component: 'feedbackModal',
+                size: 'sm',
+                resolve: {
+                    message: () => `Configuration '${this.template.name}'loaded!`
+                }
+            });
+        }
     }
 
     onSubmit() {
-        angular.forEach(this.form.attachments.items.attachment, (attachment, index) => {
+        angular.forEach(this.template.attachments.items.attachment, (attachment, index) => {
             attachment.$.order = index;
             delete attachment.$$hashKey;
         });
-        this.ConfigurationTemplatesService.setTemplate(this.form)
+        this.ConfigurationTemplatesService.setTemplate(this.template)
             .then(template => {
                 this.template = angular.copy(template);
                 this.$uibModal.open({
@@ -73,7 +73,7 @@ class ConfigurationEmailAttachmentsController {
 
     onCancel() {
         this.ConfigurationTemplatesService.resetCurrentTemplate()
-            .then(template => this.form = template);
+            .then(template => this.template = template);
     }
 
     getSelectedAttachment() {
@@ -84,7 +84,7 @@ class ConfigurationEmailAttachmentsController {
         this.$timeout(() => {
             let targetInput = angular.element(target).parents('.form-group').find('input')[0];
             let inputModel = targetInput.getAttribute('ng-model').split('.').pop();
-            this.form.attachments.archive[inputModel] = this.form.attachments.archive[inputModel] ? this.form.attachments.archive[inputModel] + variable.name : variable.name;
+            this.template.attachments.archive[inputModel] = this.template.attachments.archive[inputModel] ? this.template.attachments.archive[inputModel] + variable.name : variable.name;
             targetInput.focus();
         });
     }
@@ -100,10 +100,10 @@ class ConfigurationEmailAttachmentsController {
 
         modalInstance.result.then(result => {
             if (attachment) {
-                let index = _.indexOf(this.form.attachments.items.attachment, attachment);
-                this.form.attachments.items.attachment[index].$.path = result;
+                let index = _.indexOf(this.template.attachments.items.attachment, attachment);
+                this.template.attachments.items.attachment[index].$.path = result;
             } else {
-                this.form.attachments.items.attachment.push({
+                this.template.attachments.items.attachment.push({
                     $: {
                         path: result
                     }
@@ -116,21 +116,21 @@ class ConfigurationEmailAttachmentsController {
 
     removeAttachment(attachment) {
         if (attachment) {
-            _.remove(this.form.attachments.items.attachment, o => o.$.path === attachment.$.path);
+            _.remove(this.template.attachments.items.attachment, o => o.$.path === attachment.$.path);
         }
     }
 
     attachmentUp(attachment) {
-        let index = _.indexOf(this.form.attachments.items.attachment, attachment);
+        let index = _.indexOf(this.template.attachments.items.attachment, attachment);
         if (index > 0) {
-            this.move(this.form.attachments.items.attachment, index, index - 1);
+            this.move(this.template.attachments.items.attachment, index, index - 1);
         }
     }
 
     attachmentDown(attachment) {
-        let index = _.indexOf(this.form.attachments.items.attachment, attachment);
-        if (index < this.form.attachments.items.attachment.length) {
-            this.move(this.form.attachments.items.attachment, index, index + 1);
+        let index = _.indexOf(this.template.attachments.items.attachment, attachment);
+        if (index < this.template.attachments.items.attachment.length) {
+            this.move(this.template.attachments.items.attachment, index, index + 1);
         }
     }
 
@@ -139,7 +139,7 @@ class ConfigurationEmailAttachmentsController {
     }
 
     clearAttachments() {
-        this.form.attachments.items.attachment = [];
+        this.template.attachments.items.attachment = [];
     }
 }
 

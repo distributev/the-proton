@@ -208,18 +208,6 @@ export class Logger {
             info: this.getInfoLogs(),
             debug: this.getDebugLogs()
         });
-        // this.logger.query({ order: 'desc' }, (err, results) => {
-        //     if (err) reject(err);
-        //     angular.forEach(results, (logs, transport) => {
-        //         angular.forEach(logs.reverse(), log => {
-        //             if (transport === 'error-file' && log.level === 'error' && !this.logsTail.errors.find(msg => msg === log.message)) this.logsTail.errors.push(log.message);
-        //             if (transport === 'warn-file' && log.level === 'warn' && !this.logsTail.warnings.find(msg => msg === log.message)) this.logsTail.warnings.push(log.message);
-        //             if (transport === 'info-file' && log.level === 'info' && !this.logsTail.info.find(msg => msg === log.message)) this.logsTail.info.push(log.message);
-        //             if (transport === 'debug-file' && log.level === 'debug' && !this.logsTail.debug.find(msg => msg === log.message)) this.logsTail.debug.push(log.message);
-        //         });
-        //     });
-        //     resolve(this.logsTail);
-        // });
     }
 
     getErrorLogs() {
@@ -305,7 +293,6 @@ export class Logger {
                 }
             });
             return rx.Disposable.create(() => {
-                console.log('disposed');
                 errorTail.unwatch();
                 warningTail.unwatch();
                 infoTail.unwatch();

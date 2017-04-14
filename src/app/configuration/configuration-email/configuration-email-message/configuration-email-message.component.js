@@ -14,48 +14,47 @@ class ConfigurationEmailMessageController {
     }
 
     $onInit() {
+        this.previousTemplate = angular.copy(this.template);
         this.activeTab = 1;
-        this.form = angular.copy(_.pick(this.template, [
-                'path',
-                'name',
-                'emailSettings',
-                'htmlEmail',
-                'path'
-            ]));
         this.currentTemplateSubscription = this.ConfigurationTemplatesService.subscribe(template => this.loadTemplate(template));
+        this.resetTemplateSubscription = this.ConfigurationTemplatesService.subscribeToChanges(changes => this.showPendingChanges = changes);
+        this.resetTemplateSubscription = this.ConfigurationTemplatesService.subscribeToReset(template => this.template = template);
     }
 
-    $onChanges(changes) {}
+    $onChanges(changes) {
+        if (changes.template) {
+            this.template = angular.copy(this.template);
+        }
+    }
 
     $doCheck() {
-        this.saved = angular.copy(_.pick(this.template, _.keys(this.form)));
-        if (!angular.equals(this.form, this.saved)) {
-            this.showPendingChanges = true;
-        }
-        else {
-            this.showPendingChanges = false;
+        if (!angular.equals(this.template, this.previousTemplate)) {
+            this.ConfigurationTemplatesService.setCurrentTemplate(angular.copy(this.template))
+            .then(() => {
+                this.previousTemplate = angular.copy(this.template);
+            });
         }
     }
 
     $onDestroy() {
-        this.ConfigurationTemplatesService.setCurrentTemplate(this.form);
         this.currentTemplateSubscription.dispose();
     }
 
     loadTemplate(template) {
-        this.form = angular.copy(_.pick(template, _.keys(this.form)));
-        this.$uibModal.open({
-            animation: true,
-            component: 'feedbackModal',
-            size: 'sm',
-            resolve: {
-                message: () => `Configuration '${this.form.name}'loaded!`
-            }
-        });
+        if (this.template.path !== template.path) {
+            this.$uibModal.open({
+                animation: true,
+                component: 'feedbackModal',
+                size: 'sm',
+                resolve: {
+                    message: () => `Configuration '${this.template.name}'loaded!`
+                }
+            });
+        }
     }
 
     onSubmit() {
-        this.ConfigurationTemplatesService.setTemplate(this.form)
+        this.ConfigurationTemplatesService.setTemplate(this.template)
             .then(template => {
                 this.template = angular.copy(template);
                 this.$uibModal.open({
@@ -71,11 +70,11 @@ class ConfigurationEmailMessageController {
 
     onCancel() {
         this.ConfigurationTemplatesService.resetCurrentTemplate()
-            .then(template => this.form = template);
+            .then(template => this.template = template);
     }
 
     htmlEmailToggle() {
-        if (!this.form.htmlEmail && this.activeTab === 0) {
+        if (!this.template.htmlEmail && this.activeTab === 0) {
             this.activeTab = 1;
         }
     }
@@ -88,10 +87,10 @@ class ConfigurationEmailMessageController {
             resolve: {
                 email: () => {
                     return {
-                        htmlEmail: this.form.htmlEmail,
+                        htmlEmail: this.template.htmlEmail,
                         emailSettings: {
-                            text: this.form.emailSettings.text,
-                            html: this.form.emailSettings.html
+                            text: this.template.emailSettings.text,
+                            html: this.template.emailSettings.html
                         }
                     }
                 }
@@ -99,11 +98,9 @@ class ConfigurationEmailMessageController {
         });
 
         modalInstance.result.then(result => {
-            this.form.htmlEmail = result.htmlEmail;
-            this.form.emailSettings.text = result.emailSettings.text;
-            this.form.emailSettings.html = result.emailSettings.html;
-        }, reason => {
-            // console.log('modal-component dismissed with reason: ' + reason);
+            this.template.htmlEmail = result.htmlEmail;
+            this.template.emailSettings.text = result.emailSettings.text;
+            this.template.emailSettings.html = result.emailSettings.html;
         });
     }
 
@@ -120,7 +117,7 @@ class ConfigurationEmailMessageController {
             } else {
                 inputModel = targetInput[0].getAttribute('ng-model').split('.').pop();
             }
-            this.form.emailSettings[inputModel] = this.form.emailSettings[inputModel] ? this.form.emailSettings[inputModel] + variable.name : variable.name;
+            this.template.emailSettings[inputModel] = this.template.emailSettings[inputModel] ? this.template.emailSettings[inputModel] + variable.name : variable.name;
             targetInput.focus();
         });
     }
@@ -130,11 +127,11 @@ class ConfigurationEmailMessageController {
             .then(data => {
                 if (this.activeTab === 0) {
                     this.$timeout(() => {
-                        this.form.emailSettings.html = angular.copy(data);
+                        this.template.emailSettings.html = angular.copy(data);
                     });
                 } else {
                     this.$timeout(() => {
-                        this.form.emailSettings.text = angular.copy(data);
+                        this.template.emailSettings.text = angular.copy(data);
                     });
                 }
             })
@@ -144,9 +141,9 @@ class ConfigurationEmailMessageController {
     saveTemplate($event) {
         let data;
         if (this.activeTab === 0) {
-            data = this.form.emailSettings.html;
+            data = this.template.emailSettings.html;
         } else {
-            data = this.form.emailSettings.text;
+            data = this.template.emailSettings.text;
         }
         this.ConfigurationTemplatesService.saveFile($event.path, data)
             .then(() => {
@@ -176,7 +173,7 @@ class ConfigurationEmailMessageController {
     }
 
     getTrustedHtml() {
-        return this.$sce.trustAsHtml(this.getPreview(this.form.emailSettings.html));
+        return this.$sce.trustAsHtml(this.getPreview(this.template.emailSettings.html));
     }
 }
 
