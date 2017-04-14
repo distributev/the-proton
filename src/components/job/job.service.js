@@ -72,9 +72,9 @@ export class Job {
         const external = spawn(job.command, job.args);
 
         external.stdout.on('data', (data) => {
-            if (data.toString().startsWith('warn:')) {
+            if (data.toString().includes('warn:')) {
                 this.LoggerService.warn(data.toString().substr(6));
-            } else if (data.toString().startsWith('info:')) {
+            } else if (data.toString().includes('info:')) {
                 this.LoggerService.info(data.toString().substr(6));
             } else {
                 this.LoggerService.info(data.toString());
@@ -83,7 +83,7 @@ export class Job {
 
         external.stderr.on('data', (data) => {
             this.LoggerService.error(data.toString());
-            if (data.toString().startsWith('error:')) {
+            if (data.toString().includes('error:')) {
                 this.LoggerService.error(data.toString().substr(8));
             } else {
                 this.LoggerService.info(data.toString());

@@ -31,7 +31,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body row">
                             <h5 class="text-info col-xs-12">Info Log Tail</h5>
-                            <div class="tail-body" scroll-glue>
+                            <div class="tail-body" scroll-glue-top="glued">
                                 <div class="text-info col-xs-12" ng-repeat="log in $ctrl.logs.info | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
                             </div>
                         </div>
@@ -41,7 +41,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body row">
                             <h5 class="text-warning col-xs-12">Warning Log Tail</h5>
-                            <div class="tail-body half" scroll-glue>
+                            <div class="tail-body half" scroll-glue-top="glued">
                                 <div class="text-warning col-xs-12" ng-repeat="log in $ctrl.logs.warnings | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
                             </div>
                         </div>
@@ -51,7 +51,7 @@
                     <div class="panel panel-default">
                         <div class="panel-body row">
                             <h5 class="text-danger col-xs-12">Error Log Tail</h5>
-                            <div class="tail-body half" scroll-glue>
+                            <div class="tail-body half" scroll-glue-top="glued">
                                 <div class="text-danger col-xs-12" ng-repeat="log in $ctrl.logs.errors | limitTo: $ctrl.logTailSize * (-1) track by $index">{{log}}</div>
                             </div>
                         </div>

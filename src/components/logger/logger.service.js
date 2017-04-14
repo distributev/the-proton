@@ -230,7 +230,7 @@ export class Logger {
             }).on('line', (line) => {
                 if (line !== '' && !errors.find(msg => msg === line)) errors.push(line);
             }).on('close', () => {
-                return resolve(errors);
+                return resolve(errors.reverse());
             });
         });
     }
@@ -243,7 +243,7 @@ export class Logger {
             }).on('line', (line) => {
                 if (line !== '' && !warnings.find(msg => msg === line)) warnings.push(line);
             }).on('close', () => {
-                return resolve(warnings);
+                return resolve(warnings.reverse());
             });
         });
     }
@@ -256,7 +256,7 @@ export class Logger {
             }).on('line', (line) => {
                 if (line !== '' && !info.find(msg => msg === line)) info.push(line);
             }).on('close', () => {
-                return resolve(info);
+                return resolve(info.reverse());
             });
         });
     }
@@ -269,7 +269,7 @@ export class Logger {
             }).on('line', (line) => {
                 if (line !== '' && !debug.find(msg => msg === line)) debug.push(line);
             }).on('close', () => {
-                return resolve(debug);
+                return resolve(debug.reverse());
             });
         });
     }
@@ -279,28 +279,28 @@ export class Logger {
             const errorTail = new Tail(path.join(this.logsPath, `errors.log`), { fromBeginning: true });
             errorTail.on("line", data => {
                 if (data !== '' && !this.logsTail.errors.find(msg => msg === data)) {
-                    this.logsTail.errors.push(data);
+                    this.logsTail.errors.unshift(data);
                     observable.onNext(this.logsTail);
                 }
             });
             const warningTail = new Tail(path.join(this.logsPath, `warnings.log`), { fromBeginning: true });
             warningTail.on("line", data => {
                 if (data !== '' && !this.logsTail.warnings.find(msg => msg === data)) {
-                    this.logsTail.warnings.push(data);
+                    this.logsTail.warnings.unshift(data);
                     observable.onNext(this.logsTail);
                 }
             });
             const infoTail = new Tail(path.join(this.logsPath, `info.log`), { fromBeginning: true });
             infoTail.on("line", data => {
                 if (data !== '' && !this.logsTail.info.find(msg => msg === data)) {
-                    this.logsTail.info.push(data);
+                    this.logsTail.info.unshift(data);
                     observable.onNext(this.logsTail);
                 }
             });
             const debugTail = new Tail(path.join(this.logsPath, `debug.log`), { fromBeginning: true });
             debugTail.on("line", data => {
                 if (data !== '' && !this.logsTail.debug.find(msg => msg === data)) {
-                    this.logsTail.debug.push(data);
+                    this.logsTail.debug.unshift(data);
                     observable.onNext(this.logsTail);
                 }
             });
