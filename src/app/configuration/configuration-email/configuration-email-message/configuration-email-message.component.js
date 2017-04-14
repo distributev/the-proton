@@ -42,6 +42,7 @@ class ConfigurationEmailMessageController {
 
     loadTemplate(template) {
         if (this.template.path !== template.path) {
+            this.template = angular.copy(template);
             this.$uibModal.open({
                 animation: true,
                 component: 'feedbackModal',
