@@ -9,6 +9,7 @@ import ngSanitize from 'angular-sanitize';
 import uiRouter from 'angular-ui-router';
 import uiBootstrap from 'angular-ui-bootstrap';
 import 'angular-ui-ace';
+import luegg from 'angularjs-scroll-glue';
 // import ngMessages from 'angular-messages';
 
 // Import all bootstrap plugins
@@ -41,7 +42,7 @@ import logger from '../components/logger/logger.module';
 
 import './app.less';
 
-angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', navbar,
+angular.module('theProtonApp', [ngCookies, ngResource, ngSanitize, uiRouter, uiBootstrap, 'ui.ace', luegg, navbar,
         footer, config, main, breadcrumb, constants, mainSidebar, controlSidebar, skin,
         processing, configuration, configurationTemplates, loggingTracing, about, electronDialogButton,
         variablesButton, confirmationModal, feedbackModal, job, logger

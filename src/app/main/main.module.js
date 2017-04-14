@@ -21,7 +21,7 @@ export default angular
                         return ConfigurationTemplatesService.getDefault();
                     },
                     logger: (LoggerService) => {
-                        LoggerService.initLogger();
+                        return LoggerService.initLogger();
                     }
                 },
                 component: 'main'

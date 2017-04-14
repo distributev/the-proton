@@ -22,12 +22,6 @@ export class Logger {
         this.subject = new rx.Subject();
         this.configPath = configPath;
         this.logsPath = path.join(__dirname, configPath, logsPath);
-        this.logsTail = {
-            errors: [],
-            warnings: [],
-            info: [],
-            debug: []
-        };
         // this.initLogger();
     }
 
@@ -98,6 +92,11 @@ export class Logger {
                     ]
                 });
                 return this.initLogsWatcher();
+            })
+            .then(() => this.getLogs())
+            .then(logs => {
+                this.logsTail = logs;
+                return this.$q.resolve();
             });
     }
 
@@ -171,20 +170,41 @@ export class Logger {
     }
 
     clear(logLevel) {
-        return fs.truncateAsync(path.join(this.logsPath, `${logLevel}.log`), 0);
+        return fs.truncateAsync(path.join(this.logsPath, `${logLevel}.log`), 0)
+            .then(() => {
+                this.logsTail[logLevel] = [];
+                return this.$q.resolve();
+            });
     }
 
     clearAll() {
         return fs.truncateAsync(path.join(this.logsPath, `errors.log`), 0)
+            .then(() => {
+                this.logsTail.errors = [];
+                return this.$q.resolve();
+            })
             .then(() => fs.truncateAsync(path.join(this.logsPath, `warnings.log`), 0))
+            .then(() => {
+                this.logsTail.warnings = [];
+                return this.$q.resolve();
+            })
             .then(() => fs.truncateAsync(path.join(this.logsPath, `info.log`), 0))
-            .then(() => fs.truncateAsync(path.join(this.logsPath, `debug.log`), 0));
+            .then(() => {
+                this.logsTail.info = [];
+                return this.$q.resolve();
+            })
+            .then(() => fs.truncateAsync(path.join(this.logsPath, `debug.log`), 0))
+            .then(() => {
+                this.logsTail.debug = [];
+                return this.$q.resolve();
+            });
     }
 
     getLogs() {
-        return this.$q.all({
+        if (this.logsTail) return this.$q.resolve(this.logsTail);
+        else return this.$q.all({
             errors: this.getErrorLogs(),
-            warnings: this.getWarningsLogs(),
+            warnings: this.getWarningLogs(),
             info: this.getInfoLogs(),
             debug: this.getDebugLogs()
         });
@@ -206,9 +226,9 @@ export class Logger {
         return this.$q((resolve) => {
             let errors = [];
             readline.createInterface({
-                input: fs.createReadStream(this.logsPath, `errors.log`)
+                input: fs.createReadStream(path.join(this.logsPath, `errors.log`))
             }).on('line', (line) => {
-                if (line !== '' && !this.logsTail.errors.find(msg => msg === line)) errors.push(line);
+                if (line !== '' && !errors.find(msg => msg === line)) errors.push(line);
             }).on('close', () => {
                 return resolve(errors);
             });
@@ -219,9 +239,9 @@ export class Logger {
         return this.$q((resolve) => {
             let warnings = [];
             readline.createInterface({
-                input: fs.createReadStream(this.logsPath, `warnings.log`)
+                input: fs.createReadStream(path.join(this.logsPath, `warnings.log`))
             }).on('line', (line) => {
-                if (line !== '' && !this.logsTail.warnings.find(msg => msg === line)) warnings.push(line);
+                if (line !== '' && !warnings.find(msg => msg === line)) warnings.push(line);
             }).on('close', () => {
                 return resolve(warnings);
             });
@@ -232,9 +252,9 @@ export class Logger {
         return this.$q((resolve) => {
             let info = [];
             readline.createInterface({
-                input: fs.createReadStream(this.logsPath, `info.log`)
+                input: fs.createReadStream(path.join(this.logsPath, `info.log`))
             }).on('line', (line) => {
-                if (line !== '' && !this.logsTail.info.find(msg => msg === line)) info.push(line);
+                if (line !== '' && !info.find(msg => msg === line)) info.push(line);
             }).on('close', () => {
                 return resolve(info);
             });
@@ -245,9 +265,9 @@ export class Logger {
         return this.$q((resolve) => {
             let debug = [];
             readline.createInterface({
-                input: fs.createReadStream(this.logsPath, `debug.log`)
+                input: fs.createReadStream(path.join(this.logsPath, `debug.log`))
             }).on('line', (line) => {
-                if (line !== '' && !this.logsTail.debug.find(msg => msg === line)) debug.push(line);
+                if (line !== '' && !debug.find(msg => msg === line)) debug.push(line);
             }).on('close', () => {
                 return resolve(debug);
             });
