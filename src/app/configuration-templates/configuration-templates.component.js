@@ -1,12 +1,13 @@
 import _ from 'lodash';
 
 class ConfigurationTemplatesController {
-    constructor($state, $uibModal, ConfigurationTemplatesService, defaultSettingsFile) {
+    constructor($state, $uibModal, ConfigurationTemplatesService, defaultSettingsFile, defaultTemplateFile) {
         'ngInject';
         this.$state = $state;
         this.$uibModal = $uibModal;
         this.ConfigurationTemplatesService = ConfigurationTemplatesService;
         this.defaultSettingsFile = defaultSettingsFile;
+        this.defaultTemplateFile = defaultTemplateFile;
     }
 
     $onInit() {
@@ -81,7 +82,19 @@ class ConfigurationTemplatesController {
 
     removeTemplate(template) {
         if (template) {
-            _.remove(this.formData.templates, { path: template.path });
+            if (!template.path.includes(this.defaultTemplateFile)) {
+                _.remove(this.formData.templates, { path: template.path });
+            }
+            else {
+                this.$uibModal.open({
+                    animation: true,
+                    component: 'feedbackModal',
+                    size: 'sm',
+                    resolve: {
+                        message: () => `Default Configuration Template cannot be removed!`
+                    }
+                });
+            }
         }
     }
 }

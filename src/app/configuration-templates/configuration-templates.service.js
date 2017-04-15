@@ -144,8 +144,16 @@ export class ConfigurationTemplates {
 
     setTemplates(templates) {
         let promises = [];
-        templates.forEach(tpl => promises.push(this.setTemplate(tpl)));
-        return this.$q.all(promises);
+        return this.getTemplates()
+            .then(tpls => {
+                tpls.forEach(tpl => {
+                    if (!_.find(templates, { path: tpl.path })) {
+                        promises.push(this.deleteTemplate(tpl));
+                    }
+                });
+                templates.forEach(template => promises.push(this.setTemplate(template)));
+                return this.$q.all(promises);
+            });
     }
 
     getTemplate(filePath) {
@@ -171,6 +179,10 @@ export class ConfigurationTemplates {
                 return fs.outputFileAsync(path.join(__dirname, this.configPath, filePath), xmlData);
             })
             .then(() => this.setCurrentTemplate(template));
+    }
+
+    deleteTemplate(template) {
+        return fs.unlinkAsync(path.join(__dirname, this.configPath, template.path));
     }
 
     getXmlFiles(filePath) {
